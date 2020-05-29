@@ -277,31 +277,53 @@
                   </div>
                 </div>
               </div>
-
-               <div class="col-md-12">
+              <div class="col-md-12">
                 <div class="form-group">
-                <label for="venue">Venue <span style="color: red;">*</span></label>
-                <input type="venue" class="form-control" name="venue" placeholder="Accra Conference Center, Ghana">
+                  <label >Location<span style="color: red;">*</span></label>
+                </div>
+
               </div>
-            </div>
-
-               <div class="col-md-12">
-                
-          <!-- STACKED MAP CHART -->
-            <div class="card card-success">
-              <label for="" style=" font-weight: lighter !important;">Location</label>
-              <div class="card-header">
-                <h3 class="card-title center" style="text-align: center !important; font-size: 15px; ">Drag & Drop pin to Adjust Location</h3>
-             </div>
-              <div >
-                <div class="container wow fadeInUp" data-wow-delay="1.2s" style="height: 300px">
-                  <Map/>
+            <div class="row col-md-12">
+              <div class="map-view col-md-6 card" >
+                        <Map/>
                   </div>
-            </div>
-             </div>
-      
+              
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <input type="text" class="form-control" :v-model="venueName" placeholder="Venue name">
+                  </div>
+                  <div class="form-group">
+                    <input type="text" class="form-control" :v-model="street" placeholder="Street">
+                  </div> 
+                  <div class="form-group">
+                    <input type="text" class="form-control" :value="getLocation.city" placeholder="City">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                         <div class="form-group">
+                            <input type="text" class="form-control" :value="getLocation.state" placeholder="State">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                           <input type="text" class="form-control" v-model="postalCode" placeholder="Postal/Zip Code">
+                        </div>
+                    </div>
+                  </div>
+                    <div style="height: 500px">{{getLocation}}</div>
+                    <Dropdown
+                        :options="allCountries"
+                        v-on:selected="getSelectedCountry"
+                        v-on:filter="getDropdownValues"
+                        :disabled="false"
+                        name="country"
+                        :maxItem="256"
+                        placeholder="Country">
+                  </Dropdown>
+                
+                </div>
 
-           </div>
+            </div>
             <br>
 
            <!-- IMAGE UPLOAD -->
@@ -1347,14 +1369,18 @@
 import moment from 'moment'
 import ChipInput from '../components/ChipInput.vue'
 import Map from '../components/Map.vue'
+import Dropdown from 'vue-simple-search-dropdown';
+import countries from '../utils/countries'
+import { mapGetters } from 'vuex'
 
-
-
+// setTitleMethod('title')
 export default {
   name: 'CreateEvent',
+  title: 'Create Event',
   components: {
     ChipInput,
-    Map
+    Map,
+    Dropdown
   },
   props: {
  
@@ -1369,7 +1395,14 @@ export default {
       logoLoaded: false,
       bannerSrc: '',
       bannerName: 'no banner added',
-      bannerLoaded: false
+      bannerLoaded: false,
+      allCountries: countries,
+      venueName: '',
+      street: '',
+      city: '',
+      state: '',
+      postalCode: '',
+      selectedCountry: ''
     }
   },
   methods: {
@@ -1399,16 +1432,34 @@ export default {
       this.bannerSrc = URL.createObjectURL(event.target.files[0])
       this.bannerLoaded = true
       this.bannerName = event.target.files[0].name
-    }
-    
+    },
+
+    getSelectedCountry(country){
+      country;
+      // console.log(country)
+    },
+
+    getDropdownValues(dropVal){
+      console.log(dropVal)
+    },
   },
 
-   beforeDestroy() {
+  computed: {
+    ...mapGetters(['getLocation']),
+  },
+
+  beforeUpdate(){
+    this.selectedCountry = this.getLocation.country;
+   document.querySelector('.dropdown-input').value = this.selectedCountry ;  
+  },
+
+  beforeDestroy() {
     
   },
 
   mounted() {
-   
+      document.querySelector('.dropdown-input').classList.add("form-control");
+
   },
 
   created() {
@@ -1434,6 +1485,12 @@ body{
     color: #212529;
     text-align: left;
 }
+
+
+.map-view{
+  height: 300px;
+}
+
 
 .flex-column{
   width: 98%;

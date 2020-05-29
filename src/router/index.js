@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CreateEvent from '../views/CreateEvent.vue'
-// import * as Vue2Leaflet from 'vue2-leaflet'; 
-// import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import VuePageTitle from 'vue-page-title'
 
 
 Vue.use(VueRouter)
-// Vue.component('v-map', Vue2Leaflet.Map);
-// Vue.component('v-tilelayer', Vue2Leaflet.TileLayer);
-// Vue.component('v-marker', Vue2Leaflet.Marker);
+Vue.use(VuePageTitle, {
+  prefix: 'event360 - ',
+  // suffix: '- My App '
+})
 
 
   const routes = [
@@ -17,14 +17,14 @@ Vue.use(VueRouter)
   //   name: 'Home',
   //   component: Home
   // },
-  { 
-    path: '/about',
-    name: 'Map',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../components/Map.vue')
-  },
+  // { 
+  //   path: '/about',
+  //   name: 'Map',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () => import(/* webpackChunkName: "about" */ '../components/Map.vue')
+  // },
   {
     path: '/',
     name: 'CreateEvent',

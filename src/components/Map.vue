@@ -17,7 +17,8 @@ const { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 import VGeosearch from 'vue2-leaflet-geosearch';
 import { OpenStreetMapProvider,  /*GeoSearchControl*/} from 'leaflet-geosearch';
 import $ from 'jquery'
-
+import { mapActions } from 'vuex'
+ 
 //GeoSearchControl
 
 delete L.Icon.Default.prototype._getIconUrl  
@@ -57,6 +58,7 @@ const provider = new OpenStreetMapProvider();
 
 
 export default {
+  name: 'Map',
   components: { LMap, LTileLayer, LMarker, VGeosearch},
   data(){
     return {
@@ -76,14 +78,41 @@ export default {
         keepResult: true,
         searchLabel: 'search event venue here...',
         popupFormat: ({ result }) => {
-                      // console.log(query);
-                      console.log(result);
+          console.log(result)
+                     const selected = {
+                        city: '',
+                        state: '',
+                        country: '',
+                        label: ''
+                     }
+
+                     selected.label = result.label;
+                      const list = result.label.split(',')
+                          if(list.length  >= 3){
+                              selected.country = list[list.length - 1],
+                              selected.city = list[0]
+                              selected.state = list[1]
+                          }else if(list.length === 1){
+                              selected.country = list[0];
+                          }else if(list.length === 2){
+                            selected.country = list[1],
+                              selected.state = list[0]
+                          }
+                      this.getNewLocation(result)
                       return result.label
                     },
       },
     }
   },
   methods: {
+    ...mapActions(['onLocationSelected']),
+
+    getNewLocation(loc){
+      this.onLocationSelected(loc)
+    }
+  },
+  computed: {
+
   },
   mounted(){
     // const map = new L.Map('leafletmap');
