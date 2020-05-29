@@ -6,7 +6,7 @@ import VuePageTitle from 'vue-page-title'
 
 Vue.use(VueRouter)
 Vue.use(VuePageTitle, {
-  prefix: 'event360 - ',
+  prefix: 'e360 - ',
   // suffix: '- My App '
 })
 

@@ -166,8 +166,8 @@
 
               <div class="col-md-6">
               <div class="form-group">
-                  <label>Types <span style="color: red;">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
+                  <label>Type <span style="color: red;">*</span></label>
+                  <select :v-model="eventType" class="form-control select2" style="width: 100%;">
                     <option selected="selected">Camp, Trip or Retreat</option>
                     <option>Camp, Trip or Retreat</option>
                     <option>Conference</option>
@@ -186,10 +186,9 @@
               <div class="col-md-6">
                  <div class="form-group">
                   <label>Category <span style="color: red;">*</span></label>
-                  <select class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Science & technology</option>
-                    <option>Auto, Boat, Air</option>
-                    <option>Business & Career</option>
+                  <select :v-model="category" class="form-control select2" style="width: 100%;" >
+                    <option  :key="category.id" v-for="category in allCategories" :value="category.id" > {{ category.name }}</option>
+                    <!-- <option>Business & Career</option>
                     <option>Film, Media & Entertainment</option>
                     <option>Government & Politics</option>
                     <option>Music</option>
@@ -199,40 +198,43 @@
                     <option>Agriculture</option>
                     <option>Fashion & Beauty</option>
                     <option>Health & Wellness</option>
-                    <option>Trade fair shows</option>
+                    <option>Trade fair shows</option> -->
                   </select>
                 </div>
               </div>
 
-               <div class="col-md-6">
+               <div class="col-md-12">
               <div class="form-group">
                 <label for="tags">Enter Tags</label>
                 <ChipInput/>
               </div>
 
               </div>
-              <!-- <div class="col-md-6">
-                 <div class="form-group">   
-               <button class="btn mt-4"> <i class="fa fa-fw ml-3 red-tooltip" aria-hidden="true"  title="improve discoverability of your event  by adding tags relevant to the subject matter" data-toggle="tooltip" data-placement="right"  data-original-title="Tooltip on top" style="padding-top: 5px;"></i></button>
-              </div>
-              
-              </div> -->
               
 
                <div class="col-md-12">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Organiser  <span style="color: red;">*</span></label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Add organisers">
+                  <input :value="orgainser" type="email" class="form-control" id="exampleInputEmail1" placeholder="Name of organiser">
                 </div>
 
               </div>
 
               <div class="flex-column">
-                 
-                  <div class="form-group flow-row">
-                        <label for="num">Number of Attendees <span style="color: red;" >*</span></label>
-                          <input type="number" value="10" name="num">
-                    </div>
+             
+                <div class="form-group flow-row">
+                <label for="exampleFormControlSelect1">Number of Attendees <span style="color: red;" >*</span></label>
+                <select :v-model="numOfAttendees" class="form-control" id="exampleFormControlSelect1">
+                  <option>Fewer than 500</option>
+                  <option>500 - 1500</option>
+                  <option>1500 - 3000</option>
+                  <option>3000 - 5000</option>
+                  <option>5000 - 10000</option>
+                  <option>10000 - 30000</option>
+                  <option>More than 30000</option>
+                </select>
+              </div>
+                    
                   <div class="mb-2 mt-2">
                         <input class="" name="checkboxPrimary3" type="checkbox" checked="">
                         <label for="checkboxPrimary3" style=" font-weight: lighter !important;">
@@ -245,7 +247,35 @@
               <div class="col-md-12">
                <div class="form-group editor-box">
                     <label>Description <span style="color: red;">*</span></label>
-                      <Vueditor></Vueditor>
+                    <div class="form-group">
+                      <input type="text" class="form-control" @input="getDescriptionExcerpt"  placeholder="Short description">
+                    </div>
+                    <editor
+                        api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
+                        :init="{
+                          height: 400,
+                          paste_data_images: true,
+                          menubar: true,
+                          themes: 'modern',
+                           image_advtab: true,
+                           selector: 'textarea',
+                          plugins: [
+                            'advlist autolink lists link image charmap print preview anchor',
+                            'searchreplace visualblocks code fullscreen',
+                            'insertdatetime media table paste code help wordcount link code imagetools filepicker'
+                          ],
+                          toolbar:
+                            'undo redo | formatselect | bold italic backcolor | \
+                            alignleft aligncenter alignright alignjustify | \
+                            bullist numlist outdent indent | removeformat | '+
+                           ' help image media table forecolor backcolor emoticons preview insertfile',
+                          file_picker_callback: callbaavkFile
+                            
+                        }"
+                        v-model="textEditorData"
+                        
+                      />
+                       <input name="image" type="file" id="upload" class="hidden" onchange="">
                  </div>
               </div>
 
@@ -290,27 +320,27 @@
               
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input type="text" class="form-control" :v-model="venueName" placeholder="Venue name">
+                    <input type="text" class="form-control" ref="venueInput" @input="getVenue"  :value="getLocation.venue" placeholder="Venue name">
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" :v-model="street" placeholder="Street">
+                    <input type="text" class="form-control" ref="streetInput" :value="getLocation.street" placeholder="Street">
                   </div> 
                   <div class="form-group">
-                    <input type="text" class="form-control" :value="getLocation.city" placeholder="City">
+                    <input type="text" class="form-control" ref="cityInput" :value="getLocation.city" placeholder="City">
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                          <div class="form-group">
-                            <input type="text" class="form-control" :value="getLocation.state" placeholder="State">
+                            <input type="text" class="form-control" ref="stateInput" :value="getLocation.state" placeholder="State">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                           <input type="text" class="form-control" v-model="postalCode" placeholder="Postal/Zip Code">
+                           <input type="text" class="form-control" v-model="postal_zip" placeholder="Postal/Zip Code">
                         </div>
                     </div>
                   </div>
-                    <div style="height: 500px">{{getLocation}}</div>
+                   
                     <Dropdown
                         :options="allCountries"
                         v-on:selected="getSelectedCountry"
@@ -318,7 +348,7 @@
                         :disabled="false"
                         name="country"
                         :maxItem="256"
-                        placeholder="Country">
+                        placeholder="Country" ref="dropdown">
                   </Dropdown>
                 
                 </div>
@@ -422,7 +452,7 @@
                         </div>
                           <div class="col-md-3">
                           <div class="custom-control custom-switch float-right">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+                            <input type="checkbox" class="custom-control-input" v-model="isopenAccess" @change="setOpenAccess" id="customSwitch1">
                             <label class="custom-control-label" for="customSwitch1"></label>
                         </div>
                         </div>
@@ -437,7 +467,7 @@
                         </div>
                           <div class="col-md-3">
                           <div class="custom-control custom-switch float-right">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch2">
+                            <input type="checkbox" class="custom-control-input" v-model="isattendeeList" @change="setAttendeeList" id="customSwitch2">
                             <label class="custom-control-label" for="customSwitch2"></label>
                         </div>
                         </div>
@@ -452,7 +482,7 @@
                         </div>
                           <div class="col-md-3">
                           <div class="custom-control custom-switch float-right">
-                            <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                            <input type="checkbox" class="custom-control-input" v-model="iseventCode" @change="setEventCode" id="customSwitch3">
                             <label class="custom-control-label" for="customSwitch3"></label>
                         </div>
                         </div>
@@ -1025,7 +1055,7 @@
                 </div>
                 <div class="form-check ml-2">
                   <input class="form-check-input" type="checkbox" checked="">
-                  <label class="form-check-label">Untill Ticket sales start</label>
+                  <label class="form-check-label">Until Ticket sales start</label>
                 </div> 
                 <div class="form-check ml-2">
                   <input class="form-check-input" type="checkbox" checked="">
@@ -1279,19 +1309,24 @@
           <section class="col-lg-4 connectedSortable">
 
                 <div class="card profile-card-2 js-sticky-header" >
-                    <div class="card-img-block">
-                        <img class="img-fluid" src="../assets/img/photo2.png" alt="Card image cap">
+                    <div class="card-img-block" v-if="bannerLoaded">
+                        <img class="img-fluid" :src="bannerSrc" alt="Card image cap">
+                    </div>
+                    <div class="card-img-block" v-else>
+                        <img class="img-fluid"  src="../assets/img/photo2.png" alt="Card image cap">
                     </div>
                     <div class="card-body pt-5">
-                        <img src="../assets/img/user8-128x128.jpg" alt="profile-image" class="profile">
+                        <img v-if="logoLoaded" :src="logoSrc" alt="profile-image" class="profile">
+                        <img v-else src="../assets/img/user8-128x128.jpg" alt="profile-image" class="profile">
                     <div class="meta">
                         <ul>
-                            <li><span><i class="far fa-clock"></i> {{this.startDateData }} </span></li>
-                            <li><span><i class="fa fa-map-marker"></i> California</span></li>
+                            <li><span><i class="far fa-clock"></i> {{ this.startDateData }} </span></li>
+                            <li v-if="this.getLocation.venue !== ''"><span><i class="fa fa-map-marker"></i> {{ this.getLocation.venue }} </span></li>
+                            <li v-else><span><i class="fa fa-map-marker"></i> Venue </span></li>
                         </ul>
                     </div>  
-                        <h5 class="card-title">{{this.eventNameData}}</h5>
-                        <p class="card-text">An event to support agri-Business and funding</p>
+                        <h5 class="card-title">{{ this.eventNameData }}</h5>
+                        <p class="card-text">{{ decriptionExcerpt }}</p>
                         <div class="icon-block">
                              <a href=""><h6 class="card-title">Read More<i class="fas fa-chevron-right" style="font-size: 14px;"></i></h6></a>
                         </div>
@@ -1371,7 +1406,10 @@ import ChipInput from '../components/ChipInput.vue'
 import Map from '../components/Map.vue'
 import Dropdown from 'vue-simple-search-dropdown';
 import countries from '../utils/countries'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
+import Editor from '@tinymce/tinymce-vue'
+import $ from 'jquery'
+// import { apiUrl } from '../utils/config'
 
 // setTitleMethod('title')
 export default {
@@ -1380,14 +1418,15 @@ export default {
   components: {
     ChipInput,
     Map,
-    Dropdown
+    Dropdown,
+    editor: Editor
   },
   props: {
  
   },
   data(){
     return {
-      eventNameData: 'Event Name',
+      eventNameData: 'Event name',
       startDateData: moment().format('LL'),
       endDateData: '',
       logoSrc: '',
@@ -1397,19 +1436,29 @@ export default {
       bannerName: 'no banner added',
       bannerLoaded: false,
       allCountries: countries,
-      venueName: '',
+      venueName: 'Venue',
       street: '',
       city: '',
       state: '',
-      postalCode: '',
-      selectedCountry: ''
+      postal_zip: '',
+      selectedCountry: '',
+      textEditorData: '',
+      decriptionExcerpt : 'This how your description excerpt will be displayed',
+      isopenAccess: true,
+      isattendeeList: false,
+      iseventCode: false,
+      eventType: '',
+      category: '',
+      orgainser: '',
+      numOfAttendees: 0
     }
   },
   methods: {
+    ...mapActions(['onLocationSelected', 'fetchAllCategories']),
 
     setEventPreview(value){
       if(value === ''){
-          this.eventNameData = 'Event Name';
+          this.eventNameData = 'Event name';
       }else{
         this.eventNameData = value;
       }
@@ -1442,10 +1491,128 @@ export default {
     getDropdownValues(dropVal){
       console.log(dropVal)
     },
+
+    getDescriptionExcerpt(event) {
+      const value = event.target.value;
+      if(value.length == 0){
+        this.decriptionExcerpt = 'This how your description excerpt will be displayed'
+      }else{
+        this.decriptionExcerpt = value
+      }
+      
+    },
+
+    getVenue(event){
+     const loc = this.getLocation
+     loc.venue = event.target.value
+      this.onLocationSelected(loc)
+    },
+
+    callbaavkFile(callback, value, meta){
+      console.log(value)
+      if (meta.filetype == 'image') {
+        $('#upload').trigger('click');
+        $('#upload').on('change', function() {
+          var file = this.files[0];
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            callback(e.target.result, {
+              alt: ''
+            });
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    },
+
+    setOpenAccess(evt){
+      this.isopenAccess =  evt.target.checked
+      if(this.isopenAccess){
+        this.iseventCode = false
+        this.isattendeeList = false;
+      }
+
+      if(!this.isattendeeList && !this.iseventCode && !this.isopenAccess){
+        this.isopenAccess =  true
+      }
+    },
+
+    setAttendeeList(evt){
+      this.isattendeeList =  evt.target.checked
+      if(this.isattendeeList){
+        this.iseventCode = false
+        this.isopenAccess = false;
+      }
+
+      if(!this.isattendeeList && !this.iseventCode && !this.isopenAccess){
+        this.isopenAccess =  true
+      }
+    },
+
+    setEventCode(evt){
+      this.iseventCode =  evt.target.checked
+      
+      if(this.iseventCode){
+        this.isattendeeList = false
+        this.isopenAccess = false;
+      }
+
+      if(!this.isattendeeList && !this.iseventCode && !this.isopenAccess){
+        this.isopenAccess =  true
+      }
+    },
+
+    validateFields(){
+      
+    },
+
+    setPostBody(){
+      const chips = this.allChips();
+      let chipString = ''
+      chips.forEach((oneChip, index) => {
+        chipString += oneChip
+        if(index != chips.length - 1){
+          chipString += ','
+        }
+      })
+
+      let access;
+
+      if(this.isopenAccess){
+        access = 1
+      }else if(this.isattendeeList){
+        access = 2
+      }else{
+        access = 3
+      }
+
+      const body = {
+          "event_name": this.eventNameData,
+          "type": this.eventType,
+          "category": this.category,
+          "hash_tag": chipString,
+          "organiser": this.orgainser,
+          "virtual": false,
+          "description": this.textEditorData,
+          "start_date": this.startDateData,
+          "end_date": this.endDateData,
+          "number_of_attendees": this.numOfAttendees,
+          "location": this.getLocation,
+          "welcome": "",
+          "airport": 2,
+          "website": "https://piuniversal.com",
+          "access_management": access,
+          "topics": "",
+          "attendee_location": "world",
+          "video_link": this.decriptionExcerpt
+    }
+    console.log(body)
+    }
+
   },
 
   computed: {
-    ...mapGetters(['getLocation']),
+    ...mapGetters(['getLocation', 'allCategories', 'allChips']),
   },
 
   beforeUpdate(){
@@ -1459,11 +1626,12 @@ export default {
 
   mounted() {
       document.querySelector('.dropdown-input').classList.add("form-control");
-
   },
 
-  created() {
+  
 
+  created() {
+    this.fetchAllCategories();
   }
 }
 </script>
@@ -1486,6 +1654,7 @@ body{
     text-align: left;
 }
 
+.hidden{ display:none; }
 
 .map-view{
   height: 300px;
@@ -1871,7 +2040,7 @@ element.style {
 .profile-card-2 h5{
     font-weight:600;
     color:#000;
-    margin-bottom: 35px !important;
+    margin-bottom: 10px !important;
 }
 
 .profile-card-2 h6{
@@ -1905,7 +2074,7 @@ element.style {
 
 /*mine*/
  .meta {
-    margin-bottom: 25px;
+    margin-bottom: 10px;
     margin-top: 15px;
 }
 
@@ -1924,7 +2093,7 @@ element.style {
 .meta ul li span {
     display: inline-block;
     color: #666666;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 
 /*hover effects*/

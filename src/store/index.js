@@ -1,16 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Vueditor from 'vueditor'
-import 'vueditor/dist/style/vueditor.min.css'
 import MapState from './modules/MapState'
+import Categories from './modules/Categories'
 
 
 Vue.use(Vuex)
-Vue.use(Vueditor);
+
 
 export default new Vuex.Store({
   modules:{
-    MapState
+    MapState,
+    Categories
   },
   state: {
   },

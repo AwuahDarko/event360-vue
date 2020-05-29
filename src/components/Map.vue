@@ -16,7 +16,7 @@ import * as Vue2Leaflet from 'vue2-leaflet';
 const { LMap, LTileLayer, LMarker } = Vue2Leaflet;
 import VGeosearch from 'vue2-leaflet-geosearch';
 import { OpenStreetMapProvider,  /*GeoSearchControl*/} from 'leaflet-geosearch';
-import $ from 'jquery'
+// import $ from 'jquery'
 import { mapActions } from 'vuex'
  
 //GeoSearchControl
@@ -76,29 +76,51 @@ export default {
         retainZoomLevel: false,
         animateZoom: true,
         keepResult: true,
-        searchLabel: 'search event venue here...',
+        searchLabel: 'search location',
         popupFormat: ({ result }) => {
-          console.log(result)
+          
                      const selected = {
                         city: '',
                         state: '',
                         country: '',
-                        label: ''
+                        label: '',
                      }
 
+                    selected.longitude = result.raw.lon;
+                    selected.latitude = result.raw.lat;
                      selected.label = result.label;
                       const list = result.label.split(',')
-                          if(list.length  >= 3){
-                              selected.country = list[list.length - 1],
-                              selected.city = list[0]
-                              selected.state = list[1]
-                          }else if(list.length === 1){
+
+                      switch(list.length){
+                        case 1:{
                               selected.country = list[0];
-                          }else if(list.length === 2){
-                            selected.country = list[1],
-                              selected.state = list[0]
-                          }
-                      this.getNewLocation(result)
+                          break
+                        }
+
+                        case 2: {
+                              selected.country = list[1];
+                              selected.state = list[0];
+                              break
+                        } 
+
+                        case 3: {
+                               selected.country = list[list.length - 1];
+                              selected.city = list[0];
+                              selected.state = list[1];
+                              break
+                        }
+                        default :{
+                               selected.country = list[list.length - 1];
+                               selected.state = list[list.length - 3];
+                               selected.city = list[list.length - 4];
+                               selected.street = list[1],
+                               selected.venue = list[0]
+                               
+                        }
+                      }
+
+                      console.log(selected)
+                      this.getNewLocation(selected)
                       return result.label
                     },
       },
@@ -115,6 +137,13 @@ export default {
 
   },
   mounted(){
+
+    const mq = window.matchMedia( "(max-width: 800px)" );
+    if (mq.matches) {
+        this.geosearchOptions.style = 'button'
+    }else {
+        this.geosearchOptions.style = 'bar'
+    }
     // const map = new L.Map('leafletmap');
     // map.addControl(searchControl);
     // // map.on('geosearch/showlocation', function (selected) {
@@ -137,7 +166,7 @@ export default {
   }
   ,
   created(){
-    setTimeout(function () {$('.pointer').fadeOut('slow');}, 3400);
+    // setTimeout(function () {$('.pointer').fadeOut('slow');}, 3400);
     
   }
 }

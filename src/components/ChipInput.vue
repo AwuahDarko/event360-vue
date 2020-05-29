@@ -13,6 +13,7 @@
 
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     props: {
     set: {
@@ -27,10 +28,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['onChipSaved']),
     saveChip() {
       const {chips, currentInput, set} = this;
       ((set && chips.indexOf(currentInput) === -1) || !set) && chips.push(currentInput);
       this.currentInput = '';
+      this.onChipSaved(chips)
     },
     deleteChip(index) {
       this.chips.splice(index, 1);
@@ -46,12 +49,13 @@ export default {
 
 <style scoped>
 .chip-container {
-  width: 400px;
+  width: 100%;
   border: 1px solid #ccc;
   min-height: 34px;
   display: flex;
   flex-wrap: wrap;
   align-content: space-between;
+  border-radius: 5px;
 }
 .chip-container .chip {
   margin: 4px;
