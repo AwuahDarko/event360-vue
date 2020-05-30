@@ -1,5 +1,6 @@
 <template>
 <div class="hold-transition sidebar-mini layout-fixed">
+  <snackbar ref="snackbar" baseSize="100px" :wrapClass="''"  :holdTime="3000" :multiple="true" :position="position"/>
     <div class="wrapper">
       <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
@@ -116,7 +117,7 @@
           <section class="col-lg-10 connectedSortable">
 
             <!-- Map card -->
-            <div class="col-12 col-sm-12">
+            <div class="col-sm-12">
             <div class="card card-primary card-tabss">
               <div class="card-headers p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
@@ -511,7 +512,7 @@
                         </div>
                           <div class="col-md-3">
                           <div class="custom-control custom-switch float-right">
-                      <button type="button" class="btn btn-block btn-success btn-md next" >Next</button>
+                      <button type="button" class="btn btn-block btn-success btn-md next" @click="validateFields" >Next</button>
                         </div>
                         </div>
                       </div>
@@ -680,7 +681,7 @@
             <div class="row">
             <div class="col-md-3">
             <div class="">
-               <button type="button" class="btn btn-block btn-success btn-md float-left" >Next</button>
+               <button type="button" class="btn btn-block btn-success btn-md float-left"  >Next</button>
             </div>
             </div>
             <div class="col-md-3">
@@ -752,7 +753,7 @@
             </div>
               <div class="col-md-3">
               <div class="custom-control custom-switch float-right">
-          <button type="button" class="btn btn-block btn-success btn-md next" style="display: none;">Next</button>
+          <button type="button" class="btn btn-block btn-success btn-md next"  style="display: none;">Next</button>
             </div>
             </div>
           </div>
@@ -1409,9 +1410,15 @@ import countries from '../utils/countries'
 import { mapGetters, mapActions } from 'vuex'
 import Editor from '@tinymce/tinymce-vue'
 import $ from 'jquery'
+import Snackbar from 'vuejs-snackbar';
 // import { apiUrl } from '../utils/config'
 
 // setTitleMethod('title')
+//  vue.$refs.snackbar.error('Error function triggered')
+// vue.$refs.snackbar.warn('Warn function triggered')
+// vue.$refs.snackbar.info('Info function triggered')
+// vue.$refs.snackbar.open('Open function triggered')
+
 export default {
   name: 'CreateEvent',
   title: 'Create Event',
@@ -1419,13 +1426,15 @@ export default {
     ChipInput,
     Map,
     Dropdown,
-    editor: Editor
+    editor: Editor,
+    snackbar: Snackbar
   },
   props: {
  
   },
   data(){
     return {
+      position: 'top-right',
       eventNameData: 'Event name',
       startDateData: moment().format('LL'),
       endDateData: '',
@@ -1563,7 +1572,9 @@ export default {
     },
 
     validateFields(){
-      
+       console.log('Snack me')
+      this.$refs.snackbar.error('Error function triggered')
+     
     },
 
     setPostBody(){
@@ -1617,6 +1628,7 @@ export default {
 
   beforeUpdate(){
     this.selectedCountry = this.getLocation.country;
+    if(this.selectedCountry != undefined)
    document.querySelector('.dropdown-input').value = this.selectedCountry ;  
   },
 
