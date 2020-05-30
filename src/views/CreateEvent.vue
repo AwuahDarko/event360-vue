@@ -1,6 +1,9 @@
 <template>
+<!-- <div > -->
+ 
 <div class="hold-transition sidebar-mini layout-fixed">
-  <snackbar ref="snackbar" baseSize="100px" :wrapClass="''"  :holdTime="3000" :multiple="true" :position="position"/>
+  <vue-progress-bar></vue-progress-bar>
+  <snackbar ref="snackbar" baseSize="50px"  :holdTime="5000" :multiple="true" :position="position"/>
     <div class="wrapper">
       <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
@@ -122,16 +125,24 @@
               <div class="card-headers p-0 pt-1">
                 <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                   <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Event Profile</a>
+                    <a v-if="event_profile_done" class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Event Profile</a>
+                    <a v-else class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true"><i class="far fa-circle" style="font-size: 1rem;"></i> Event Profile</a>
+
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="features" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Tickets</a>
+                    <a v-if="tickets_done" class="nav-link" id="features" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Tickets</a>
+                    <a v-else class="nav-link" id="features" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false"><i class="far fa-circle" style="font-size: 1rem;"></i> Tickets</a>
+
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="messages" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Registration</a>
+                    <a v-if="registration_done" class="nav-link" id="messages" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Registration</a>
+                    <a v-else class="nav-link" id="messages" data-toggle="pill" href="#custom-tabs-one-messages" role="tab" aria-controls="custom-tabs-one-messages" aria-selected="false"><i class="far fa-circle" style="font-size: 1rem;"></i> Registration</a>
+
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Subscription</a>
+                    <a v-if="subscription_done" class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false"><i class="far fa-check-circle" style="font-size: 1rem;"></i> Subscription</a>
+                    <a v-else class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill" href="#custom-tabs-one-settings" role="tab" aria-controls="custom-tabs-one-settings" aria-selected="false"><i class="far fa-circle" style="font-size: 1rem;"></i> Subscription</a>
+
                   </li>
                    <li class="nav-item">
                     <a class="nav-link" id="publish" data-toggle="pill" href="#custom-tabs-one-publish" role="tab" aria-controls="custom-tabs-one-publish" aria-selected="false">Publish</a>
@@ -160,7 +171,7 @@
                 <div class="col-md-12">
                 <div class="form-group">
                 <label for="exampleInputEmail1">Event Name <span style="color: red;">*</span></label>
-                <input type="email" class="form-control"  v-on:input="setEventPreview($event.target.value)"  placeholder="Enter name">
+                <input type="email" class="form-control" v-bind:class="{'is-empty': invalidEventName}"  v-on:input="setEventPreview($event.target.value)"  placeholder="Enter name">
               </div>
 
               </div>
@@ -168,10 +179,11 @@
               <div class="col-md-6">
               <div class="form-group">
                   <label>Type <span style="color: red;">*</span></label>
-                  <select :v-model="eventType" class="form-control select2" style="width: 100%;">
-                    <option selected="selected">Camp, Trip or Retreat</option>
+                  <select v-bind:class="{'is-empty': invalidEventType}" v-model="eventType" class="form-control select2" style="width: 100%;">
+                    <option selected >Select event type</option>
+                    <option >Camp, Trip or Retreat</option>
                     <option>Camp, Trip or Retreat</option>
-                    <option>Conference</option>
+                    <option >Conference</option>
                     <option>Convention</option>
                     <option>Dinner or Gala</option>
                     <option>Festival or Fair</option>
@@ -187,7 +199,8 @@
               <div class="col-md-6">
                  <div class="form-group">
                   <label>Category <span style="color: red;">*</span></label>
-                  <select :v-model="category" class="form-control select2" style="width: 100%;" >
+                  <select v-bind:class="{'is-empty': invalidCategory}" v-model="category" class="form-control select2" style="width: 100%;" >
+                    <option selected> Select category</option>
                     <option  :key="category.id" v-for="category in allCategories" :value="category.id" > {{ category.name }}</option>
                     <!-- <option>Business & Career</option>
                     <option>Film, Media & Entertainment</option>
@@ -206,8 +219,8 @@
 
                <div class="col-md-12">
               <div class="form-group">
-                <label for="tags">Enter Tags</label>
-                <ChipInput/>
+                <label for="tags">Enter Tags <small style="font-weight: lighter"> (press spacebar after each tag) </small> </label>
+                <ChipInput />
               </div>
 
               </div>
@@ -216,7 +229,7 @@
                <div class="col-md-12">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Organiser  <span style="color: red;">*</span></label>
-                  <input :value="orgainser" type="email" class="form-control" id="exampleInputEmail1" placeholder="Name of organiser">
+                  <input v-bind:class="{'is-empty': invalidOrganiser}"  v-model="orgainser" type="email" class="form-control" id="exampleInputEmail1" placeholder="Name of organiser">
                 </div>
 
               </div>
@@ -249,7 +262,7 @@
                <div class="form-group editor-box">
                     <label>Description <span style="color: red;">*</span></label>
                     <div class="form-group">
-                      <input type="text" class="form-control" @input="getDescriptionExcerpt"  placeholder="Short description">
+                      <input v-bind:class="{'is-empty': invalidShortDescription}" type="text" class="form-control" @input="getDescriptionExcerpt"  placeholder="Short description">
                     </div>
                     <editor
                         api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
@@ -291,7 +304,7 @@
                       </span>
                     </div>
                     <!-- <input type="date" class="form-control float-right"  :value="startDate"> -->
-                    <input type="date" class="form-control float-right"  @change="setStartDatePreview($event.target.value)">
+                    <input v-bind:class="{'is-empty': invalidStartDate}" type="date" class="form-control float-right" v-model="startDate" @change="setStartDatePreview($event.target.value)">
                   </div>
                 </div>
               </div>
@@ -304,7 +317,7 @@
                         <i class="far fa-calendar-alt"></i>
                       </span>
                     </div>
-                    <input type="date" class="form-control float-right" >
+                    <input v-bind:class="{'is-empty': invalidEndDate}" type="date" v-model="endDateData" class="form-control float-right" >
                   </div>
                 </div>
               </div>
@@ -321,27 +334,27 @@
               
                 <div class="col-md-6">
                   <div class="form-group">
-                    <input type="text" class="form-control" ref="venueInput" @input="getVenue"  :value="getLocation.venue" placeholder="Venue name">
+                    <input type="text" class="form-control" v-bind:class="{'is-empty': invalidVenue}" ref="venueInput" @input="getVenue"  v-model="getLocation.venue" placeholder="Venue name">
                   </div>
                   <div class="form-group">
-                    <input type="text" class="form-control" ref="streetInput" :value="getLocation.street" placeholder="Street">
+                    <input type="text" class="form-control" v-bind:class="{'is-empty': invalidStreet}" ref="streetInput" v-model="getLocation.street" placeholder="Street">
                   </div> 
                   <div class="form-group">
-                    <input type="text" class="form-control" ref="cityInput" :value="getLocation.city" placeholder="City">
+                    <input type="text" class="form-control" v-bind:class="{'is-empty': invalidCity}" ref="cityInput" v-model="getLocation.city" placeholder="City">
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                          <div class="form-group">
-                            <input type="text" class="form-control" ref="stateInput" :value="getLocation.state" placeholder="State">
+                            <input type="text" class="form-control" v-bind:class="{'is-empty': invalidState}" ref="stateInput" v-model="getLocation.state" placeholder="State">
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                           <input type="text" class="form-control" v-model="postal_zip" placeholder="Postal/Zip Code">
+                           <input type="text" class="form-control" v-bind:class="{'is-empty': invalidpostal_zip}" v-model="postal_zip" placeholder="Postal/Zip Code">
                         </div>
                     </div>
                   </div>
-                   
+                   <div v-bind:class="{'country-empty': invalidCountry}">
                     <Dropdown
                         :options="allCountries"
                         v-on:selected="getSelectedCountry"
@@ -351,6 +364,7 @@
                         :maxItem="256"
                         placeholder="Country" ref="dropdown">
                   </Dropdown>
+                  </div>
                 
                 </div>
 
@@ -363,19 +377,9 @@
               <div class="card-header">
                 <h3 class="card-title event__info">Branding <i class="fas fa-info-circle"></i></h3>
                 <div class="card-tools">
-                  <!-- <button type="button" class="btn btn-tool" data-toggle="tooltip" title="Mark as read">
-                    <i class="far fa-circle"></i></button>
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                  </button> -->
                 </div>
               </div>
               <div class="card-body">
-             
-                   <!-- new banner upload -->
-              <!-- <script class="jsbin" src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script> -->
-          <!-- <div class="file-upload"> -->
              <div >
             <button type="button"  class="btn btn-block btn-success btn-flat">Add Banner Image
               <span class="badge badge-light"> {{ bannerName }}</span>
@@ -389,12 +393,6 @@
               </div>
             </div>
             <div class="file-upload-content">
-              <!-- <img class="img-fluid pad" src="#" alt="your image" >
-              <div class="image-title-wrap">
-                 <button type="button" class="btn btn-default btn-sm mt-2">
-                  <i class="fa fa-fw" aria-hidden="true" title="Copy to use close"></i>Remove
-                </button>
-              </div> -->
             </div>
           </div>
             <!-- NE UPLOAD END -->
@@ -404,7 +402,6 @@
               <!-- new logo -->
                <div class="card-body myLogocard mb-2" style="width: 50%;">
                 <div style="width: 100%;">
-             <!-- <button type="button" class="btn btn-block btn-success btn-flat">Add logo</button> -->
                   <button type="button"  class="btn btn-block btn-success  mb-2">Add logo 
                     <span class="badge badge-light"> {{ logoName }}</span>
                     </button>
@@ -435,16 +432,17 @@
           <!-- IMAGE UPLOAD ENDS -->
 
           <!-- ACCESS MANAGEMENT -->
-           <div class="col-md-12">
+          <div v-bind:class="{'access-empty': accessInvalid}">
+           <div class="col-md-12" >
             <!-- <div class=""> -->
               <div class="card-header">
                 <h3 class="card-title event__info">Access Management  <i class="fas fa-info-circle"></i></h3>
               </div>
               <!-- /.card-header -->
-              <div>
+              <div >
                 <div  class="carousel slide" data-ride="carousel">
                   <div class="col-md-12">
-                  <div class="card">
+                  <div class="card" >
                     <div class="card-body divBorder">
                       <div class="row">
                         <div class="col-md-9">
@@ -494,6 +492,7 @@
                 </div>
             </div>
           </div>
+          </div>
           
                    <div class="card-body ">
                       <div class="row">
@@ -512,7 +511,7 @@
                         </div>
                           <div class="col-md-3">
                           <div class="custom-control custom-switch float-right">
-                      <button type="button" class="btn btn-block btn-success btn-md next" @click="validateFields" >Next</button>
+                      <button type="button" class="btn btn-block btn-success btn-md next" @click="postEventProfile" >Next</button>
                         </div>
                         </div>
                       </div>
@@ -1395,6 +1394,7 @@
     </div>
   
 </div>
+<!-- </div> -->
 </template>
 
 
@@ -1411,7 +1411,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Editor from '@tinymce/tinymce-vue'
 import $ from 'jquery'
 import Snackbar from 'vuejs-snackbar';
-// import { apiUrl } from '../utils/config'
+import { apiUrl } from '../utils/config'
 
 // setTitleMethod('title')
 //  vue.$refs.snackbar.error('Error function triggered')
@@ -1437,6 +1437,7 @@ export default {
       position: 'top-right',
       eventNameData: 'Event name',
       startDateData: moment().format('LL'),
+      startDate: '',
       endDateData: '',
       logoSrc: '',
       logoName: 'no logo added',
@@ -1452,14 +1453,35 @@ export default {
       postal_zip: '',
       selectedCountry: '',
       textEditorData: '',
-      decriptionExcerpt : 'This how your description excerpt will be displayed',
+      decriptionExcerpt : 'This is how your description will be displayed',
       isopenAccess: true,
       isattendeeList: false,
       iseventCode: false,
       eventType: '',
       category: '',
       orgainser: '',
-      numOfAttendees: 0
+      numOfAttendees: 0,
+      invalidEventName: false,
+      invalidOrganiser: false,
+      invalidShortDescription: false,
+      invalidLongDescription: false,
+      invalidStartDate: false,
+      invalidEndDate: false,
+      invalidVenue: false,
+      invalidStreet: false,
+      invalidCity: false,
+      invalidState: false,
+      invalidpostal_zip: false,
+      invalidCountry: false,
+      accessInvalid: false,
+      event_profile_done: false,
+      tickets_done: false,
+      registration_done: false,
+      subscription_done: false,
+      loading: false,
+      invalidCategory: false,
+      invalidEventType: false,
+      token: ''
     }
   },
   methods: {
@@ -1498,7 +1520,7 @@ export default {
     },
 
     getDropdownValues(dropVal){
-      console.log(dropVal)
+      this.selectedCountry = dropVal
     },
 
     getDescriptionExcerpt(event) {
@@ -1518,7 +1540,6 @@ export default {
     },
 
     callbaavkFile(callback, value, meta){
-      console.log(value)
       if (meta.filetype == 'image') {
         $('#upload').trigger('click');
         $('#upload').on('change', function() {
@@ -1572,13 +1593,37 @@ export default {
     },
 
     validateFields(){
-       console.log('Snack me')
-      this.$refs.snackbar.error('Error function triggered')
-     
+      
+      this.invalidEventName = this.invalidOrganiser = this.invalidShortDescription = this.invalidStartDate =
+       this.invalidEndDate = this.invalidVenue = this.invalidStreet = this.invalidCity =
+       this.invalidState = this.invalidpostal_zip = this.invalidCountry = false;
+
+      if(this.eventNameData === 'Event Name') this.invalidEventName = true;
+      if(this.orgainser === '') this.invalidOrganiser = true;
+      if(this.decriptionExcerpt === 'This how your description excerpt will be displayed') this.invalidShortDescription = true;
+      if(!this.startDate) this.invalidStartDate = true
+      if(!this.endDateData) this.invalidEndDate = true
+      if(!this.$refs.venueInput) this.invalidVenue = true;
+      if(!this.$refs.streetInput) this.invalidStreet = true;
+      if(!this.$refs.cityInput) this.invalidCity = true;
+      if(!this.$refs.stateInput) this.invalidState = true
+      if(!this.postal_zip) this.invalidpostal_zip = true;
+      if(!document.querySelector('.dropdown-input').value) this.invalidCountry = true;
+      if(!this.isopenAccess && !this.isattendeeList && !this.iseventCode) this.accessInvalid = true;
+      if(!this.category || this.category === 'Select category') this.invalidCategory = true
+      if(!this.eventType || this.eventType === 'Select event type') this.invalidEventType = true;
+      if(this.invalidEventName || this.invalidOrganiser || this.invalidShortDescription || this.invalidStartDate
+      || this.invalidEndDate || this.invalidVenue || this.invalidStreet || this.invalidCity
+      || this.invalidState || this.invalidpostal_zip || this.invalidCountry){
+        return false;
+      }else{
+        return true;
+      }
+
     },
 
     setPostBody(){
-      const chips = this.allChips();
+      const chips = this.allChips;
       let chipString = ''
       chips.forEach((oneChip, index) => {
         chipString += oneChip
@@ -1617,7 +1662,35 @@ export default {
           "attendee_location": "world",
           "video_link": this.decriptionExcerpt
     }
-    console.log(body)
+    return body;
+    },
+
+    postEventProfile(){
+      if(!this.validateFields()){
+        this.$refs.snackbar.error('You missed some required fields')
+        return
+      }
+      const body = this.setPostBody(); 
+      
+      this.$Progress.start()
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Authorization': this.token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body)
+      }
+      fetch(`${apiUrl}/api/event`, options)
+      .then(res => {
+        if(res.status === 201){
+          this.event_profile_done = true;
+        }
+        return res.text()
+      })
+      .then(message => { this.$Progress.finish(); this.$refs.snackbar.info(message);})
+      .catch(err => { this.$refs.snackbar.error(err); this.$Progress.finish(); })
     }
 
   },
@@ -1628,8 +1701,7 @@ export default {
 
   beforeUpdate(){
     this.selectedCountry = this.getLocation.country;
-    if(this.selectedCountry != undefined)
-   document.querySelector('.dropdown-input').value = this.selectedCountry ;  
+    if(this.selectedCountry != undefined) document.querySelector('.dropdown-input').value = this.selectedCountry ;  
   },
 
   beforeDestroy() {
@@ -1637,10 +1709,35 @@ export default {
   },
 
   mounted() {
+      this.token = window.localStorage.getItem('token')
       document.querySelector('.dropdown-input').classList.add("form-control");
   },
-
   
+  beforeCreate(){
+    // check for authentication
+    const token = window.localStorage.getItem('token')
+    if(!token){
+      window.localStorage.setItem('return_to_login_info', 'Unauthorized access, please login to authenticate')
+      this.$router.push('login')
+    }else{
+      // verify token     
+           const options = {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify({token: token})
+           }
+           fetch(`${apiUrl}/api/verify-login`, options)
+           .then(res => {
+               if(res.status !== 208){
+                 window.localStorage.setItem('return_to_login_info', 'Sorry, your session has expired, please login')
+                   this.$router.push('login')
+               }
+           })
+           .catch(err => console.log("ERROR: ",err))
+    }
+  },
 
   created() {
     this.fetchAllCategories();
@@ -1666,12 +1763,29 @@ body{
     text-align: left;
 }
 
+.md-progress-bar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+  }
+
 .hidden{ display:none; }
 
 .map-view{
   height: 300px;
 }
 
+.is-empty{
+  border-color: rgb(238, 59, 59) !important;
+}
+
+.country-empty, .access-empty{
+  border: 1px solid; 
+  border-radius: 5px;
+  border-color: rgb(238, 59, 59) !important;
+}
 
 .flex-column{
   width: 98%;

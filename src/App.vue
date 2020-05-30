@@ -4,6 +4,8 @@
   </div>
 </template>
 
+
+
 <style>
 *{
   padding: 0;
@@ -27,8 +29,13 @@
     min-width: 100% !important;
     max-width: 100% !important;
     height: calc(2.25rem + 2px);
-    font-size: 1rem;
+    font-size: 1.1rem !important;
   }
+
+
+  ._cov-progress{
+    opacity: 100 !important;
+  }  
 
 
 </style>
