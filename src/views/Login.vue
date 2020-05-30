@@ -154,13 +154,22 @@ export default {
                  body: JSON.stringify(body)
              }
 
-            
+            let login_failed = false;
             fetch(`${apiUrl}/auth/local`, options)
             .then(res => {
-                console.log('after', res)
+               this.$Progress.finish()
                 if(res.status === 401){
-                   this.$Progress.finish()
+                   
                     this.$refs.snackbar.error('Invalid login credentials')
+                    login_failed = true
+                    return res.text()
+                }
+
+                return res.json()
+            }).then(data => {
+                if(!login_failed){
+                    window.localStorage.setItem('token', data.token)
+                    this.$router.push('/')
                 }
             })
             .catch(err =>{this.$Progress.finish(); console.log(err)})

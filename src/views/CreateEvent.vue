@@ -1684,12 +1684,13 @@ export default {
       }
       fetch(`${apiUrl}/api/event`, options)
       .then(res => {
+        this.$Progress.finish(); 
         if(res.status === 201){
           this.event_profile_done = true;
         }
         return res.text()
       })
-      .then(message => { this.$Progress.finish(); this.$refs.snackbar.info(message);})
+      .then(message => { this.$refs.snackbar.info(message);})
       .catch(err => { this.$refs.snackbar.error(err); this.$Progress.finish(); })
     }
 
