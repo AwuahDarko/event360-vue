@@ -172,7 +172,10 @@ export default {
                     this.$router.push('/')
                 }
             })
-            .catch(err =>{this.$Progress.finish(); console.log(err)})
+            .catch(err =>{
+                this.$Progress.finish(); console.log(err); 
+                this.$refs.snackbar.error('Network error please check your internet connection')
+            })
             
              
          },
@@ -201,7 +204,7 @@ export default {
 
         // verify token
         if(remember_me === 'true'){
-            const token = window.localStorage.getItem('token');
+            const token =`Bearer ${window.localStorage.getItem('token')}`;
           
            const options = {
                method: 'POST',
@@ -216,7 +219,10 @@ export default {
                    this.$router.push('/')
                }
            })
-           .catch(err => console.log("ERROR:",err))
+           .catch(err => {
+               console.log("ERROR:",err)
+               this.$refs.snackbar.error('Network error please check your internet connection');
+           })
         }
     },
     mounted() {

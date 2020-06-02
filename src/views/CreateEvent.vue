@@ -83,7 +83,7 @@
                                            <!--  <div tabindex="-1" class="dropdown-divider"></div> -->
                                             <a href="#"><button type="button" tabindex="0" class="dropdown-item">Tickets</button></a>
                                             <a href="#"><button type="button" tabindex="0" class="dropdown-item">Liked</button></a>
-                                            <a href="#"><button type="button" tabindex="0" class="dropdown-item">Log Out</button></a>
+                                            <a href="#"><button type="button" tabindex="0" class="dropdown-item" @click="logout">Log Out</button></a>
                                          </div>
                                     </div>
                                 </div>
@@ -180,7 +180,7 @@
               <div class="form-group">
                   <label>Type <span style="color: red;">*</span></label>
                   <select v-bind:class="{'is-empty': invalidEventType}" v-model="eventType" class="form-control select2" style="width: 100%;">
-                    <option selected >Select event type</option>
+                    <!-- <option selected >Select event type</option> -->
                     <option >Camp, Trip or Retreat</option>
                     <option>Camp, Trip or Retreat</option>
                     <option >Conference</option>
@@ -189,7 +189,7 @@
                     <option>Festival or Fair</option>
                     <option>Forum</option>         
                     <option>Meeting or Networking Event</option>
-                    <option>Meet Up</option>
+                    <option>Meetup</option>
                     <option>Seminar or Talk</option>
                     <option>Submit</option>  
                     <option>Tradeshow, Consumershow, Expo</option>
@@ -200,7 +200,7 @@
                  <div class="form-group">
                   <label>Category <span style="color: red;">*</span></label>
                   <select v-bind:class="{'is-empty': invalidCategory}" v-model="category" class="form-control select2" style="width: 100%;" >
-                    <option selected> Select category</option>
+                    <!-- <option selected> Select category</option> -->
                     <option  :key="category.id" v-for="category in allCategories" :value="category.id" > {{ category.name }}</option>
                     <!-- <option>Business & Career</option>
                     <option>Film, Media & Entertainment</option>
@@ -219,7 +219,7 @@
 
                <div class="col-md-12">
               <div class="form-group">
-                <label for="tags">Enter Tags <small style="font-weight: lighter"> (press spacebar after each tag) </small> </label>
+                <label for="tags">Enter Tags <small style="font-weight: lighter; color: #6610f2"> (press spacebar after each tag) </small> </label>
                 <ChipInput />
               </div>
 
@@ -238,7 +238,7 @@
              
                 <div class="form-group flow-row">
                 <label for="exampleFormControlSelect1">Number of Attendees <span style="color: red;" >*</span></label>
-                <select :v-model="numOfAttendees" class="form-control" id="exampleFormControlSelect1">
+                <select v-model="numOfAttendees" class="form-control" id="exampleFormControlSelect1">
                   <option>Fewer than 500</option>
                   <option>500 - 1500</option>
                   <option>1500 - 3000</option>
@@ -250,7 +250,7 @@
               </div>
                     
                   <div class="mb-2 mt-2">
-                        <input class="" name="checkboxPrimary3" type="checkbox" checked="">
+                        <input class="" name="checkboxPrimary3" type="checkbox" checked v-model="includeTicketsBtn">
                         <label for="checkboxPrimary3" style=" font-weight: lighter !important;">
                           Include a "Buy Tickets" button
                         </label>
@@ -261,9 +261,6 @@
               <div class="col-md-12">
                <div class="form-group editor-box">
                     <label>Description <span style="color: red;">*</span></label>
-                    <div class="form-group">
-                      <input v-bind:class="{'is-empty': invalidShortDescription}" type="text" class="form-control" @input="getDescriptionExcerpt"  placeholder="Short description">
-                    </div>
                     <editor
                         api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
                         :init="{
@@ -283,13 +280,15 @@
                             alignleft aligncenter alignright alignjustify | \
                             bullist numlist outdent indent | removeformat | '+
                            ' help image media table forecolor backcolor emoticons preview insertfile',
-                          file_picker_callback: callbaavkFile
+                          file_picker_callback: callbaavkFile,
+                          file_picker_types: 'image'
                             
                         }"
                         v-model="textEditorData"
-                        
+                        @onChange="getTextEditorData"
+                        v-bind:class="{'is-empty': invalidShortDescription}"
                       />
-                       <input name="image" type="file" id="upload" class="hidden" onchange="">
+                       <input name="image" type="file" id="upload" class="hidden" >
                  </div>
               </div>
 
@@ -317,7 +316,7 @@
                         <i class="far fa-calendar-alt"></i>
                       </span>
                     </div>
-                    <input v-bind:class="{'is-empty': invalidEndDate}" type="date" v-model="endDateData" class="form-control float-right" >
+                    <input v-bind:class="{'is-empty': invalidEndDate}" type="date" v-model="endDate"  class="form-control float-right" @change="setEndDatePreview($event.target.value)">
                   </div>
                 </div>
               </div>
@@ -350,7 +349,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                           <input type="text" class="form-control" v-bind:class="{'is-empty': invalidpostal_zip}" v-model="postal_zip" placeholder="Postal/Zip Code">
+                           <input type="text" class="form-control" v-bind:class="{'is-empty': invalidpostal_zip}" v-model="postal_zip" @input="setPostalCode" placeholder="Postal/Zip Code">
                         </div>
                     </div>
                   </div>
@@ -1059,7 +1058,7 @@
                 </div> 
                 <div class="form-check ml-2">
                   <input class="form-check-input" type="checkbox" checked="">
-                  <label class="form-check-label">Untill Ticket sales ends</label>
+                  <label class="form-check-label">Until Ticket sales ends</label>
                 </div> 
                 
               </div>
@@ -1222,11 +1221,11 @@
                 </div>
                 <div class="form-check ml-2">
                   <input class="form-check-input" type="checkbox" checked="">
-                  <label class="form-check-label">Untill Ticket sales start</label>
+                  <label class="form-check-label">Until Ticket sales start</label>
                 </div> 
                 <div class="form-check ml-2">
                   <input class="form-check-input" type="checkbox" checked="">
-                  <label class="form-check-label">Untill Ticket sales ends</label>
+                  <label class="form-check-label">Until Ticket sales ends</label>
                 </div> 
                 
               </div>
@@ -1320,9 +1319,9 @@
                         <img v-else src="../assets/img/user8-128x128.jpg" alt="profile-image" class="profile">
                     <div class="meta">
                         <ul>
-                            <li><span><i class="far fa-clock"></i> {{ this.startDateData }} </span></li>
-                            <li v-if="this.getLocation.venue !== ''"><span><i class="fa fa-map-marker"></i> {{ this.getLocation.venue }} </span></li>
-                            <li v-else><span><i class="fa fa-map-marker"></i> Venue </span></li>
+                            <li><span><i class="far fa-clock"></i> {{ startDateData }} - {{ endDateData }} </span></li>
+                            <li v-if="this.getLocation.venue === '' || this.getLocation.venue === undefined" key="vunue1"><span><i class="fa fa-map-marker"></i> Venue </span></li>
+                            <li v-else><span><i class="fa fa-map-marker" key="vunue2"></i> {{this.getLocation.venue}} </span></li>
                         </ul>
                     </div>  
                         <h5 class="card-title">{{ this.eventNameData }}</h5>
@@ -1330,7 +1329,7 @@
                         <div class="icon-block">
                              <a href=""><h6 class="card-title">Read More<i class="fas fa-chevron-right" style="font-size: 14px;"></i></h6></a>
                         </div>
-                         <div class="icon-block">
+                         <div class="icon-block" v-if="includeTicketsBtn" key="includebtn">
                              <button type="button" class="btn btn-block btn-success btn-sm mt-3 mb-3">Get Tickets</button>
                         </div>
 
@@ -1438,7 +1437,8 @@ export default {
       eventNameData: 'Event name',
       startDateData: moment().format('LL'),
       startDate: '',
-      endDateData: '',
+      endDate: '',
+      endDateData: moment().format('LL'),
       logoSrc: '',
       logoName: 'no logo added',
       logoLoaded: false,
@@ -1446,14 +1446,14 @@ export default {
       bannerName: 'no banner added',
       bannerLoaded: false,
       allCountries: countries,
-      venueName: 'Venue',
+      // venueName: 'Venue',
       street: '',
       city: '',
       state: '',
       postal_zip: '',
       selectedCountry: '',
       textEditorData: '',
-      decriptionExcerpt : 'This is how your description will be displayed',
+      decriptionExcerpt : 'The greatest event yet... Come one, come all',
       isopenAccess: true,
       isattendeeList: false,
       iseventCode: false,
@@ -1481,7 +1481,10 @@ export default {
       loading: false,
       invalidCategory: false,
       invalidEventType: false,
-      token: ''
+      token: '',
+      includeTicketsBtn: true,
+      logoImage: null,
+      bannerImage: null
     }
   },
   methods: {
@@ -1500,15 +1503,28 @@ export default {
         
     },
 
+    setEndDatePreview(value){
+      this.endDateData = moment(value, "YYYY-MM-DD").format( 'LL' )
+        
+    },
+
+    logout(){
+      this.getLocation = {}
+      window.localStorage.removeItem('token')
+      this.$router.push("login")
+    },
+
     getSelectedLogo(event){
-     
+      this.logoImage = event.target.files[0]
+    //  console.log(this.logoImage)
       this.logoSrc = URL.createObjectURL(event.target.files[0])
       this.logoLoaded = true
       this.logoName = event.target.files[0].name
     },
 
     getSelectedBanner(event){
-     
+     this.bannerImage = event.target.files[0]
+    //  console.log(typeof this.bannerImage)
       this.bannerSrc = URL.createObjectURL(event.target.files[0])
       this.bannerLoaded = true
       this.bannerName = event.target.files[0].name
@@ -1526,7 +1542,7 @@ export default {
     getDescriptionExcerpt(event) {
       const value = event.target.value;
       if(value.length == 0){
-        this.decriptionExcerpt = 'This how your description excerpt will be displayed'
+        this.decriptionExcerpt = 'The greatest event yet... Come one, come all'
       }else{
         this.decriptionExcerpt = value
       }
@@ -1553,6 +1569,49 @@ export default {
           reader.readAsDataURL(file);
         });
       }
+    },
+
+   async uploadLogo(event_key){
+      const formData = new FormData();
+      formData.append('image', this.logoImage)
+      formData.append('event_key', event_key)
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Authorization': this.token,
+          // 'Content-Type': 'multipart/form-data'
+        },
+        body: formData
+      }
+      
+
+      return new Promise( (resolve, reject) => {
+            fetch(`${apiUrl}/api/event-logo`, options)
+            .then(res => resolve(res))
+            .catch(err => reject(err)) 
+      })
+    },
+
+    async uploadBanner(event_key){
+      const formData = new FormData();
+      formData.append('image', this.bannerImage)
+      formData.append('event_key', event_key)
+
+      const options = {
+        method: 'POST',
+        headers: {
+          'Authorization': this.token,
+          // 'Content-Type': 'multipart/form-data'
+        },
+        body: formData
+      }
+
+      return new Promise( (resolve, reject) => {
+          fetch(`${apiUrl}/api/event-banner`, options)
+          .then(res => resolve(res))
+          .catch(err => reject(err))
+      })
     },
 
     setOpenAccess(evt){
@@ -1600,9 +1659,9 @@ export default {
 
       if(this.eventNameData === 'Event Name') this.invalidEventName = true;
       if(this.orgainser === '') this.invalidOrganiser = true;
-      if(this.decriptionExcerpt === 'This how your description excerpt will be displayed') this.invalidShortDescription = true;
+      if(this.decriptionExcerpt === 'The greatest event yet... Come one, come all') this.invalidShortDescription = true;
       if(!this.startDate) this.invalidStartDate = true
-      if(!this.endDateData) this.invalidEndDate = true
+      if(!this.endDate) this.invalidEndDate = true
       if(!this.$refs.venueInput) this.invalidVenue = true;
       if(!this.$refs.streetInput) this.invalidStreet = true;
       if(!this.$refs.cityInput) this.invalidCity = true;
@@ -1620,6 +1679,24 @@ export default {
         return true;
       }
 
+    },
+
+    parseHTML(html){
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || "";
+    },
+
+    setPostalCode(){
+     const loc = this.getLocation
+     loc.postal_zip = this.postal_zip
+     this.onLocationSelected(loc)
+    },
+
+    getTextEditorData(){
+      this.decriptionExcerpt = this.parseHTML(this.textEditorData).trim().substring(0, 45);
+      if(this.getDescriptionExcerpt === ''){
+        this.descriptionExcerpt = 'The greatest event yet... Come one, come all'
+      }
     },
 
     setPostBody(){
@@ -1650,17 +1727,19 @@ export default {
           "organiser": this.orgainser,
           "virtual": false,
           "description": this.textEditorData,
-          "start_date": this.startDateData,
-          "end_date": this.endDateData,
+          "start_date": moment(this.startDateData, 'LL').format('YYYY-MM-DD'),
+          "end_date": moment(this.endDateData, 'LL').format('YYYY-MM-DD'),
           "number_of_attendees": this.numOfAttendees,
           "location": this.getLocation,
-          "welcome": "",
+          "welcome": "N/A",
           "airport": 2,
           "website": "https://piuniversal.com",
           "access_management": access,
-          "topics": "",
+          "topics": "N/A",
           "attendee_location": "world",
-          "video_link": this.decriptionExcerpt
+          "video_link": '',
+          'buy_ticket_btn': this.includeTicketsBtn
+
     }
     return body;
     },
@@ -1688,10 +1767,23 @@ export default {
         if(res.status === 201){
           this.event_profile_done = true;
         }
-        return res.text()
+        return res.json()
       })
-      .then(message => { this.$refs.snackbar.info(message);})
-      .catch(err => { this.$refs.snackbar.error(err); this.$Progress.finish(); })
+      .then( async (message) => { 
+        // upload images
+        await this.uploadLogo(message.event_key)
+        await this.uploadBanner(message.event_key)
+
+         // store event key
+        window.localStorage.setItem('current_event_key', message.event_key)
+        this.$refs.snackbar.info(message.message);
+       
+      })
+      .catch(err => { 
+        console.log(err)
+        this.$refs.snackbar.error('Please check your internet connection'); 
+        this.$Progress.finish(); 
+        })
     }
 
   },
@@ -1710,13 +1802,13 @@ export default {
   },
 
   mounted() {
-      this.token = window.localStorage.getItem('token')
+      this.token = `Bearer ${window.localStorage.getItem('token')}`
       document.querySelector('.dropdown-input').classList.add("form-control");
   },
   
   beforeCreate(){
     // check for authentication
-    const token = window.localStorage.getItem('token')
+    const token = `Bearer ${window.localStorage.getItem('token')}`
     if(!token){
       window.localStorage.setItem('return_to_login_info', 'Unauthorized access, please login to authenticate')
       this.$router.push('login')
@@ -1736,7 +1828,11 @@ export default {
                    this.$router.push('login')
                }
            })
-           .catch(err => console.log("ERROR: ",err))
+           .catch(err => {
+             console.log("ERROR: ",err)
+             //if we can't authenticate, then go back to login
+              this.$router.push('login')
+           })
     }
   },
 
@@ -1763,6 +1859,9 @@ body{
     color: #212529;
     text-align: left;
 }
+
+
+
 
 .md-progress-bar {
     position: sticky;

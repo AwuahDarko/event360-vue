@@ -63,10 +63,10 @@ export default {
   data(){
     return {
       zoom:13,
-      center: L.latLng(47.413220, -1.219482),
+      center: L.latLng(52.4925725, 4.8033412),
       url: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      marker: L.latLng(47.413220, -1.219482),
+      marker: L.latLng(52.4925725, 4.8033412),
       geosearchOptions: { // Important part Here
         provider: provider,
         style: 'bar',
