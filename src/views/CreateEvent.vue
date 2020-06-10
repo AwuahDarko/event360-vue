@@ -48,9 +48,7 @@
               </a>
 
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer"
-                >See All Messages</a
-              >
+              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
             </div>
           </li>
           <!-- Notifications Dropdown Menu -->
@@ -69,10 +67,7 @@
                           class="p-0 btn"
                         >
                           Help
-                          <i
-                            class="fa fa-angle-down ml-2 opacity-10"
-                            style="color: #000;"
-                          ></i>
+                          <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
                         </a>
                         <div
                           tabindex="-1"
@@ -81,41 +76,25 @@
                           class="dropdown-menu dropdown-menu-right"
                         >
                           <a href="#">
-                            <button
-                              type="button"
-                              tabindex="0"
-                              class="dropdown-item"
-                            >
-                              Product Update
-                            </button>
+                            <button type="button" tabindex="0" class="dropdown-item">Product Update</button>
                           </a>
                           <a href="#">
                             <button
                               type="button"
                               tabindex="0"
                               class="dropdown-item"
-                            >
-                              How do i create an event
-                            </button>
+                            >How do i create an event</button>
                           </a>
                           <a href="#">
                             <button
                               type="button"
                               tabindex="0"
                               class="dropdown-item"
-                            >
-                              How does it cost to create an event?
-                            </button>
+                            >How does it cost to create an event?</button>
                           </a>
                           <div tabindex="-1" class="dropdown-divider"></div>
                           <a href="#">
-                            <button
-                              type="button"
-                              tabindex="0"
-                              class="dropdown-item"
-                            >
-                              Help Center
-                            </button>
+                            <button type="button" tabindex="0" class="dropdown-item">Help Center</button>
                           </a>
                         </div>
                       </div>
@@ -138,16 +117,8 @@
                           aria-expanded="false"
                           class="p-0 btn"
                         >
-                          <img
-                            width="30"
-                            class="rounded-circle"
-                            src="../assets/img/avatar.png"
-                            alt
-                          />
-                          <i
-                            class="fa fa-angle-down ml-2 opacity-10"
-                            style="color: #000;"
-                          ></i>
+                          <img width="30" class="rounded-circle" src="../assets/img/avatar.png" alt />
+                          <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
                         </a>
                         <div
                           tabindex="-1"
@@ -157,22 +128,10 @@
                         >
                           <!--  <div tabindex="-1" class="dropdown-divider"></div> -->
                           <a href="#">
-                            <button
-                              type="button"
-                              tabindex="0"
-                              class="dropdown-item"
-                            >
-                              Tickets
-                            </button>
+                            <button type="button" tabindex="0" class="dropdown-item">Tickets</button>
                           </a>
                           <a href="#">
-                            <button
-                              type="button"
-                              tabindex="0"
-                              class="dropdown-item"
-                            >
-                              Liked
-                            </button>
+                            <button type="button" tabindex="0" class="dropdown-item">Liked</button>
                           </a>
                           <a href="#">
                             <button
@@ -180,9 +139,7 @@
                               tabindex="0"
                               class="dropdown-item"
                               @click="logout"
-                            >
-                              Log Out
-                            </button>
+                            >Log Out</button>
                           </a>
                         </div>
                       </div>
@@ -218,10 +175,7 @@
             <div class="container-fluid">
               <div class="row">
                 <section class="col-lg-2 connectedSortable">
-                  <button
-                    type="button"
-                    class="btn btn-block btn-default btn-lg"
-                  >
+                  <button type="button" class="btn btn-block btn-default btn-lg">
                     <i style="font-size:16px;" class="fa">&#xf104;</i> Dashboard
                   </button>
                 </section>
@@ -230,11 +184,7 @@
                   <div class="col-sm-12">
                     <div class="card card-primary card-tabss">
                       <div class="card-headers p-0 pt-1">
-                        <ul
-                          class="nav nav-tabs"
-                          id="custom-tabs-one-tab"
-                          role="tablist"
-                        >
+                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
                           <li class="nav-item">
                             <a
                               v-if="event_profile_done"
@@ -246,10 +196,7 @@
                               aria-controls="custom-tabs-one-home"
                               aria-selected="true"
                             >
-                              <i
-                                class="far fa-check-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
                               Event Profile
                             </a>
                             <a
@@ -262,10 +209,7 @@
                               aria-controls="custom-tabs-one-home"
                               aria-selected="true"
                             >
-                              <i
-                                class="far fa-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-circle" style="font-size: 1rem;"></i>
                               Event Profile
                             </a>
                           </li>
@@ -280,10 +224,7 @@
                               aria-controls="custom-tabs-one-profile"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-check-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
                               Tickets
                             </a>
                             <a
@@ -296,10 +237,7 @@
                               aria-controls="custom-tabs-one-profile"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-circle" style="font-size: 1rem;"></i>
                               Tickets
                             </a>
                           </li>
@@ -314,10 +252,7 @@
                               aria-controls="custom-tabs-one-messages"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-check-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
                               Registration
                             </a>
                             <a
@@ -330,10 +265,7 @@
                               aria-controls="custom-tabs-one-messages"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-circle" style="font-size: 1rem;"></i>
                               Registration
                             </a>
                           </li>
@@ -348,10 +280,7 @@
                               aria-controls="custom-tabs-one-settings"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-check-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
                               Subscription
                             </a>
                             <a
@@ -364,10 +293,7 @@
                               aria-controls="custom-tabs-one-settings"
                               aria-selected="false"
                             >
-                              <i
-                                class="far fa-circle"
-                                style="font-size: 1rem;"
-                              ></i>
+                              <i class="far fa-circle" style="font-size: 1rem;"></i>
                               Subscription
                             </a>
                           </li>
@@ -380,8 +306,7 @@
                               role="tab"
                               aria-controls="custom-tabs-one-publish"
                               aria-selected="false"
-                              >Publish</a
-                            >
+                            >Publish</a>
                           </li>
                         </ul>
                       </div>
@@ -419,11 +344,11 @@
                                     type="email"
                                     class="form-control"
                                     v-bind:class="{
-                                      'is-empty': invalidEventName,
-                                    }"
+                                  'is-empty': invalidEventName,
+                                }"
                                     v-on:input="
-                                      setEventPreview($event.target.value)
-                                    "
+                                  setEventPreview($event.target.value)
+                                "
                                     placeholder="Enter name"
                                   />
                                 </div>
@@ -437,8 +362,8 @@
                                   </label>
                                   <select
                                     v-bind:class="{
-                                      'is-empty': invalidEventType,
-                                    }"
+                                  'is-empty': invalidEventType,
+                                }"
                                     v-model="eventType"
                                     class="form-control select2"
                                     style="width: 100%;"
@@ -455,9 +380,7 @@
                                     <option>Meetup</option>
                                     <option>Seminar or Talk</option>
                                     <option>Submit</option>
-                                    <option
-                                      >Tradeshow, Consumershow, Expo</option
-                                    >
+                                    <option>Tradeshow, Consumershow, Expo</option>
                                   </select>
                                 </div>
                               </div>
@@ -469,8 +392,8 @@
                                   </label>
                                   <select
                                     v-bind:class="{
-                                      'is-empty': invalidCategory,
-                                    }"
+                                  'is-empty': invalidCategory,
+                                }"
                                     v-model="category"
                                     class="form-control select2"
                                     style="width: 100%;"
@@ -480,18 +403,17 @@
                                       :key="category.id"
                                       v-for="category in allCategories"
                                       :value="category.id"
-                                      >{{ category.name }}</option
-                                    >
+                                    >{{ category.name }}</option>
                                     <!-- <option>Business & Career</option>
-                    <option>Film, Media & Entertainment</option>
-                    <option>Government & Politics</option>
-                    <option>Music</option>
-                    <option>Religious & Spirituality</option>
-                    <option>Education</option>
-                    <option>Food & Drink</option>
-                    <option>Agriculture</option>
-                    <option>Fashion & Beauty</option>
-                    <option>Health & Wellness</option>
+                <option>Film, Media & Entertainment</option>
+                <option>Government & Politics</option>
+                <option>Music</option>
+                <option>Religious & Spirituality</option>
+                <option>Education</option>
+                <option>Food & Drink</option>
+                <option>Agriculture</option>
+                <option>Fashion & Beauty</option>
+                <option>Health & Wellness</option>
                                     <option>Trade fair shows</option>-->
                                   </select>
                                 </div>
@@ -503,8 +425,7 @@
                                     Enter Tags
                                     <small
                                       style="font-weight: lighter; color: #6610f2"
-                                      >(press spacebar after each tag)</small
-                                    >
+                                    >(press spacebar after each tag)</small>
                                   </label>
                                   <ChipInput />
                                 </div>
@@ -518,8 +439,8 @@
                                   </label>
                                   <input
                                     v-bind:class="{
-                                      'is-empty': invalidOrganiser,
-                                    }"
+                                  'is-empty': invalidOrganiser,
+                                }"
                                     v-model="orgainser"
                                     type="email"
                                     class="form-control"
@@ -561,8 +482,7 @@
                                   <label
                                     for="checkboxPrimary3"
                                     style=" font-weight: lighter !important;"
-                                    >Include a "Buy Tickets" button</label
-                                  >
+                                  >Include a "Buy Tickets" button</label>
                                 </div>
                               </div>
 
@@ -575,37 +495,32 @@
                                   <editor
                                     api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
                                     :init="{
-                                      height: 400,
-                                      paste_data_images: true,
-                                      menubar: true,
-                                      themes: 'modern',
-                                      image_advtab: true,
-                                      selector: 'textarea',
-                                      plugins: [
-                                        'advlist autolink lists link image charmap print preview anchor',
-                                        'searchreplace visualblocks code fullscreen',
-                                        'insertdatetime media table paste code help wordcount link code imagetools filepicker',
-                                      ],
-                                      toolbar:
-                                        'undo redo | formatselect | bold italic backcolor | \
-                            alignleft aligncenter alignright alignjustify | \
-                            bullist numlist outdent indent | removeformat | ' +
-                                        ' help image media table forecolor backcolor emoticons preview insertfile',
-                                      file_picker_callback: callbaavkFile,
-                                      file_picker_types: 'image',
-                                    }"
+                                  height: 400,
+                                  paste_data_images: true,
+                                  menubar: true,
+                                  themes: 'modern',
+                                  image_advtab: true,
+                                  selector: 'textarea',
+                                  plugins: [
+                                    'advlist autolink lists link image charmap print preview anchor',
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste code help wordcount link code imagetools filepicker',
+                                  ],
+                                  toolbar:
+                                    'undo redo | formatselect | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | ' +
+                                    ' help image media table forecolor backcolor emoticons preview insertfile',
+                                  file_picker_callback: callbaavkFile,
+                                  file_picker_types: 'image',
+                                }"
                                     v-model="textEditorData"
                                     @onChange="getTextEditorData"
                                     v-bind:class="{
-                                      'is-empty': invalidShortDescription,
-                                    }"
+                                  'is-empty': invalidShortDescription,
+                                }"
                                   />
-                                  <input
-                                    name="image"
-                                    type="file"
-                                    id="upload"
-                                    class="hidden"
-                                  />
+                                  <input name="image" type="file" id="upload" class="hidden" />
                                 </div>
                               </div>
 
@@ -625,14 +540,14 @@
                                     <!-- <input type="date" class="form-control float-right"  :value="startDate"> -->
                                     <input
                                       v-bind:class="{
-                                        'is-empty': invalidStartDate,
-                                      }"
+                                    'is-empty': invalidStartDate,
+                                  }"
                                       type="date"
                                       class="form-control float-right"
                                       v-model="startDate"
                                       @change="
-                                        setStartDatePreview($event.target.value)
-                                      "
+                                    setStartDatePreview($event.target.value)
+                                  "
                                     />
                                   </div>
                                 </div>
@@ -651,14 +566,14 @@
                                     </div>
                                     <input
                                       v-bind:class="{
-                                        'is-empty': invalidEndDate,
-                                      }"
+                                    'is-empty': invalidEndDate,
+                                  }"
                                       type="date"
                                       v-model="endDate"
                                       class="form-control float-right"
                                       @change="
-                                        setEndDatePreview($event.target.value)
-                                      "
+                                    setEndDatePreview($event.target.value)
+                                  "
                                     />
                                   </div>
                                 </div>
@@ -682,8 +597,8 @@
                                       type="text"
                                       class="form-control"
                                       v-bind:class="{
-                                        'is-empty': invalidVenue,
-                                      }"
+                                    'is-empty': invalidVenue,
+                                  }"
                                       ref="venueInput"
                                       @input="getVenue"
                                       v-model="getLocation.venue"
@@ -695,8 +610,8 @@
                                       type="text"
                                       class="form-control"
                                       v-bind:class="{
-                                        'is-empty': invalidStreet,
-                                      }"
+                                    'is-empty': invalidStreet,
+                                  }"
                                       ref="streetInput"
                                       v-model="getLocation.street"
                                       placeholder="Street"
@@ -719,8 +634,8 @@
                                           type="text"
                                           class="form-control"
                                           v-bind:class="{
-                                            'is-empty': invalidState,
-                                          }"
+                                        'is-empty': invalidState,
+                                      }"
                                           ref="stateInput"
                                           v-model="getLocation.state"
                                           placeholder="State"
@@ -733,8 +648,8 @@
                                           type="text"
                                           class="form-control"
                                           v-bind:class="{
-                                            'is-empty': invalidpostal_zip,
-                                          }"
+                                        'is-empty': invalidpostal_zip,
+                                      }"
                                           v-model="postal_zip"
                                           @input="setPostalCode"
                                           placeholder="Postal/Zip Code"
@@ -744,8 +659,8 @@
                                   </div>
                                   <div
                                     v-bind:class="{
-                                      'country-empty': invalidCountry,
-                                    }"
+                                  'country-empty': invalidCountry,
+                                }"
                                   >
                                     <Dropdown
                                       :options="allCountries"
@@ -779,9 +694,11 @@
                                         class="btn btn-block btn-success btn-flat"
                                       >
                                         Add Banner Image
-                                        <span class="badge badge-light">{{
+                                        <span class="badge badge-light">
+                                          {{
                                           bannerName
-                                        }}</span>
+                                          }}
+                                        </span>
                                       </button>
 
                                       <div class="image-upload-wrap">
@@ -809,19 +726,15 @@
                                   </div>
                                 </div>
                                 <!-- new logo -->
-                                <div
-                                  class="card-body myLogocard mb-2"
-                                  style="width: 50%;"
-                                >
+                                <div class="card-body myLogocard mb-2" style="width: 50%;">
                                   <div style="width: 100%;">
-                                    <button
-                                      type="button"
-                                      class="btn btn-block btn-success mb-2"
-                                    >
+                                    <button type="button" class="btn btn-block btn-success mb-2">
                                       Add logo
-                                      <span class="badge badge-light">{{
+                                      <span class="badge badge-light">
+                                        {{
                                         logoName
-                                      }}</span>
+                                        }}
+                                      </span>
                                     </button>
                                   </div>
                                   <div class="image-upload-wrap2">
@@ -832,36 +745,19 @@
                                       @change="getSelectedLogo"
                                     />
                                     <div class="drag-text">
-                                      <img
-                                        :src="logoSrc"
-                                        v-if="logoLoaded"
-                                        class="logo-image"
-                                      />
-                                      <h5 class="bring-to-front-2">
-                                        Drag or Add logo
-                                      </h5>
+                                      <img :src="logoSrc" v-if="logoLoaded" class="logo-image" />
+                                      <h5 class="bring-to-front-2">Drag or Add logo</h5>
                                     </div>
                                   </div>
-                                  <div
-                                    class="file-upload-content2"
-                                    style="background-color: red"
-                                  >
-                                    <img
-                                      class="attachment-img"
-                                      src="#"
-                                      alt="your image"
-                                    />
+                                  <div class="file-upload-content2" style="background-color: red">
+                                    <img class="attachment-img" src="#" alt="your image" />
                                     <div class="image-title-wrap2">
-                                      <button
-                                        type="button"
-                                        class="btn btn-default btn-sm mt-2"
-                                      >
+                                      <button type="button" class="btn btn-default btn-sm mt-2">
                                         <i
                                           class="fa fa-fw"
                                           aria-hidden="true"
                                           title="Copy to use close"
-                                          ></i
-                                        >Remove
+                                        ></i>Remove
                                       </button>
                                     </div>
                                   </div>
@@ -873,9 +769,7 @@
                               <!-- IMAGE UPLOAD ENDS -->
 
                               <!-- ACCESS MANAGEMENT -->
-                              <div
-                                v-bind:class="{ 'access-empty': accessInvalid }"
-                              >
+                              <div v-bind:class="{ 'access-empty': accessInvalid }">
                                 <div class="col-md-12">
                                   <!-- <div class=""> -->
                                   <div class="card-header">
@@ -886,10 +780,7 @@
                                   </div>
                                   <!-- /.card-header -->
                                   <div>
-                                    <div
-                                      class="carousel slide"
-                                      data-ride="carousel"
-                                    >
+                                    <div class="carousel slide" data-ride="carousel">
                                       <div class="col-md-12">
                                         <div class="card">
                                           <div class="card-body divBorder">
@@ -900,8 +791,7 @@
                                                     class="fa fa-fw"
                                                     aria-hidden="true"
                                                     title="Copy to use bullhorn"
-                                                    ></i
-                                                  >
+                                                  ></i>
                                                   Open Access (Default)
                                                 </h6>
                                                 <p>
@@ -937,8 +827,7 @@
                                                     class="fa fa-fw"
                                                     aria-hidden="true"
                                                     title="Copy to use user"
-                                                    ></i
-                                                  >
+                                                  ></i>
                                                   Attendee List
                                                 </h6>
                                                 <p>
@@ -1009,16 +898,11 @@
                               <div class="card-body">
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <div
-                                      class="custom-control float-left"
-                                      style="display: none;"
-                                    >
+                                    <div class="custom-control float-left" style="display: none;">
                                       <button
                                         type="button"
                                         class="btn btn-block btn-success btn-md"
-                                      >
-                                        Next
-                                      </button>
+                                      >Next</button>
                                     </div>
                                   </div>
                                   <div class="col-md-3">
@@ -1030,16 +914,12 @@
                                     <p>Restrict Access to your event by using an event code (Password).</p>-->
                                   </div>
                                   <div class="col-md-3">
-                                    <div
-                                      class="custom-control custom-switch float-right"
-                                    >
+                                    <div class="custom-control custom-switch float-right">
                                       <button
                                         type="button"
                                         class="btn btn-block btn-success btn-md next"
                                         @click="postEventProfile"
-                                      >
-                                        Next
-                                      </button>
+                                      >Next</button>
                                     </div>
                                   </div>
                                 </div>
@@ -1057,7 +937,12 @@
                         role="tabpanel"
                         aria-labelledby="features"
                       >
-                        <TicketTable />
+                        <div v-if="proceedToTicketTable">
+                          <TicketTable />
+                        </div>
+                        <div v-else>
+                          <Tickets />
+                        </div>
                       </div>
 
                       <!--  -->
@@ -1068,25 +953,19 @@
                         id="custom-tabs-one-messages"
                         role="tabpanel"
                         aria-labelledby="messages"
-                      >
-                        Registration
-                      </div>
+                      >Registration</div>
                       <div
                         class="tab-pane fade"
                         id="custom-tabs-one-settings"
                         role="tabpanel"
                         aria-labelledby="custom-tabs-one-settings-tab"
-                      >
-                        Subscription
-                      </div>
+                      >Subscription</div>
                       <div
                         class="tab-pane fade"
                         id="custom-tabs-one-publish"
                         role="tabpanel"
                         aria-labelledby="publish"
-                      >
-                        Publish
-                      </div>
+                      >Publish</div>
                     </div>
                   </div>
                   <!-- /.card -->
@@ -1094,26 +973,13 @@
                 <section class="col-lg-4 connectedSortable">
                   <div class="card profile-card-2 js-sticky-header">
                     <div class="card-img-block" v-if="bannerLoaded">
-                      <img
-                        class="img-fluid"
-                        :src="bannerSrc"
-                        alt="Card image cap"
-                      />
+                      <img class="img-fluid" :src="bannerSrc" alt="Card image cap" />
                     </div>
                     <div class="card-img-block" v-else>
-                      <img
-                        class="img-fluid"
-                        src="../assets/img/photo2.png"
-                        alt="Card image cap"
-                      />
+                      <img class="img-fluid" src="../assets/img/photo2.png" alt="Card image cap" />
                     </div>
                     <div class="card-body pt-5">
-                      <img
-                        v-if="logoLoaded"
-                        :src="logoSrc"
-                        alt="profile-image"
-                        class="profile"
-                      />
+                      <img v-if="logoLoaded" :src="logoSrc" alt="profile-image" class="profile" />
                       <img
                         v-else
                         src="../assets/img/user8-128x128.jpg"
@@ -1130,9 +996,9 @@
                           </li>
                           <li
                             v-if="
-                              this.getLocation.venue === '' ||
-                                this.getLocation.venue === undefined
-                            "
+                          this.getLocation.venue === '' ||
+                            this.getLocation.venue === undefined
+                        "
                             key="vunue1"
                           >
                             <span>
@@ -1153,24 +1019,15 @@
                         <a href>
                           <h6 class="card-title">
                             Read More
-                            <i
-                              class="fas fa-chevron-right"
-                              style="font-size: 14px;"
-                            ></i>
+                            <i class="fas fa-chevron-right" style="font-size: 14px;"></i>
                           </h6>
                         </a>
                       </div>
-                      <div
-                        class="icon-block"
-                        v-if="includeTicketsBtn"
-                        key="includebtn"
-                      >
+                      <div class="icon-block" v-if="includeTicketsBtn" key="includebtn">
                         <button
                           type="button"
                           class="btn btn-block btn-success btn-sm mt-3 mb-3"
-                        >
-                          Get Tickets
-                        </button>
+                        >Get Tickets</button>
                       </div>
 
                       <div class="mt-1 float-left text-center">
@@ -1184,9 +1041,7 @@
                                 <i class="fa fa-star" aria-hidden="true"></i>
                               </li>
                               <li>
-                                <button type="button" class="btn btn-sm">
-                                  Interested
-                                </button>
+                                <button type="button" class="btn btn-sm">Interested</button>
                               </li>
                             </ul>
                           </div>
@@ -1196,9 +1051,7 @@
                                 <i class="far fa-check-circle"></i>
                               </li>
                               <li>
-                                <button type="button" class="btn btn-sm">
-                                  Going
-                                </button>
+                                <button type="button" class="btn btn-sm">Going</button>
                               </li>
                             </ul>
                           </div>
@@ -1208,9 +1061,7 @@
                                 <i class="fas fa-share"></i>
                               </li>
                               <li>
-                                <button type="button" class="btn btn-sm">
-                                  Share
-                                </button>
+                                <button type="button" class="btn btn-sm">Share</button>
                               </li>
                             </ul>
                           </div>
@@ -1220,9 +1071,7 @@
                                 <i class="far fa-bookmark"></i>
                               </li>
                               <li>
-                                <button type="button" class="btn btn-sm">
-                                  Save
-                                </button>
+                                <button type="button" class="btn btn-sm">Save</button>
                               </li>
                             </ul>
                           </div>
@@ -1270,7 +1119,7 @@ import Editor from "@tinymce/tinymce-vue";
 import $ from "jquery";
 import Snackbar from "vuejs-snackbar";
 import { apiUrl } from "../utils/config";
-// import Tickets from "../components/Tickets.vue";
+import Tickets from "../components/Tickets.vue";
 import TicketTable from "../components/TicketTable.vue";
 
 // setTitleMethod('title')
@@ -1288,8 +1137,8 @@ export default {
     Dropdown,
     editor: Editor,
     snackbar: Snackbar,
-    // Tickets,
-    TicketTable,
+    Tickets,
+    TicketTable
   },
   props: {},
   data() {
@@ -1345,7 +1194,7 @@ export default {
       token: "",
       includeTicketsBtn: true,
       logoImage: null,
-      bannerImage: null,
+      bannerImage: null
     };
   },
   methods: {
@@ -1421,7 +1270,7 @@ export default {
           var reader = new FileReader();
           reader.onload = function(e) {
             callback(e.target.result, {
-              alt: "",
+              alt: ""
             });
           };
           reader.readAsDataURL(file);
@@ -1437,16 +1286,16 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          Authorization: this.token,
+          Authorization: this.token
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData,
+        body: formData
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-logo`, options)
-          .then((res) => resolve(res))
-          .catch((err) => reject(err));
+          .then(res => resolve(res))
+          .catch(err => reject(err));
       });
     },
 
@@ -1458,16 +1307,16 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          Authorization: this.token,
+          Authorization: this.token
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData,
+        body: formData
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-banner`, options)
-          .then((res) => resolve(res))
-          .catch((err) => reject(err));
+          .then(res => resolve(res))
+          .catch(err => reject(err));
       });
     },
 
@@ -1607,12 +1456,12 @@ export default {
         location: this.getLocation,
         welcome: "N/A",
         airport: 2,
-        website: "https://piuniversal.com",
+        website: "N/A",
         access_management: access,
         topics: "N/A",
         attendee_location: "world",
         video_link: "",
-        buy_ticket_btn: this.includeTicketsBtn,
+        buy_ticket_btn: this.includeTicketsBtn
       };
       return body;
     },
@@ -1630,19 +1479,19 @@ export default {
         method: "POST",
         headers: {
           Authorization: this.token,
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body)
       };
       fetch(`${apiUrl}/api/event`, options)
-        .then((res) => {
+        .then(res => {
           this.$Progress.finish();
           if (res.status === 201) {
             this.event_profile_done = true;
           }
           return res.json();
         })
-        .then(async (message) => {
+        .then(async message => {
           // upload images
           await this.uploadLogo(message.event_key);
           await this.uploadBanner(message.event_key);
@@ -1651,16 +1500,21 @@ export default {
           window.localStorage.setItem("current_event_key", message.event_key);
           this.$refs.snackbar.info(message.message);
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
           this.$refs.snackbar.error("Please check your internet connection");
           this.$Progress.finish();
         });
-    },
+    }
   },
 
   computed: {
-    ...mapGetters(["getLocation", "allCategories", "allChips"]),
+    ...mapGetters([
+      "getLocation",
+      "allCategories",
+      "allChips",
+      "proceedToTicketTable"
+    ])
   },
 
   beforeUpdate() {
@@ -1690,12 +1544,12 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ token: token }),
+        body: JSON.stringify({ token: token })
       };
       fetch(`${apiUrl}/api/verify-login`, options)
-        .then((res) => {
+        .then(res => {
           if (res.status !== 208) {
             window.localStorage.setItem(
               "return_to_login_info",
@@ -1704,7 +1558,7 @@ export default {
             this.$router.push("login");
           }
         })
-        .catch((err) => {
+        .catch(err => {
           console.log("ERROR: ", err);
           //if we can't authenticate, then go back to login
           this.$router.push("login");
@@ -1714,7 +1568,7 @@ export default {
 
   created() {
     this.fetchAllCategories();
-  },
+  }
 };
 </script>
 
