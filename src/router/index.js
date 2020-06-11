@@ -6,6 +6,9 @@ import Register from '../views/Register.vue';
 import VuePageTitle from 'vue-page-title';
 import VueProgressBar from 'vue-progressbar';
 import VModal from 'vue-js-modal';
+import { BootstrapVue } from 'bootstrap-vue';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 const options = {
   color: '#00BFFF',
@@ -23,6 +26,11 @@ const options = {
 };
 
 Vue.use(VueRouter);
+
+Vue.use(BootstrapVue);
+// Optionally install the BootstrapVue icon components plugin
+// Vue.use(IconsPlugin);
+
 Vue.use(VuePageTitle, {
   prefix: 'e360 - ',
   // suffix: '- My App '

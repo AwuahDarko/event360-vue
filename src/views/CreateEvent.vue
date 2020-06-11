@@ -937,11 +937,15 @@
                         role="tabpanel"
                         aria-labelledby="features"
                       >
-                        <div v-if="proceedToTicketTable">
-                          <TicketTable />
+                        <div v-if="proceedToTicketTable" key="til">
+                          <TicketTable
+                            :selectedCountry="ticketCountryOfPayment"
+                            :selectedCurrency="ticketCurrencyOfPayment"
+                            v-on:showFlagFromTicketTable="showFlagsFromTicketTable"
+                          />
                         </div>
-                        <div v-else>
-                          <Tickets />
+                        <div v-else key="till">
+                          <Tickets v-on:showFlagFromTicket="showFlagsFromTicket" />
                         </div>
                       </div>
 
@@ -1224,7 +1228,7 @@ export default {
 
     getSelectedLogo(event) {
       this.logoImage = event.target.files[0];
-      //  console.log(this.logoImage)
+
       this.logoSrc = URL.createObjectURL(event.target.files[0]);
       this.logoLoaded = true;
       this.logoName = event.target.files[0].name;
@@ -1232,7 +1236,7 @@ export default {
 
     getSelectedBanner(event) {
       this.bannerImage = event.target.files[0];
-      //  console.log(typeof this.bannerImage)
+
       this.bannerSrc = URL.createObjectURL(event.target.files[0]);
       this.bannerLoaded = true;
       this.bannerName = event.target.files[0].name;
@@ -1245,6 +1249,14 @@ export default {
 
     getDropdownValues(dropVal) {
       this.selectedCountry = dropVal;
+    },
+
+    showFlagsFromTicket(flag) {
+      this.$refs.snackbar.open(flag);
+    },
+
+    showFlagsFromTicketTable(flag) {
+      this.$refs.snackbar.error(flag);
     },
 
     getDescriptionExcerpt(event) {
@@ -1513,7 +1525,9 @@ export default {
       "getLocation",
       "allCategories",
       "allChips",
-      "proceedToTicketTable"
+      "proceedToTicketTable",
+      "ticketCountryOfPayment",
+      "ticketCurrencyOfPayment"
     ])
   },
 

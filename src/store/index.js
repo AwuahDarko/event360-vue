@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import MapState from './modules/MapState';
 import Categories from './modules/Categories';
 import Chips from './modules/Chips';
-import Ticket from './modules/tickets';
+import Tickets from './modules/Tickets';
 
 Vue.use(Vuex);
 
@@ -12,9 +12,10 @@ export default new Vuex.Store({
     MapState,
     Categories,
     Chips,
-    Ticket,
+    Tickets,
   },
   state: {},
   mutations: {},
   actions: {},
+  getters: {},
 });

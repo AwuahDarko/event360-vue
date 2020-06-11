@@ -135,8 +135,9 @@
                 type="radio"
                 name="pay-option"
                 @change="markEventAsFree"
+                id="free-check"
               />
-              <label class="form-check-label">No, the event is free for everybody</label>
+              <label for="free-check" class="form-check-label">No, the event is free for everybody</label>
             </div>
             <div class="form-check pl-4">
               <input
@@ -145,8 +146,12 @@
                 name="pay-option"
                 checked
                 @change="markEventAsPaid"
+                id="paid-check"
               />
-              <label class="form-check-label">Yes, attendees will be paying for registration</label>
+              <label
+                for="paid-check"
+                class="form-check-label"
+              >Yes, attendees will be paying for registration</label>
             </div>
             <!-- country -->
             <h6 class="mt-2">
@@ -263,8 +268,13 @@
               </h6>You will receive the remaining payment 1 month after the event
               ends.
               <div class="form-check mt-3">
-                <input class="form-check-input" type="checkbox" @change="acceptTerms" />
-                <label class="form-check-label">
+                <input
+                  class="form-check-input"
+                  id="understand-check"
+                  type="checkbox"
+                  @change="acceptTerms"
+                />
+                <label class="form-check-label" for="understand-check">
                   I have read and understand the information presented
                   above.
                 </label>
@@ -290,7 +300,8 @@
 import Dropdown from "vue-simple-search-dropdown";
 import countries from "../utils/countries";
 import currency from "../utils/currency";
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+import { apiUrl } from "../utils/config";
 
 export default {
   name: "Ticket",
@@ -307,7 +318,8 @@ export default {
       infoBoxStyles: "overflow: auto; background-color: rgb(0,0,0,0)",
       countryNotSet: false,
       currencyNotSet: false,
-      termsAccepted: false
+      termsAccepted: false,
+      event_key: ""
     };
   },
   methods: {
@@ -319,6 +331,15 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
+      // this.event_key = window.localStorage.getItem("current_event_key");
+      // if (this.event_key === null || this.event_key === "") {
+      //   this.$emit(
+      //     "showFlagFromTicket",
+      //     "To create a ticket you must first create an event."
+      //   );
+      //   return;
+      // }
+
       this.countryNotSet = false;
       this.currencyNotSet = false;
       this.onEventPaymentTypeSet(true);
@@ -346,28 +367,27 @@ export default {
       this.onEventPaymentTypeSet(true);
     },
 
-    onNextFromCountryCurrencyDialog() {
+    async onNextFromCountryCurrencyDialog() {
       this.countryNotSet = false;
       this.currencyNotSet = false;
 
       const country = this.$refs.countrydropdown.selected;
       const currency = this.$refs.currencydropdown.selected;
 
-      // if (Object.keys(country).length === 0 && country.constructor === Object) {
-      //   this.countryNotSet = true;
-      //   return;
-      // }
+      if (Object.keys(country).length === 0 && country.constructor === Object) {
+        this.countryNotSet = true;
+        return;
+      }
 
-      // if (
-      //   Object.keys(currency).length === 0 &&
-      //   currency.constructor === Object
-      // ) {
-      //   this.currencyNotSet = true;
-      //   return;
-      // }
+      if (
+        Object.keys(currency).length === 0 &&
+        currency.constructor === Object
+      ) {
+        this.currencyNotSet = true;
+        return;
+      }
 
-      this.onCountryOfPaymentSet({ id: country.id, name: country.name });
-      this.onCurrencyOfPaymentSet({ id: currency.id, name: currency.name });
+      await this.saveCountryCurrency();
       this.showTicketInfoBox();
     },
 
@@ -388,6 +408,30 @@ export default {
 
     onCurrency(currency) {
       this.onCurrencyOfPaymentSet(currency);
+    },
+
+    saveCountryCurrency() {
+      const token = `Bearer ${window.localStorage.getItem("token")}`;
+      const body = {
+        event_key: "8a064820-0546-452f-b618-73a5d134758f", //this.event_key,
+        country: this.ticketCountryOfPayment.name,
+        currency: this.ticketCurrencyOfPayment.name
+      };
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token
+        },
+        body: JSON.stringify(body)
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(`${apiUrl}/api/event-pay-option`, options)
+          .then(res => resolve(res))
+          .catch(err => reject(err));
+      });
     }
   },
 
@@ -402,6 +446,10 @@ export default {
     if (media.matches) {
       this.height = "420px";
     }
+  },
+
+  computed: {
+    ...mapGetters(["ticketCountryOfPayment", "ticketCurrencyOfPayment"])
   }
 };
 </script>

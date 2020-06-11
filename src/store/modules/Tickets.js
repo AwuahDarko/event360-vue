@@ -1,18 +1,18 @@
-const countryOfPayment = new Object();
-const currencyOfPayment = new Object();
+// const country = new Object();
+// const currency = new Object();
 
 const state = {
   isPaidEvent: true,
-  countryOfPayment: countryOfPayment,
-  currencyOfPayment: currencyOfPayment,
+  country: null,
+  currency: null,
   proceed: false,
 };
 
 const getters = {
   ticketPaymentType: (state) => state.isPaidEvent,
-  aticketCountryOfPayment: (state) => state.countryOfPayment,
-  aticketCurrencyOfPayment: (state) => state.currencyOfPayment,
   proceedToTicketTable: (state) => state.proceed,
+  ticketCountryOfPayment: (state) => state.country,
+  ticketCurrencyOfPayment: (state) => state.currency,
 };
 
 const actions = {
@@ -35,8 +35,8 @@ const actions = {
 
 const mutations = {
   setTicketPaymentType: (state, value) => (state.isPaidEvent = value),
-  setCountryOfPayment: (state, count) => (state.countryOfPayment = count),
-  setCurrencyOfPayment: (state, curr) => (state.currencyOfPayment = curr),
+  setCountryOfPayment: (state, country) => (state.country = country),
+  setCurrencyOfPayment: (state, currency) => (state.currency = currency),
   setProceed: (state, value) => (state.proceed = value),
 };
 
