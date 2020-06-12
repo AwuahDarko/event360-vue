@@ -65,12 +65,12 @@
                   <h2 class="lead">
                     <b>
                       1% +
-                      <span v-html="cedi">{{cedi}}</span> 0.99 per paid ticket
+                      <span class="ghana-cedi" v-html="cedi">{{cedi}}</span> 0.99 per paid ticket
                     </b>
                   </h2>
                   <span class="small">
                     Capped at
-                    <span v-html="cedi">{{cedi}}</span> 5.00 per ticket
+                    <span class="ghana-cedi" v-html="cedi">{{cedi}}</span> 5.00 per ticket
                   </span>
                 </div>
               </div>
@@ -243,15 +243,24 @@
             <div class="form-check mt-2" style="background-color: #f4f6f9">
               <small>
                 Event360 Registration Fee: 1% of ticket price +
-                <span v-html="cedi">{{cedi}}</span> 0.99 per
+                <span
+                  class="ghana-cedi"
+                  v-html="cedi"
+                >{{cedi}}</span> 0.99 per
                 ticket (Capped at
-                <span v-html="cedi">{{cedi}}</span> 5.00 per ticket)
+                <span
+                  class="ghana-cedi"
+                  v-html="cedi"
+                >{{cedi}}</span> 5.00 per ticket)
               </small>
             </div>
             <div class="form-check" style="background-color: #f4f6f9">
               <small>
                 Merchant Processing Fee: 3.4% of ticket price +
-                <span v-html="cedi">{{cedi}}</span> 0.30 per
+                <span
+                  class="ghana-cedi"
+                  v-html="cedi"
+                >{{cedi}}</span> 0.30 per
                 ticket
                 <span style="color: red">*</span>Subject to change by
                 stripe
@@ -339,8 +348,9 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
-      //==================================================================================//
-      // ================ ACTIVATE THIS COMMENT =========================================//
+      /**
+       * ! REMOVE THIS COMMENT WHEN GOING TO PRODUCTION
+       */
 
       // this.event_key = window.localStorage.getItem("current_event_key");
       // if (this.event_key === null || this.event_key === "") {

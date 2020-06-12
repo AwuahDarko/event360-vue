@@ -943,6 +943,7 @@
                             :selectedCurrency="ticketCurrencyOfPayment"
                             :token="token"
                             v-on:showFlagFromTicketTable="showFlagsFromTicketTable"
+                            v-on:showOrHideProgressBar="showOrHideProgress"
                           />
                         </div>
                         <div v-else key="till">
@@ -1477,6 +1478,14 @@ export default {
         buy_ticket_btn: this.includeTicketsBtn
       };
       return body;
+    },
+
+    showOrHideProgress(which) {
+      if (which) {
+        this.$Progress.start();
+      } else {
+        this.$Progress.finish();
+      }
     },
 
     postEventProfile() {

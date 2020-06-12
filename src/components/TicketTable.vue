@@ -73,32 +73,41 @@
               <thead>
                 <tr>
                   <th style="width: 15%">Ticket</th>
-                  <th style="width: 1%">Price</th>
+                  <th style="width: 1%">
+                    Price
+                    <span class="ghana-cedi" v-html="cedi">{{cedi}}</span>
+                  </th>
                   <th style="width: 30%">Fees</th>
-                  <th style="width: 10%">Attendee Pays</th>
-                  <th>Organizer (You) Get</th>
+                  <th style="width: 10%">
+                    Attendee Pays
+                    <span class="ghana-cedi" v-html="cedi">{{cedi}}</span>
+                  </th>
+                  <th>
+                    Organizer (You) Get
+                    <span class="ghana-cedi" v-html="cedi">{{cedi}}</span>
+                  </th>
                   <th style="width: 12%">Ticket Sales</th>
                   <th style="width: 20%" class="text-center">Action</th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td>1 Day Badge</td>
+              <tbody v-if="createdTickets.length > 0">
+                <tr v-for="ticket in createdTickets" :key="ticket.ticketId">
+                  <td>{{ ticket.name }}</td>
                   <td>
-                    <a>$100.00</a>
+                    <a>{{ ticket.price }}</a>
                   </td>
                   <td>
                     Paid by Attendee Registration Fee Processing Fee (By Stripe)
                     App Fee.
                   </td>
                   <td>
-                    <a>$100.00</a>
+                    <a>{{ ticket.attendeePays }}</a>
                   </td>
                   <td>
-                    <a>$60.00</a>
+                    <a>{{ ticket.organizerAmt }}</a>
                   </td>
                   <td>
-                    <a>0/200</a>
+                    <a>0/{{ ticket.quantity }}</a>
                   </td>
                   <td
                     style="display: flex; justify-content: space-evenly; padding-top: 30%; padding-bottom: 30%"
@@ -106,10 +115,15 @@
                     <button class="edit-btn">
                       <i class="fas fa-pencil-alt"></i>
                     </button>
-                    <button class="del-btn">
+                    <button class="del-btn" @click="deleteTicket($event, ticket)">
                       <i class="fa fa-trash"></i>
                     </button>
                   </td>
+                </tr>
+              </tbody>
+              <tbody v-else>
+                <tr>
+                  <td colspan="7">Add tickets by clicking on "Create Ticket" button above</td>
                 </tr>
               </tbody>
             </table>
@@ -216,6 +230,7 @@
                             id="exampleInput"
                             placeholder="0"
                             v-model="freeTicketQuantity"
+                            @keypress="isOnlyNumberKey($event)"
                           />
                         </div>
                       </div>
@@ -497,6 +512,7 @@
                             v-bind:class="{
                                   'is-empty': invalidPaidQuantity,
                                 }"
+                            @keypress="isOnlyNumberKey($event)"
                           />
                         </div>
                       </div>
@@ -840,7 +856,9 @@ export default {
       registrationFee: 0,
       processingFee: 0,
       attendeeFee: 0,
-      organizerAmt: 0
+      organizerAmt: 0,
+      createdTickets: [],
+      cedi: "(GH&#8373)"
     };
   },
 
@@ -910,7 +928,7 @@ export default {
 
       this.disableFreeBtn();
 
-      const body = JSON.stringify(this.setFreeTicketPostBody());
+      const body = this.setFreeTicketPostBody();
 
       const options = {
         method: "POST",
@@ -918,7 +936,7 @@ export default {
           "Content-Type": "application/json",
           Authorization: this.token
         },
-        body: body
+        body: JSON.stringify(body)
       };
 
       fetch(`${apiUrl}/api/ticket`, options)
@@ -926,15 +944,22 @@ export default {
           this.enableFreeBtn();
 
           if (res.status === 201) {
+            const ticket = await res.json();
+            // console.log(ticket);
+            // add
+            body.price = body.price.toFixed(2);
+            body.attendeePays = this.attendeeFee.toFixed(2);
+            body.organizerAmt = this.organizerAmt.toFixed(2);
+            body.ticketId = ticket.ticket_id;
+
+            this.createdTickets.push(body);
+
             this.showFreeTicketMessage = true;
             this.resetFreeTicketData();
 
             setTimeout(() => {
               this.showFreeTicketMessage = false;
-            }, 3000);
-
-            const ticket = await res.json();
-            console.log(ticket);
+            }, 2000);
           }
         })
         .catch(err => {
@@ -950,7 +975,7 @@ export default {
 
       this.disablePaidBtn();
 
-      const body = JSON.stringify(this.setPaidTicketPostBody());
+      const body = this.setPaidTicketPostBody();
 
       const options = {
         method: "POST",
@@ -958,7 +983,7 @@ export default {
           "Content-Type": "application/json",
           Authorization: this.token
         },
-        body: body
+        body: JSON.stringify(body)
       };
 
       fetch(`${apiUrl}/api/ticket`, options)
@@ -966,15 +991,22 @@ export default {
           this.enablePaidBtn();
 
           if (res.status === 201) {
+            const ticket = await res.json();
+            // console.log(ticket); // { ticket_id: 11 }
+
             this.showPaidTicketMessage = true;
+            // add
+            body.attendeePays = this.attendeeFee;
+            body.organizerAmt = this.organizerAmt;
+            body.ticketId = ticket.ticket_id;
+
+            this.createdTickets.push(body);
+
             this.resetPaidTicketData();
 
             setTimeout(() => {
               this.showPaidTicketMessage = false;
-            }, 3000);
-
-            const ticket = await res.json();
-            console.log(ticket); // { ticket_id: 11 }
+            }, 2000);
           }
         })
         .catch(err => {
@@ -1024,6 +1056,19 @@ export default {
         charCode > 31 &&
         (charCode < 48 || charCode > 57) &&
         charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    isOnlyNumberKey(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        (charCode > 31 && (charCode < 48 || charCode > 57)) ||
+        charCode == 46
       ) {
         evt.preventDefault();
       } else {
@@ -1251,6 +1296,29 @@ export default {
           "Could not save, please check internet connection"
         );
       });
+    },
+
+    deleteTicket(evt, ticket) {
+      this.$emit("showOrHideProgressBar", true);
+
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: this.token
+        }
+      };
+
+      fetch(`${apiUrl}/api/ticket?id=${ticket.ticketId}`, options).then(res => {
+        this.$emit("showOrHideProgressBar", false);
+
+        if (res.status === 200) {
+          // delete ticket from array
+          const index = this.createdTickets.indexOf(ticket);
+          if (index > -1) {
+            this.createdTickets.splice(index, 1);
+          }
+        }
+      });
     }
   },
 
@@ -1266,7 +1334,7 @@ export default {
     this.$refs.curdropdown.searchFilter = this.selectedCurrency.name;
     this.$refs.countdropdown.searchFilter = this.selectedCountry.name;
   }
-}; //jQuery351083681624253124621
+};
 </script>
 
 <style scoped>
@@ -1346,6 +1414,10 @@ label:not(.form-check-label):not(.custom-file-label) {
 
 .p-as-label {
   font-size: 0.9rem;
+}
+
+.ghana-cedi {
+  font-size: 0.6rem !important;
 }
 
 @media (max-width: 600px) {

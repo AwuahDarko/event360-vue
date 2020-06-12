@@ -32,4 +32,10 @@
 ._cov-progress {
   opacity: 100 !important;
 }
+
+.ghana-cedi {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.9rem;
+  font-weight: lighter;
+}
 </style>
