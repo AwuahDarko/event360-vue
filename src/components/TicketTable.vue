@@ -974,7 +974,7 @@ export default {
             }, 3000);
 
             const ticket = await res.json();
-            console.log(ticket);
+            console.log(ticket); // { ticket_id: 11 }
           }
         })
         .catch(err => {
