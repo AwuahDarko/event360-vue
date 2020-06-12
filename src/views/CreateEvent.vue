@@ -833,7 +833,7 @@
                                                 <p>
                                                   Restrict Access to your event
                                                   by uploading a list of
-                                                  autorised attendees.
+                                                  authorized attendees.
                                                 </p>
                                               </div>
                                               <div class="col-md-3">
@@ -982,7 +982,7 @@
                       <img class="img-fluid" :src="bannerSrc" alt="Card image cap" />
                     </div>
                     <div class="card-img-block" v-else>
-                      <img class="img-fluid" src="../assets/img/photo2.png" alt="Card image cap" />
+                      <img class="img-fluid" src="../assets/img/photo2.jpg" alt="Card image cap" />
                     </div>
                     <div class="card-body pt-5">
                       <img v-if="logoLoaded" :src="logoSrc" alt="profile-image" class="profile" />

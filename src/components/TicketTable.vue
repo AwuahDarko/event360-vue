@@ -96,10 +96,15 @@
                   <td>
                     <a>{{ ticket.price }}</a>
                   </td>
-                  <td>
-                    Paid by Attendee Registration Fee Processing Fee (By Stripe)
-                    App Fee.
+                  <td v-if="ticket.type === 'paid'">
+                    <p
+                      class="remove-bottom-margin"
+                    >{{ ticket.fees_option === 1 ? 'Paid by Attendee:' : 'Absorbed by You' }}</p>
+                    <p class="remove-bottom-margin">Registration Fee:</p>
+                    <p class="remove-bottom-margin">Processing Fee (By Stripe):</p>
+                    <p class="remove-bottom-margin">App Fee:</p>
                   </td>
+                  <td v-else>Free</td>
                   <td>
                     <a>{{ ticket.attendeePays }}</a>
                   </td>
@@ -112,7 +117,20 @@
                   <td
                     style="display: flex; justify-content: space-evenly; padding-top: 30%; padding-bottom: 30%"
                   >
-                    <button class="edit-btn">
+                    <button
+                      v-if="ticket.type ==='free'"
+                      class="edit-btn"
+                      data-toggle="modal"
+                      data-target="#edit_free_Ticket"
+                    >
+                      <i class="fas fa-pencil-alt"></i>
+                    </button>
+                    <button
+                      v-else
+                      class="edit-btn"
+                      data-toggle="modal"
+                      data-target="#edit_paid_Ticket"
+                    >
                       <i class="fas fa-pencil-alt"></i>
                     </button>
                     <button class="del-btn" @click="deleteTicket($event, ticket)">
@@ -348,7 +366,7 @@
                               v-model="freeTicketSaleEndTime"
                               class="form-control"
                               type="time"
-                              id="reservationtime"
+                              id="datetimepicker1"
                               v-bind:class="{
                                     'is-empty': invalidFreeEndTime,
                                   }"
@@ -409,8 +427,6 @@
                         </div>
                       </div>
                     </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
@@ -436,6 +452,212 @@
       </div>
 
       <!-- ============free ticket ends -->
+
+      <!-- EDIT FREE TICKET -->
+      <div class="row">
+        <div class="col-md-12">
+          <div
+            class="modal fade"
+            data-backdrop="static"
+            data-keyboard="false"
+            id="edit_free_Ticket"
+          >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header bg-success">
+                  <h4 class="modal-title">Free Ticket</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="alert alert-warning col-md-12 text-center" role="alert">
+                        <span class="mx-auto w-50 text-light font-weight-bold">New ticket created</span>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>
+                            Ticket Name
+                            <span style="color: red;">*</span>
+                          </label>
+                          <input type="text" class="form-control" placeholder="e.g. General Ticket" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Quantity Available
+                            <span style="color: red;">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            class="form-control"
+                            placeholder="0"
+                            @keypress="isOnlyNumberKey($event)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Limit Per Person
+                            <span style="color: red;">*</span>
+                          </label>
+                          <select class="form-control select2" style="width: 100%;">
+                            <option disabled value="0">...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            Ticket Sales Start
+                            <span style="color: red;">*</span>
+                          </label>
+
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                            <input type="date" class="form-control" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>time</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-clock"></i>
+                              </span>
+                            </div>
+                            <input class="form-control" type="time" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            Ticket Sales End
+                            <span style="color: red;">*</span>
+                          </label>
+
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                            <input type="date" class="form-control" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>time</label>
+
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-clock"></i>
+                              </span>
+                            </div>
+                            <input class="form-control" type="time" id="reservationtime" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="ticket_visibility">
+                          <h2 class="lead">
+                            <b>Ticket Visibility</b>
+                          </h2>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="visibility-e"
+                            checked
+                            id="always-visible-e"
+                          />
+                          <label for="always-visible-e" class="form-check-label">Always Visible</label>
+                        </div>
+
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="visibility-e"
+                            id="hide-at-e"
+                          />
+                          <label class="form-check-label" for="hide-at-e">Hidden at a specific time</label>
+                        </div>
+                        <div class="form-check ml-2">
+                          <input
+                            class="form-check-input"
+                            id="until-start-e"
+                            type="radio"
+                            name="hide-specific-e"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="until-start-e"
+                          >Until Ticket sales start</label>
+                        </div>
+                        <div class="form-check ml-2">
+                          <input
+                            class="form-check-input"
+                            id="until-end-e"
+                            type="radio"
+                            name="hide-specific-e"
+                          />
+                          <label class="form-check-label" for="until-end-e">Until Ticket sales end</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-end">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success">Update</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+        </div>
+      </div>
+      <!-- EDIT FREE TICKET ENDS -->
+
+      <!-- Paid TICKET start here -->
       <div class="row">
         <div class="col-md-12">
           <div class="modal fade" data-backdrop="static" data-keyboard="false" id="paid_Ticket">
@@ -781,6 +1003,286 @@
           </div>
         </div>
       </div>
+      <!-- paid Ticket ends -->
+
+      <!-- EDIT PAID TICKET -->
+      <div class="row">
+        <div class="col-md-12">
+          <div
+            class="modal fade"
+            data-backdrop="static"
+            data-keyboard="false"
+            id="edit_paid_Ticket"
+          >
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header bg-success">
+                  <h4 class="modal-title">Paid Ticket</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="col-md-12">
+                    <div class="row">
+                      <div class="alert alert-warning col-md-12 text-center" role="alert">
+                        <span class="mx-auto w-50 text-light font-weight-bold">New ticket created</span>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label>
+                            Ticket Name
+                            <span style="color: red;">*</span>
+                          </label>
+                          <input type="email" class="form-control" placeholder="e.g. VIP Ticket" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Price
+                            <span style="color: red;">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            step="0.01"
+                            class="form-control"
+                            placeholder="0.00"
+                            @keypress="isNumberKey($event)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Quantity Available
+                            <span style="color: red;">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            step="1"
+                            class="form-control"
+                            placeholder="0"
+                            @keypress="isOnlyNumberKey($event)"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="form-group">
+                          <label>
+                            Limit Per Person
+                            <span style="color: red;">*</span>
+                          </label>
+                          <select class="form-control select2" style="width: 100%;">
+                            <option disabled value="0">...</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            Ticket Sales Start
+                            <span style="color: red;">*</span>
+                          </label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                            <input type="date" class="form-control" id="reservation2" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>time</label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-clock"></i>
+                              </span>
+                            </div>
+                            <input class="form-control" type="time" id="reservationtime2" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>
+                            Ticket Sales End
+                            <span style="color: red;">*</span>
+                          </label>
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-calendar-alt"></i>
+                              </span>
+                            </div>
+                            <input type="date" class="form-control" id="reservation2" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <label>time</label>
+
+                          <div class="input-group">
+                            <div class="input-group-prepend">
+                              <span class="input-group-text">
+                                <i class="far fa-clock"></i>
+                              </span>
+                            </div>
+                            <input class="form-control" type="time" id="reservationtime2" />
+                          </div>
+                          <!-- /.input group -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="ticket_visibility">
+                          <h2 class="lead">Ticket Visibility</h2>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            checked
+                            id="paid-always-p"
+                            name="top-level-p"
+                          />
+                          <label class="form-check-label" for="paid-always-p">Always Visible</label>
+                        </div>
+                        <div class="form-check">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            id="paid-hidden-p"
+                            name="top-level-p"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="paid-hidden-p"
+                          >Hidden at a specific time</label>
+                        </div>
+                        <div class="form-check ml-2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            id="paid-start-p"
+                            name="paid-hidden-end-p"
+                          />
+                          <label
+                            class="form-check-label"
+                            for="paid-start-p"
+                          >Until Ticket sales start</label>
+                        </div>
+                        <div class="form-check ml-2">
+                          <input
+                            class="form-check-input"
+                            type="radio"
+                            name="paid-hidden-end-p"
+                            id="paid-end-p"
+                          />
+                          <label class="form-check-label" for="paid-end-p">Until Ticket sales end</label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="form-group mt-2">
+                          <label>
+                            Fees
+                            <span style="color: red;">*</span>
+                          </label>
+                          <select class="form-control select2" style="width: 100%;">
+                            <option value="1">Pass fees on</option>
+                            <option value="2">Absorb</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-8">
+                        <label style="visibility: hidden;">
+                          Fees
+                          <span style="color: red;">*</span>
+                        </label>
+                        <p class="p-as-label">feeOptionMessage</p>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="fees_shade" style="background-color: #f4f6f9">
+                          <div style="padding: 0.2rem;">
+                            <div class="space-out-children">
+                              <small>Registration fees:</small>
+                              <small>registrationFee === 0 ? 'N/A' : registrationFee</small>
+                            </div>
+                            <div class="space-out-children">
+                              <small>Processing fees (by Stripe):</small>
+                              <small>processingFee === 0 ? 'N/A' : processingFee</small>
+                            </div>
+                            <div class="space-out-children">
+                              <small>Attendees pays:</small>
+                              <small>attendeeFee === 0 ? 'N/A' : attendeeFee</small>
+                            </div>
+                            <div class="space-out-children">
+                              <small class="text-success text-secondary">Organizer (you) gets:</small>
+                              <small
+                                class="text-success text-secondary"
+                              >organizerAmt === 0 ? 'N/A' : organizerAmt</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 mt-2">
+                        <p class="p-as-label">
+                          <span style="color: red;">*</span> Stripe charges
+                          a processing fee. This includes transaction fees
+                          and bank transfer fees. This fee is beyond
+                          Event360's control. Please refer to stripe website
+                          for their fees
+                        </p>
+                      </div>
+                    </div>
+                    <!-- </div> -->
+                    <!-- </div> -->
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-end">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-success">Create</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+        </div>
+      </div>
+      <!-- EDIT paid ticket ENDS -->
     </div>
   </div>
   <!-- table of ticket ends -->
@@ -996,6 +1498,8 @@ export default {
 
             this.showPaidTicketMessage = true;
             // add
+            const num = parseFloat(body.price);
+            body.price = num.toFixed(2);
             body.attendeePays = this.attendeeFee;
             body.organizerAmt = this.organizerAmt;
             body.ticketId = ticket.ticket_id;
@@ -1251,7 +1755,7 @@ export default {
 
     resetPaidTicketData() {
       this.paidTicketName = "";
-      this.paidTicketQuantity = 0;
+      this.paidTicketQuantity = "";
       this.paidTicketLimitPerson = "";
       this.paidTicketSaleStartDate = "";
       this.paidTicketSaleStartTime = "";
@@ -1265,11 +1769,11 @@ export default {
       this.invalidPaidStartTime = false;
       this.invalidPaidEndDate = false;
       this.invalidPaidEndTime = false;
-      (this.ticketPrice = ""),
-        (this.registrationFee = 0),
-        (this.processingFee = 0),
-        (this.attendeeFee = 0),
-        (this.organizerAmt = 0);
+      this.ticketPrice = "";
+      this.registrationFee = 0;
+      this.processingFee = 0;
+      this.attendeeFee = 0;
+      this.organizerAmt = 0;
     },
 
     saveCountryCurrency() {
