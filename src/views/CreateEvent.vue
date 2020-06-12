@@ -941,6 +941,7 @@
                           <TicketTable
                             :selectedCountry="ticketCountryOfPayment"
                             :selectedCurrency="ticketCurrencyOfPayment"
+                            :token="token"
                             v-on:showFlagFromTicketTable="showFlagsFromTicketTable"
                           />
                         </div>

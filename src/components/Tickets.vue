@@ -63,9 +63,15 @@
               <div class="row">
                 <div class="col-12 text-center">
                   <h2 class="lead">
-                    <b>1% + $0.99 per paid ticket</b>
+                    <b>
+                      1% +
+                      <span v-html="cedi">{{cedi}}</span> 0.99 per paid ticket
+                    </b>
                   </h2>
-                  <span class="small">Capped at $5.00 per ticket</span>
+                  <span class="small">
+                    Capped at
+                    <span v-html="cedi">{{cedi}}</span> 5.00 per ticket
+                  </span>
                 </div>
               </div>
             </div>
@@ -236,17 +242,18 @@
             </div>
             <div class="form-check mt-2" style="background-color: #f4f6f9">
               <small>
-                Event360 Registration Fee: 1% of ticket price + $0.99 per
-                ticket (Capped at $5.00 per ticket)
+                Event360 Registration Fee: 1% of ticket price +
+                <span v-html="cedi">{{cedi}}</span> 0.99 per
+                ticket (Capped at
+                <span v-html="cedi">{{cedi}}</span> 5.00 per ticket)
               </small>
             </div>
             <div class="form-check" style="background-color: #f4f6f9">
               <small>
-                Merchant Processing Fee: 3.4% of ticket price + $0.30 per
+                Merchant Processing Fee: 3.4% of ticket price +
+                <span v-html="cedi">{{cedi}}</span> 0.30 per
                 ticket
-                <span
-                  style="color: red"
-                >*</span>Subject to change by
+                <span style="color: red">*</span>Subject to change by
                 stripe
               </small>
             </div>
@@ -319,7 +326,8 @@ export default {
       countryNotSet: false,
       currencyNotSet: false,
       termsAccepted: false,
-      event_key: ""
+      event_key: "",
+      cedi: "GH&#8373"
     };
   },
   methods: {
@@ -331,6 +339,9 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
+      //==================================================================================//
+      // ================ ACTIVATE THIS COMMENT =========================================//
+
       // this.event_key = window.localStorage.getItem("current_event_key");
       // if (this.event_key === null || this.event_key === "") {
       //   this.$emit(
@@ -475,10 +486,10 @@ body {
 }
 
 .important-message {
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin: 0;
   padding-right: 30px;
-  font-weight: 800 !important;
+  font-weight: 600 !important;
 }
 
 .content-header h1 {
