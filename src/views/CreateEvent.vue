@@ -1556,7 +1556,7 @@ export default {
 
   beforeCreate() {
     // check for authentication
-    const token = `Bearer ${window.localStorage.getItem("token")}`;
+    const token = window.localStorage.getItem("token");
     if (!token) {
       window.localStorage.setItem(
         "return_to_login_info",
@@ -1570,7 +1570,7 @@ export default {
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ token: token })
+        body: JSON.stringify({ token: `Bearer ${token}` })
       };
       fetch(`${apiUrl}/api/verify-login`, options)
         .then(res => {

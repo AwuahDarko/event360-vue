@@ -122,6 +122,8 @@
                       class="edit-btn"
                       data-toggle="modal"
                       data-target="#edit_free_Ticket"
+                      :id="`open-free-ticket-btn-edit-${ticket.ticketId}`"
+                      @click="editFreeTicket(ticket)"
                     >
                       <i class="fas fa-pencil-alt"></i>
                     </button>
@@ -130,6 +132,8 @@
                       class="edit-btn"
                       data-toggle="modal"
                       data-target="#edit_paid_Ticket"
+                      :id="`open-free-ticket-btn-edit-${ticket.ticketId}`"
+                      @click="editFreeTicket(ticket)"
                     >
                       <i class="fas fa-pencil-alt"></i>
                     </button>
@@ -168,6 +172,8 @@
                     class="btn btn-block btn-success"
                     data-toggle="modal"
                     data-target="#free_Ticket"
+                    data-dismiss="modal"
+                    id="open-free-ticket-btn"
                   >Free Ticket</button>
                 </div>
                 <div class="col-md-2 col-sm-2 col-xm-2">
@@ -179,6 +185,8 @@
                     class="btn btn-block btn-success"
                     data-toggle="modal"
                     data-target="#paid_Ticket"
+                    id="open-paid-ticket-btn"
+                    data-dismiss="modal"
                   >Paid Ticket</button>
                 </div>
               </div>
@@ -473,16 +481,24 @@
                 <div class="modal-body">
                   <div class="col-md-12">
                     <div class="row">
-                      <div class="alert alert-warning col-md-12 text-center" role="alert">
+                      <!-- <div class="alert alert-warning col-md-12 text-center" role="alert">
                         <span class="mx-auto w-50 text-light font-weight-bold">New ticket created</span>
-                      </div>
+                      </div>-->
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>
                             Ticket Name
                             <span style="color: red;">*</span>
                           </label>
-                          <input type="text" class="form-control" placeholder="e.g. General Ticket" />
+                          <input
+                            type="text"
+                            class="form-control"
+                            placeholder="e.g. General Ticket"
+                            v-model="freeTicketName_edit"
+                            v-bind:class="{
+                                  'is-empty': invalidFreeTicketName_edit,
+                                }"
+                          />
                         </div>
                       </div>
                     </div>
@@ -495,10 +511,14 @@
                             <span style="color: red;">*</span>
                           </label>
                           <input
+                            v-bind:class="{
+                                  'is-empty': invalidFreeQuantity_edit,
+                                }"
                             type="number"
                             class="form-control"
                             placeholder="0"
                             @keypress="isOnlyNumberKey($event)"
+                            v-model="freeTicketQuantity_edit"
                           />
                         </div>
                       </div>
@@ -508,7 +528,12 @@
                             Limit Per Person
                             <span style="color: red;">*</span>
                           </label>
-                          <select class="form-control select2" style="width: 100%;">
+                          <select
+                            v-bind:class="{ 'is-empty': invalidFreeLimit_edit }"
+                            class="form-control select2"
+                            style="width: 100%;"
+                            v-model="freeTicketLimitPerson_edit"
+                          >
                             <option disabled value="0">...</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -539,7 +564,14 @@
                                 <i class="far fa-calendar-alt"></i>
                               </span>
                             </div>
-                            <input type="date" class="form-control" />
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="freeTicketSaleStartDate_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeStartDate_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -553,7 +585,14 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input class="form-control" type="time" />
+                            <input
+                              class="form-control"
+                              type="time"
+                              v-model="freeTicketSaleStartTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeStartTime_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -571,7 +610,14 @@
                                 <i class="far fa-calendar-alt"></i>
                               </span>
                             </div>
-                            <input type="date" class="form-control" />
+                            <input
+                              type="date"
+                              class="form-control"
+                              v-model="freeTicketSaleEndDate_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeEndDate_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -586,7 +632,15 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input class="form-control" type="time" id="reservationtime" />
+                            <input
+                              class="form-control"
+                              type="time"
+                              id="reservationtime"
+                              v-model="freeTicketSaleEndTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeEndTime_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -604,8 +658,9 @@
                             class="form-check-input"
                             type="radio"
                             name="visibility-e"
-                            checked
                             id="always-visible-e"
+                            @change="onAlwaysVisible_edit"
+                            :checked="freeAlways_edit"
                           />
                           <label for="always-visible-e" class="form-check-label">Always Visible</label>
                         </div>
@@ -616,27 +671,33 @@
                             type="radio"
                             name="visibility-e"
                             id="hide-at-e"
+                            @change="onHiddenAtSpecificTimeSelected_edit"
+                            :checked="hiddenAtSpecific"
                           />
                           <label class="form-check-label" for="hide-at-e">Hidden at a specific time</label>
                         </div>
-                        <div class="form-check ml-2">
+                        <div class="form-check ml-2" v-if="showHiddenOptions_edit">
                           <input
                             class="form-check-input"
                             id="until-start-e"
                             type="radio"
                             name="hide-specific-e"
+                            @change="onUntilSalesStart_edit"
+                            :checked="freeEdit_start"
                           />
                           <label
                             class="form-check-label"
                             for="until-start-e"
                           >Until Ticket sales start</label>
                         </div>
-                        <div class="form-check ml-2">
+                        <div class="form-check ml-2" v-if="showHiddenOptions_edit">
                           <input
                             class="form-check-input"
                             id="until-end-e"
                             type="radio"
                             name="hide-specific-e"
+                            @change="onUntilSalesEnd_edit"
+                            :checked="freeEdit_end"
                           />
                           <label class="form-check-label" for="until-end-e">Until Ticket sales end</label>
                         </div>
@@ -645,8 +706,18 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success">Update</button>
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                    :disabled="isFreeCloseDisable_edit"
+                  >Close</button>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    :disabled="isFreeCreateDisable_edit"
+                    @click="onCreateFreeTicket_edit"
+                  >Update</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -1294,7 +1365,7 @@ import countries from "../utils/countries";
 import currency from "../utils/currency";
 import { mapGetters, mapActions } from "vuex";
 import { apiUrl } from "../utils/config";
-// import $ from "jquery";
+import $ from "jquery";
 
 export default {
   name: "TicketTable",
@@ -1332,6 +1403,30 @@ export default {
       showFreeTicketMessage: false,
       isFreeCloseDisable: false,
       isFreeCreateDisable: false,
+      // edit free ticket
+      showHiddenOptions_edit: false,
+      freeTicketName_edit: "",
+      freeTicketQuantity_edit: "",
+      freeTicketLimitPerson_edit: "0",
+      freeTicketSaleStartDate_edit: "",
+      freeTicketSaleStartTime_edit: "",
+      freeTicketSaleEndDate_edit: "",
+      freeTicketSaleEndTime_edit: "",
+      freeTicketVisibility_edit: 1,
+      invalidFreeQuantity_edit: false,
+      invalidFreeTicketName_edit: false,
+      invalidFreeLimit_edit: false,
+      invalidFreeStartDate_edit: false,
+      invalidFreeStartTime_edit: false,
+      invalidFreeEndDate_edit: false,
+      invalidFreeEndTime_edit: false,
+      showFreeTicketMessage_edit: false,
+      isFreeCloseDisable_edit: false,
+      isFreeCreateDisable_edit: false,
+      freeEdit_start: false,
+      freeEdit_end: false,
+      hiddenAtSpecific: false,
+      freeAlways_edit: false,
       // paid ticket data
       paidTicketName: "",
       ticketPrice: "",
@@ -1360,7 +1455,8 @@ export default {
       attendeeFee: 0,
       organizerAmt: 0,
       createdTickets: [],
-      cedi: "(GH&#8373)"
+      cedi: "(GH&#8373)",
+      selectedTicket: null
     };
   },
 
@@ -1423,6 +1519,28 @@ export default {
       this.calculateFees();
     },
 
+    closeFreeTicketModal() {
+      $("#free_Ticket")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $("#open-free-ticket-btn").click();
+    },
+
+    closePaidTicketModal() {
+      $("#paid_Ticket")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $("#open-paid-ticket-btn").click();
+    },
+
     onCreateFreeTicket() {
       if (!this.validateFreeTicket()) {
         return;
@@ -1456,12 +1574,14 @@ export default {
 
             this.createdTickets.push(body);
 
-            this.showFreeTicketMessage = true;
+            // this.showFreeTicketMessage = true;
+            // setTimeout(() => {
+            //   this.showFreeTicketMessage = false;
+            // }, 2000);
+
             this.resetFreeTicketData();
 
-            setTimeout(() => {
-              this.showFreeTicketMessage = false;
-            }, 2000);
+            this.closeFreeTicketModal();
           }
         })
         .catch(err => {
@@ -1491,12 +1611,10 @@ export default {
       fetch(`${apiUrl}/api/ticket`, options)
         .then(async res => {
           this.enablePaidBtn();
-
           if (res.status === 201) {
             const ticket = await res.json();
             // console.log(ticket); // { ticket_id: 11 }
 
-            this.showPaidTicketMessage = true;
             // add
             const num = parseFloat(body.price);
             body.price = num.toFixed(2);
@@ -1508,9 +1626,12 @@ export default {
 
             this.resetPaidTicketData();
 
-            setTimeout(() => {
-              this.showPaidTicketMessage = false;
-            }, 2000);
+            // this.showPaidTicketMessage = true;
+            // setTimeout(() => {
+            //   this.showPaidTicketMessage = false;
+            // }, 2000);
+
+            this.closePaidTicketModal();
           }
         })
         .catch(err => {
@@ -1737,8 +1858,8 @@ export default {
 
     resetFreeTicketData() {
       this.freeTicketName = "";
-      this.freeTicketQuantity = 0;
-      this.freeTicketLimitPerson = "";
+      this.freeTicketQuantity = "";
+      this.freeTicketLimitPerson = "0";
       this.freeTicketSaleStartDate = "";
       this.freeTicketSaleStartTime = "";
       this.freeTicketSaleEndDate = "";
@@ -1756,7 +1877,7 @@ export default {
     resetPaidTicketData() {
       this.paidTicketName = "";
       this.paidTicketQuantity = "";
-      this.paidTicketLimitPerson = "";
+      this.paidTicketLimitPerson = "0";
       this.paidTicketSaleStartDate = "";
       this.paidTicketSaleStartTime = "";
       this.paidTicketSaleEndDate = "";
@@ -1823,6 +1944,214 @@ export default {
           }
         }
       });
+    },
+
+    setValuesToEdit_free(ticket) {
+      const sale_start = ticket.sale_start.split(" ");
+      let start = sale_start[0];
+      let stime = "";
+      if (sale_start.length > 1) {
+        stime = sale_start[1];
+      }
+
+      const sale_end = ticket.sale_end.split(" ");
+      let end = sale_start[0];
+      let etime = "";
+      if (sale_end.length > 1) {
+        etime = sale_start[1];
+      }
+
+      this.freeTicketName_edit = ticket.name;
+      this.freeTicketQuantity_edit = ticket.quantity;
+      this.freeTicketLimitPerson_edit = ticket.limit_per_person;
+      this.freeTicketSaleStartDate_edit = start;
+      this.freeTicketSaleStartTime_edit = stime;
+      this.freeTicketSaleEndDate_edit = end;
+      this.freeTicketSaleEndTime_edit = etime;
+      this.freeTicketVisibility_edit = ticket.visibility;
+      this.invalidFreeQuantity_edit = false;
+      this.invalidFreeTicketName_edit = false;
+      this.invalidFreeLimit_edit = false;
+      this.invalidFreeStartDate_edit = false;
+      this.invalidFreeStartTime_edit = false;
+      this.invalidFreeEndDate_edit = false;
+      this.invalidFreeEndTime_edit = false;
+      this.showFreeTicketMessage_edit = false;
+      this.isFreeCloseDisable_edit = false;
+      this.isFreeCreateDisable_edit = false;
+
+      if (this.freeTicketVisibility_edit == "1") {
+        this.freeAlways_edit = true;
+        this.showHiddenOptions_edit = false;
+        this.hiddenAtSpecific = false;
+        this.freeEdit_end = false;
+        this.freeEdit_start = false;
+      }
+
+      if (this.freeTicketVisibility_edit == "2") {
+        this.freeAlways_edit = false;
+        this.hiddenAtSpecific = true;
+        this.showHiddenOptions_edit = true;
+        this.freeEdit_start = true;
+      }
+
+      if (this.freeTicketVisibility_edit == "3") {
+        this.freeAlways_edit = false;
+        this.hiddenAtSpecific = true;
+        this.showHiddenOptions_edit = true;
+        this.freeEdit_end = true;
+      }
+    },
+
+    onAlwaysVisible_edit() {
+      this.freeTicketVisibility_edit = 1;
+      this.showHiddenOptions_edit = false;
+    },
+
+    onHiddenAtSpecificTimeSelected_edit() {
+      this.showHiddenOptions_edit = true;
+    },
+
+    onUntilSalesStart_edit() {
+      this.freeTicketVisibility_edit = 2;
+    },
+
+    onUntilSalesEnd_edit() {
+      this.freeTicketVisibility_edit = 3;
+    },
+
+    closeFreeTicketModal_edit(ticketId) {
+      $("#edit_free_Ticket")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#open-free-ticket-btn-edit-${ticketId}`).click();
+    },
+
+    onCreateFreeTicket_edit() {
+      if (!this.validateFreeTicket_edit()) {
+        return;
+      }
+
+      const ticket = this.selectedTicket;
+      this.disableFreeBtn_edit();
+
+      const body = this.setFreeTicketPostBody_edit(ticket.ticketId);
+
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.token
+        },
+        body: JSON.stringify(body)
+      };
+
+      fetch(`${apiUrl}/api/ticket`, options)
+        .then(async res => {
+          this.enableFreeBtn_edit();
+
+          if (res.status === 200) {
+            // update value in array
+            let newVal = new Object();
+            this.createdTickets.forEach((oneTicket, i) => {
+              if (oneTicket.ticketId === ticket.ticketId) {
+                newVal = body;
+                newVal.price = body.price.toFixed(2);
+                newVal.attendeePays = this.attendeeFee.toFixed(2);
+                newVal.organizerAmt = this.organizerAmt.toFixed(2);
+                newVal.ticketId = ticket.ticketId;
+
+                this.createdTickets[i] = newVal;
+              }
+            });
+
+            this.closeFreeTicketModal_edit(ticket.ticketId);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.enableFreeBtn_edit();
+        });
+    },
+
+    editFreeTicket(ticket) {
+      this.selectedTicket = ticket;
+      this.setValuesToEdit_free(ticket);
+    },
+
+    validateFreeTicket_edit() {
+      this.invalidFreeQuantity_edit = false;
+      this.invalidFreeTicketName_edit = false;
+      this.invalidFreeLimit_edit = false;
+      this.invalidFreeStartDate_edit = false;
+      this.invalidFreeStartTime_edit = false;
+      this.invalidFreeEndDate_edit = false;
+      this.invalidFreeEndTime_edit = false;
+
+      if (!this.freeTicketName_edit) {
+        this.invalidFreeTicketName_edit = true;
+      }
+
+      if (this.freeTicketQuantity_edit === "") {
+        this.invalidFreeQuantity_edit = true;
+      }
+
+      if (this.freeTicketLimitPerson_edit == "0") {
+        this.invalidFreeLimit_edit = true;
+      }
+
+      if (!this.freeTicketSaleStartDate_edit) {
+        this.invalidFreeStartDate_edit = true;
+      }
+
+      if (!this.freeTicketSaleEndDate_edit) {
+        this.invalidFreeEndDate_edit = true;
+      }
+
+      if (
+        this.invalidFreeEndTime_edit ||
+        this.invalidFreeEndDate_edit ||
+        this.invalidFreeStartTime_edit ||
+        this.invalidFreeStartDate_edit ||
+        this.invalidFreeLimit_edit ||
+        this.invalidFreeQuantity_edit ||
+        this.invalidFreeTicketName_edit
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+
+    setFreeTicketPostBody_edit(id) {
+      const body = {
+        name: this.freeTicketName_edit.trim(),
+        price: 0,
+        type: "free",
+        ticket_id: id,
+        limit_per_person: this.freeTicketLimitPerson_edit,
+        sale_start: `${this.freeTicketSaleStartDate_edit} ${this.freeTicketSaleStartTime_edit}`.trim(),
+        sale_end: `${this.freeTicketSaleEndDate_edit} ${this.freeTicketSaleEndTime_edit}`.trim(),
+        visibility: this.freeTicketVisibility_edit,
+        fees_option: 3,
+        quantity: this.freeTicketQuantity_edit
+      };
+
+      return body;
+    },
+
+    enableFreeBtn_edit() {
+      this.isFreeCloseDisable_edit = false;
+      this.isFreeCreateDisable_edit = false;
+    },
+
+    disableFreeBtn_edit() {
+      this.isFreeCloseDisable_edit = true;
+      this.isFreeCreateDisable_edit = true;
     }
   },
 
