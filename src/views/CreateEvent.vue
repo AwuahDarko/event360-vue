@@ -947,7 +947,10 @@
                           />
                         </div>
                         <div v-else key="till">
-                          <Tickets v-on:showFlagFromTicket="showFlagsFromTicket" />
+                          <Tickets
+                            v-on:showFlagFromTicket="showFlagsFromTicket"
+                            v-on:onTicketDone="setTicketDone"
+                          />
                         </div>
                       </div>
 
@@ -1527,6 +1530,10 @@ export default {
           this.$refs.snackbar.error("Please check your internet connection");
           this.$Progress.finish();
         });
+    },
+
+    setTicketDone(flag) {
+      this.tickets_done = flag;
     }
   },
 

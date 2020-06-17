@@ -38,4 +38,13 @@
   font-size: 0.9rem;
   font-weight: lighter;
 }
+
+.vue__time-picker input.display-time {
+  border: 1px solid #d2d2d2;
+  width: 8em;
+  height: 2.2em;
+  padding: 0.3em 0.5em;
+  font-size: 1em;
+  border-radius: 0 5px 5px 0;
+}
 </style>

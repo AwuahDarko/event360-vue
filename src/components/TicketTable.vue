@@ -132,8 +132,8 @@
                       class="edit-btn"
                       data-toggle="modal"
                       data-target="#edit_paid_Ticket"
-                      :id="`open-free-ticket-btn-edit-${ticket.ticketId}`"
-                      @click="editFreeTicket(ticket)"
+                      :id="`open-paid-ticket-btn-edit-${ticket.ticketId}`"
+                      @click="editPaidTicket(ticket)"
                     >
                       <i class="fas fa-pencil-alt"></i>
                     </button>
@@ -145,7 +145,7 @@
               </tbody>
               <tbody v-else>
                 <tr>
-                  <td colspan="7">Add tickets by clicking on "Create Ticket" button above</td>
+                  <td colspan="7">Add tickets by clicking "Create Ticket" button above</td>
                 </tr>
               </tbody>
             </table>
@@ -164,7 +164,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <p style="text-align: center;">What type of Ticket are you creating ?</p>
+              <p style="text-align: center;">What type of Ticket are you creating?</p>
               <div class="row">
                 <div class="col-md-5 col-sm-5 col-xm-5">
                   <button
@@ -1049,8 +1049,6 @@
                         </p>
                       </div>
                     </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
@@ -1096,16 +1094,24 @@
                 <div class="modal-body">
                   <div class="col-md-12">
                     <div class="row">
-                      <div class="alert alert-warning col-md-12 text-center" role="alert">
+                      <!-- <div class="alert alert-warning col-md-12 text-center" role="alert">
                         <span class="mx-auto w-50 text-light font-weight-bold">New ticket created</span>
-                      </div>
+                      </div>-->
                       <div class="col-md-12">
                         <div class="form-group">
                           <label>
                             Ticket Name
                             <span style="color: red;">*</span>
                           </label>
-                          <input type="email" class="form-control" placeholder="e.g. VIP Ticket" />
+                          <input
+                            type="email"
+                            class="form-control"
+                            placeholder="e.g. VIP Ticket"
+                            v-model="paidTicketName_edit"
+                            v-bind:class="{
+                                  'is-empty': invalidPaidTicketName_edit,
+                                }"
+                          />
                         </div>
                       </div>
                     </div>
@@ -1123,6 +1129,11 @@
                             class="form-control"
                             placeholder="0.00"
                             @keypress="isNumberKey($event)"
+                            v-model="ticketPrice_edit"
+                            v-bind:class="{
+                                  'is-empty': invalidPaidTicketPrice_edit,
+                                }"
+                            @change="calculateFees_edit"
                           />
                         </div>
                       </div>
@@ -1138,6 +1149,10 @@
                             class="form-control"
                             placeholder="0"
                             @keypress="isOnlyNumberKey($event)"
+                            v-model="paidTicketQuantity_edit"
+                            v-bind:class="{
+                                  'is-empty': invalidPaidQuantity_edit,
+                                }"
                           />
                         </div>
                       </div>
@@ -1147,7 +1162,12 @@
                             Limit Per Person
                             <span style="color: red;">*</span>
                           </label>
-                          <select class="form-control select2" style="width: 100%;">
+                          <select
+                            class="form-control select2"
+                            style="width: 100%;"
+                            v-model="paidTicketLimitPerson_edit"
+                            v-bind:class="{ 'is-empty': invalidPaidLimit_edit }"
+                          >
                             <option disabled value="0">...</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
@@ -1177,7 +1197,15 @@
                                 <i class="far fa-calendar-alt"></i>
                               </span>
                             </div>
-                            <input type="date" class="form-control" id="reservation2" />
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="reservation2"
+                              v-model="paidTicketSaleStartDate_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidPaidStartDate_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1191,7 +1219,15 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input class="form-control" type="time" id="reservationtime2" />
+                            <input
+                              class="form-control"
+                              type="time"
+                              id="reservationtime2"
+                              v-model="paidTicketSaleStartTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidPaidStartTime_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1208,7 +1244,15 @@
                                 <i class="far fa-calendar-alt"></i>
                               </span>
                             </div>
-                            <input type="date" class="form-control" id="reservation2" />
+                            <input
+                              type="date"
+                              class="form-control"
+                              id="reservation2"
+                              v-model="paidTicketSaleEndDate_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidPaidEndDate_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1223,7 +1267,15 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input class="form-control" type="time" id="reservationtime2" />
+                            <input
+                              class="form-control"
+                              type="time"
+                              id="reservationtime2"
+                              v-model="paidTicketSaleEndTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidPaidEndTime_edit,
+                                  }"
+                            />
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1238,9 +1290,10 @@
                           <input
                             class="form-check-input"
                             type="radio"
-                            checked
                             id="paid-always-p"
                             name="top-level-p"
+                            :checked="paidAlways_edit"
+                            @change="onAlwaysVisible_paid_edit"
                           />
                           <label class="form-check-label" for="paid-always-p">Always Visible</label>
                         </div>
@@ -1250,30 +1303,36 @@
                             type="radio"
                             id="paid-hidden-p"
                             name="top-level-p"
+                            :checked="paidHiddenAtSpecific"
+                            @change="onHiddenAtSpecificTimeSelected_paid_edit"
                           />
                           <label
                             class="form-check-label"
                             for="paid-hidden-p"
                           >Hidden at a specific time</label>
                         </div>
-                        <div class="form-check ml-2">
+                        <div class="form-check ml-2" v-if="showHiddenOptions_paid_edit">
                           <input
                             class="form-check-input"
                             type="radio"
                             id="paid-start-p"
                             name="paid-hidden-end-p"
+                            :checked="paidEdit_start"
+                            @change="onUntilSalesStart_paid_edit"
                           />
                           <label
                             class="form-check-label"
                             for="paid-start-p"
                           >Until Ticket sales start</label>
                         </div>
-                        <div class="form-check ml-2">
+                        <div class="form-check ml-2" v-if="showHiddenOptions_paid_edit">
                           <input
                             class="form-check-input"
                             type="radio"
                             name="paid-hidden-end-p"
                             id="paid-end-p"
+                            :checked="paidEdit_end"
+                            @change="onUntilSalesEnd_paid_edit"
                           />
                           <label class="form-check-label" for="paid-end-p">Until Ticket sales end</label>
                         </div>
@@ -1287,7 +1346,12 @@
                             Fees
                             <span style="color: red;">*</span>
                           </label>
-                          <select class="form-control select2" style="width: 100%;">
+                          <select
+                            class="form-control select2"
+                            style="width: 100%;"
+                            v-model="feeOption_edit"
+                            @change="onFeeOptionSelected_edit"
+                          >
                             <option value="1">Pass fees on</option>
                             <option value="2">Absorb</option>
                           </select>
@@ -1298,7 +1362,7 @@
                           Fees
                           <span style="color: red;">*</span>
                         </label>
-                        <p class="p-as-label">feeOptionMessage</p>
+                        <p class="p-as-label">{{ feeOptionMessage_edit }}</p>
                       </div>
                     </div>
                     <div class="row">
@@ -1307,21 +1371,21 @@
                           <div style="padding: 0.2rem;">
                             <div class="space-out-children">
                               <small>Registration fees:</small>
-                              <small>registrationFee === 0 ? 'N/A' : registrationFee</small>
+                              <small>{{ registrationFee_edit === 0 ? 'N/A' : registrationFee_edit }}</small>
                             </div>
                             <div class="space-out-children">
                               <small>Processing fees (by Stripe):</small>
-                              <small>processingFee === 0 ? 'N/A' : processingFee</small>
+                              <small>{{ processingFee_edit === 0 ? 'N/A' : processingFee_edit }}</small>
                             </div>
                             <div class="space-out-children">
                               <small>Attendees pays:</small>
-                              <small>attendeeFee === 0 ? 'N/A' : attendeeFee</small>
+                              <small>{{ attendeeFee_edit === 0 ? 'N/A' : attendeeFee_edit }}</small>
                             </div>
                             <div class="space-out-children">
                               <small class="text-success text-secondary">Organizer (you) gets:</small>
                               <small
                                 class="text-success text-secondary"
-                              >organizerAmt === 0 ? 'N/A' : organizerAmt</small>
+                              >{{ organizerAmt_edit === 0 ? 'N/A' : organizerAmt_edit }}</small>
                             </div>
                           </div>
                         </div>
@@ -1338,13 +1402,21 @@
                         </p>
                       </div>
                     </div>
-                    <!-- </div> -->
-                    <!-- </div> -->
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success">Create</button>
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                    :disabled="isPaidCloseDisable_edit"
+                  >Close</button>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    :disabled="isPaidCreateDisable_edit"
+                    @click="onCreatePaidTicket_edit"
+                  >Update</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -1456,7 +1528,39 @@ export default {
       organizerAmt: 0,
       createdTickets: [],
       cedi: "(GH&#8373)",
-      selectedTicket: null
+      selectedTicket: null,
+      // edit paid ticket
+      paidTicketName_edit: "",
+      ticketPrice_edit: "",
+      paidTicketQuantity_edit: "",
+      paidTicketLimitPerson_edit: "0",
+      paidTicketSaleStartDate_edit: "",
+      paidTicketSaleStartTime_edit: "",
+      paidTicketSaleEndDate_edit: "",
+      paidTicketSaleEndTime_edit: "",
+      paidTicketVisibility_edit: 1,
+      invalidPaidQuantity_edit: false,
+      invalidPaidTicketName_edit: false,
+      invalidPaidLimit_edit: false,
+      invalidPaidStartDate_edit: false,
+      invalidPaidStartTime_edit: false,
+      invalidPaidEndDate_edit: false,
+      invalidPaidEndTime_edit: false,
+      invalidPaidTicketPrice_edit: false,
+      showPaidTicketMessage_edit: false,
+      isPaidCloseDisable_edit: false,
+      isPaidCreateDisable_edit: false,
+      feeOption_edit: 1,
+      feeOptionMessage_edit: `All fees will be paid by the attendee. The organiser will receive money equal to the full pocket price.`,
+      registrationFee_edit: 0,
+      processingFee_edit: 0,
+      attendeeFee_edit: 0,
+      organizerAmt_edit: 0,
+      paidEdit_start: false,
+      paidEdit_end: false,
+      paidHiddenAtSpecific: false,
+      paidAlways_edit: false,
+      showHiddenOptions_paid_edit: false
     };
   },
 
@@ -2152,6 +2256,278 @@ export default {
     disableFreeBtn_edit() {
       this.isFreeCloseDisable_edit = true;
       this.isFreeCreateDisable_edit = true;
+    },
+
+    editPaidTicket(ticket) {
+      this.selectedTicket = ticket;
+      this.setValuesToEdit_paid(ticket);
+    },
+
+    setValuesToEdit_paid(ticket) {
+      const sale_start = ticket.sale_start.split(" ");
+      let start = sale_start[0];
+      let stime = "";
+      if (sale_start.length > 1) {
+        stime = sale_start[1];
+      }
+
+      const sale_end = ticket.sale_end.split(" ");
+      let end = sale_start[0];
+      let etime = "";
+      if (sale_end.length > 1) {
+        etime = sale_start[1];
+      }
+
+      this.ticketPrice_edit = ticket.price;
+      this.paidTicketName_edit = ticket.name;
+      this.paidTicketQuantity_edit = ticket.quantity;
+      this.paidTicketLimitPerson_edit = ticket.limit_per_person;
+      this.paidTicketSaleStartDate_edit = start;
+      this.paidTicketSaleStartTime_edit = stime;
+      this.paidTicketSaleEndDate_edit = end;
+      this.paidTicketSaleEndTime_edit = etime;
+      this.paidTicketVisibility_edit = ticket.visibility;
+      this.invalidPaidQuantity_edit = false;
+      this.invalidPaidTicketName_edit = false;
+      this.invalidPaidLimit_edit = false;
+      this.invalidPaidStartDate_edit = false;
+      this.invalidPaidStartTime_edit = false;
+      this.invalidPaidEndDate_edit = false;
+      this.invalidPaidEndTime_edit = false;
+      this.showPaidTicketMessage_edit = false;
+      this.isPaidCloseDisable_edit = false;
+      this.isPaidCreateDisable_edit = false;
+      this.registrationFee_edit = (
+        parseFloat(ticket.attendeePays) + parseFloat(ticket.organizerAmt)
+      ).toFixed(2);
+      this.processingFee_edit = 0;
+      this.attendeeFee_edit = parseFloat(ticket.attendeePays).toFixed(2);
+      this.organizerAmt_edit = parseFloat(ticket.organizerAmt).toFixed(2);
+      this.feeOption_edit = ticket.fees_option;
+      if (this.feeOption_edit == 1) {
+        this.feeOptionMessage_edit = `All fees will be paid by the attendee. The organiser will receive money equal to the full pocket price.`;
+      } else {
+        this.feeOptionMessage_edit = `All fees will be paid by the organizer (you).
+         The fee will be deducted from the ticket price.`;
+      }
+
+      if (this.paidTicketVisibility_edit == "1") {
+        this.paidAlways_edit = true;
+        this.showHiddenOptions_paid_edit = false;
+        this.paidHiddenAtSpecific = false;
+        this.paidEdit_end = false;
+        this.paidEdit_start = false;
+      }
+
+      if (this.paidTicketVisibility_edit == "2") {
+        this.paidAlways_edit = false;
+        this.paidHiddenAtSpecific = true;
+        this.showHiddenOptions_paid_edit = true;
+        this.paidEdit_start = true;
+      }
+
+      if (this.paidTicketVisibility_edit == "3") {
+        this.paidAlways_edit = false;
+        this.paidHiddenAtSpecific = true;
+        this.showHiddenOptions_paid_edit = true;
+        this.paidEdit_end = true;
+      }
+    },
+
+    calculateFees_edit() {
+      if (
+        this.ticketPrice_edit === 0 ||
+        this.ticketPrice_edit === "" ||
+        this.ticketPrice_edit === undefined ||
+        this.ticketPrice_edit === null
+      )
+        return;
+
+      const price = parseFloat(this.ticketPrice_edit);
+      const extra = 0.01 * price + 1;
+      const amt = extra + price;
+      this.registrationFee_edit = amt.toFixed(2);
+
+      if (this.feeOption_edit == "1") {
+        this.attendeeFee_edit = amt.toFixed(2);
+        this.organizerAmt_edit = price.toFixed(2);
+      }
+
+      if (this.feeOption_edit == "2") {
+        this.attendeeFee_edit = price.toFixed(2);
+        this.organizerAmt_edit = (price - extra).toFixed(2);
+      }
+    },
+
+    onAlwaysVisible_paid_edit() {
+      this.paidTicketVisibility_edit = 1;
+      this.showHiddenOptions_paid_edit = false;
+    },
+
+    onHiddenAtSpecificTimeSelected_paid_edit() {
+      this.showHiddenOptions_paid_edit = true;
+    },
+
+    onUntilSalesStart_paid_edit() {
+      this.paidTicketVisibility_edit = 2;
+    },
+
+    onUntilSalesEnd_paid_edit() {
+      this.paidTicketVisibility_edit = 3;
+    },
+
+    onFeeOptionSelected_edit() {
+      if (this.feeOption_edit == "1") {
+        this.feeOptionMessage_edit = `All fees will be paid by the attendee. The organiser will 
+        receive money equal to the full pocket price.`;
+      }
+
+      if (this.feeOption_edit == "2") {
+        this.feeOptionMessage_edit = `All fees will be paid by the organizer (you).
+         The fee will be deducted from the ticket price.`;
+      }
+
+      this.calculateFees_edit();
+    },
+
+    onCreatePaidTicket_edit() {
+      if (!this.validatePaidTicket_edit()) {
+        return;
+      }
+
+      const ticket = this.selectedTicket;
+
+      this.disablePaidBtn_edit();
+
+      const body = this.setPaidTicketPostBody_edit(ticket.ticketId);
+
+      const options = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.token
+        },
+        body: JSON.stringify(body)
+      };
+
+      fetch(`${apiUrl}/api/ticket`, options)
+        .then(async res => {
+          this.enablePaidBtn_edit();
+          // console.log(await res.json());
+          if (res.status === 200) {
+            // update value in array
+            let newVal = new Object();
+            this.createdTickets.forEach((oneTicket, i) => {
+              if (oneTicket.ticketId === ticket.ticketId) {
+                newVal = body;
+                newVal.price = parseFloat(body.price).toFixed(2);
+                newVal.attendeePays = parseFloat(this.attendeeFee_edit).toFixed(
+                  2
+                );
+                newVal.organizerAmt = parseFloat(
+                  this.organizerAmt_edit
+                ).toFixed(2);
+                newVal.ticketId = ticket.ticketId;
+
+                this.createdTickets[i] = newVal;
+              }
+            });
+
+            this.closePaidTicketModal_edit(ticket.ticketId);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.enablePaidBtn_edit();
+        });
+    },
+
+    validatePaidTicket_edit() {
+      this.invalidPaidQuantity_edit = false;
+      this.invalidPaidTicketName_edit = false;
+      this.invalidPaidLimit_edit = false;
+      this.invalidPaidStartDate_edit = false;
+      this.invalidPaidStartTime_edit = false;
+      this.invalidPaidEndDate_edit = false;
+      this.invalidPaidEndTime_edit = false;
+      this.invalidPaidTicketPrice_edit = false;
+
+      if (!this.paidTicketName_edit) {
+        this.invalidPaidTicketName_edit = true;
+      }
+
+      if (this.paidTicketQuantity_edit == "") {
+        this.invalidPaidQuantity_edit = true;
+      }
+
+      if (this.paidTicketLimitPerson_edit == "0") {
+        this.invalidPaidLimit_edit = true;
+      }
+
+      if (!this.paidTicketSaleStartDate_edit) {
+        this.invalidPaidStartDate_edit = true;
+      }
+
+      if (!this.paidTicketSaleEndDate_edit) {
+        this.invalidPaidEndDate_edit = true;
+      }
+
+      if (!this.ticketPrice_edit) {
+        this.invalidPaidTicketPrice_edit = true;
+      }
+
+      if (
+        this.invalidPaidEndTime_edit ||
+        this.invalidPaidEndDate_edit ||
+        this.invalidPaidStartTime_edit ||
+        this.invalidPaidStartDate_edit ||
+        this.invalidPaidLimit_edit ||
+        this.invalidPaidQuantity_edit ||
+        this.invalidPaidTicketName_edit ||
+        this.invalidPaidTicketPrice_edit
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+
+    disablePaidBtn_edit() {
+      this.isPaidCloseDisable_edit = true;
+      this.isPaidCreateDisable_edit = true;
+    },
+
+    enablePaidBtn_edit() {
+      this.isPaidCloseDisable_edit = false;
+      this.isPaidCreateDisable_edit = false;
+    },
+
+    setPaidTicketPostBody_edit(id) {
+      const body = {
+        name: this.paidTicketName_edit.trim(),
+        price: this.ticketPrice_edit,
+        type: "paid",
+        ticket_id: id,
+        limit_per_person: this.paidTicketLimitPerson_edit,
+        sale_start: `${this.paidTicketSaleStartDate_edit} ${this.paidTicketSaleStartTime_edit}`.trim(),
+        sale_end: `${this.paidTicketSaleEndDate_edit} ${this.paidTicketSaleEndTime_edit}`.trim(),
+        visibility: this.paidTicketVisibility_edit,
+        fees_option: this.feeOption_edit,
+        quantity: this.paidTicketQuantity_edit
+      };
+
+      return body;
+    },
+
+    closePaidTicketModal_edit(ticketId) {
+      $("#edit_paid_Ticket")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#open-paid-ticket-btn-edit-${ticketId}`).click();
     }
   },
 
@@ -2178,6 +2554,10 @@ export default {
   border-top: 1px solid rgb(120, 229, 30);
   margin: 1em 0;
   padding: 0;
+}
+
+.modal {
+  overflow-y: scroll !important;
 }
 
 .is-empty {

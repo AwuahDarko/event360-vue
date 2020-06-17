@@ -416,6 +416,8 @@ export default {
       if (this.termsAccepted) {
         this.onProceedToTicketTable(true);
         this.hideTicketInfoBox();
+
+        this.$emit("onTicketDone", true);
       }
     },
 
