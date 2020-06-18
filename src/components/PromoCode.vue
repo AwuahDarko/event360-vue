@@ -88,186 +88,213 @@
                 </button>
               </div>
               <div class="modal-body">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="exampleInputE">
-                          Ticket Name
-                          <span style="color: red;">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          placeholder="e.g. Early Bird"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label for="exampleInput">
-                          Quantity Available
-                          <span style="color: red;">*</span>
-                        </label>
-                        <input
-                          type="number"
-                          class="form-control"
-                          id="exampleInput"
-                          placeholder="0"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group">
-                        <label>
-                          Limit Per Person
-                          <span style="color: red;">*</span>
-                        </label>
-                        <select
-                          class="form-control select2"
-                          style="width: 100%;"
-                        >
-                          <option disabled value="0">...</option>
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>
-                          Ticket Sales Start
-                          <span style="color: red;">*</span>
-                        </label>
-
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="far fa-calendar-alt"></i>
-                            </span>
-                          </div>
-                          <input type="date" class="form-control" />
+                <div class="form-v4">
+                  <div class="page-content">
+                    <div class="form-v4-content">
+                      <div
+                        class="form-detail"
+                        action="#"
+                        method="post"
+                        id="myform"
+                      >
+                        <div class="mb-2">
+                          <label for="code"
+                            >Code <span class="important">*</span>
+                          </label>
+                          <input type="text" id="code" class="form-control" />
                         </div>
-                        <!-- /.input group -->
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>time</label>
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="far fa-clock"></i>
-                            </span>
-                          </div>
-                          <input class="form-control" type="time" />
+                        <div class="mb-2">
+                          <label for="tickets-box"
+                            >Applies To <span class="important">*</span>
+                          </label>
+                          <multiselect
+                            v-model="ticket_value"
+                            :options="ticket_options"
+                            :multiple="true"
+                            :close-on-select="false"
+                            :clear-on-select="false"
+                            :preserve-search="true"
+                            placeholder="Select Ticket(s)"
+                            label="name"
+                            track-by="name"
+                            :preselect-first="false"
+                          >
+                            <template
+                              slot="selection"
+                              slot-scope="{ values, search, isOpen }"
+                              ><span
+                                class="multiselect__single"
+                                v-if="values.length &amp;&amp; !isOpen"
+                                >{{ values.length }} tickets selected</span
+                              ></template
+                            >
+                          </multiselect>
                         </div>
-                        <!-- /.input group -->
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>
-                          Ticket Sales End
-                          <span style="color: red;">*</span>
-                        </label>
-
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="far fa-calendar-alt"></i>
-                            </span>
-                          </div>
-                          <input type="date" class="form-control" />
-                        </div>
-                        <!-- /.input group -->
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group">
-                        <label>time</label>
-
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                            <span class="input-group-text">
-                              <i class="far fa-clock"></i>
-                            </span>
-                            <vue-timepicker
-                              close-on-complete
-                              :input-class="input"
-                            ></vue-timepicker>
+                        <div class="m-root mb-2">
+                          <label>
+                            Discount Amount <span class="important">*</span>
+                          </label>
+                          <div class="m-body">
+                            <div class="form-groupy">
+                              <span>
+                                <input
+                                  type="radio"
+                                  name="nam"
+                                  checked
+                                  @change="activateAmount"
+                                />
+                              </span>
+                              <span>GHC</span>
+                              <input
+                                class="form-fieldy"
+                                type="number"
+                                placeholder="0.00"
+                                :disabled="disable_amount"
+                                @keypress="isNumberKey"
+                              />
+                            </div>
+                            <div class="form-groupy">
+                              <span
+                                ><input
+                                  type="radio"
+                                  name="nam"
+                                  @change="activatePercentage"
+                              /></span>
+                              <input
+                                class="form-fieldy"
+                                type="number"
+                                placeholder="0.00"
+                                :disabled="disable_percent"
+                                @keypress="isNumberKey"
+                              />
+                              <span>%</span>
+                            </div>
                           </div>
                         </div>
-                        <!-- /.input group -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="ticket_visibility">
-                        <h2 class="lead">
-                          <b>Ticket Visibility</b>
-                        </h2>
-                      </div>
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="visibility"
-                          checked
-                          id="always-visible"
-                        />
-                        <label for="always-visible" class="form-check-label"
-                          >Always Visible</label
-                        >
-                      </div>
+                        <div class="mb-2">
+                          <label>
+                            Start <span class="important">*</span>
+                          </label>
+                          <div class="m-row">
+                            <div class="m-row">
+                              <div class="icon-box">
+                                <i class="far fa-calendar-alt"></i>
+                              </div>
+                              <input class="date-picker" type="date" />
+                            </div>
+                            <div class="m-row ml-2">
+                              <div class="icon-box">
+                                <i class="far fa-clock"></i>
+                              </div>
+                              <vue-timepicker
+                                close-on-complete
+                                :input-class="input"
+                              ></vue-timepicker>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="mb-2">
+                          <label> End <span class="important">*</span> </label>
+                          <div class="m-row">
+                            <div class="m-row">
+                              <div class="icon-box">
+                                <i class="far fa-calendar-alt"></i>
+                              </div>
+                              <input class="date-picker" type="date" />
+                            </div>
+                            <div class="m-row ml-2">
+                              <div class="icon-box">
+                                <i class="far fa-clock"></i>
+                              </div>
+                              <vue-timepicker
+                                close-on-complete
+                                :input-class="input"
+                              ></vue-timepicker>
+                            </div>
+                          </div>
+                        </div>
 
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="visibility"
-                          id="hide-at"
-                        />
-                        <label class="form-check-label" for="hide-at"
-                          >Hidden at a specific time</label
-                        >
+                        <div class="mb-2">
+                          <label> Uses</label>
+                          <div>
+                            <div class="row">
+                              <input
+                                class="ml-2"
+                                type="radio"
+                                name="uses"
+                                id="unlimited"
+                                checked
+                                @change="activateUnLimited"
+                              />
+                              <label
+                                class="remove-bottom-margin ml-2"
+                                for="unlimited"
+                                >Unlimited</label
+                              >
+                            </div>
+                            <div class="row mb-2">
+                              <input
+                                class="ml-2"
+                                type="radio"
+                                name="uses"
+                                id="limited"
+                                @change="activateLimited"
+                              />
+                              <label
+                                class="remove-bottom-margin ml-2"
+                                for="limited"
+                                >Limited to:</label
+                              >
+                            </div>
+                            <input
+                              type="number"
+                              placeholder="eg: 10"
+                              :disabled="disable_limited"
+                            />
+                          </div>
+                        </div>
                       </div>
-                      <div class="form-check ml-2">
-                        <input
-                          class="form-check-input"
-                          id="until-start"
-                          type="radio"
-                          name="hide-specific"
-                        />
-                        <label class="form-check-label" for="until-start"
-                          >Until Ticket sales start</label
-                        >
-                      </div>
-                      <div class="form-check ml-2">
-                        <input
-                          class="form-check-input"
-                          id="until-end"
-                          type="radio"
-                          name="hide-specific"
-                        />
-                        <label class="form-check-label" for="until-end"
-                          >Until Ticket sales end</label
-                        >
+                      <div class="form-left">
+                        <label> Applied To:</label>
+                        <hr />
+                        <div class="m-header">
+                          0 Days Passed
+                        </div>
+                        <table class="table table-striped">
+                          <thead>
+                            <tr>
+                              <th scope="col"></th>
+                              <th scope="col"></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>Original Price</td>
+                              <td>2520</td>
+                            </tr>
+
+                            <tr>
+                              <td>You Earn</td>
+                              <td>125</td>
+                            </tr>
+                            <tr class="table-light">
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr class="table-light">
+                              <td></td>
+                              <td></td>
+                            </tr>
+                            <tr>
+                              <td>With Discount</td>
+                              <td>202</td>
+                            </tr>
+                            <tr>
+                              <td>You Earn</td>
+                              <td>22</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
                   </div>
@@ -299,22 +326,116 @@
 <script>
 import VueTimepicker from 'vue2-timepicker';
 import 'vue2-timepicker/dist/VueTimepicker.css';
+import Multiselect from 'vue-multiselect';
+import 'vue-multiselect/dist/vue-multiselect.min.css';
 
 export default {
   name: 'PromoCode',
   components: {
     VueTimepicker,
+    Multiselect,
   },
 
   data() {
     return {
       input: 'ev-time-picker',
+      ticket_options: [
+        { name: 'Vue.js', language: 'JavaScript' },
+        { name: 'Adonis', language: 'JavaScript' },
+        { name: 'Rails', language: 'Ruby' },
+        { name: 'Sinatra', language: 'Ruby' },
+        { name: 'Laravel', language: 'PHP' },
+        { name: 'Phoenix', language: 'Elixir' },
+      ],
+      ticket_value: [],
+      disable_percent: true,
+      disable_amount: false,
+      disable_limited: true,
     };
+  },
+
+  methods: {
+    isNumberKey(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57) &&
+        charCode !== 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    activatePercentage() {
+      this.disable_percent = false;
+      this.disable_amount = true;
+    },
+
+    activateAmount() {
+      this.disable_percent = true;
+      this.disable_amount = false;
+    },
+
+    activateLimited() {
+      this.disable_limited = false;
+    },
+
+    activateUnLimited() {
+      this.disable_limited = true;
+    },
   },
 };
 </script>
 
 <style scoped>
+.m-header {
+  background-color: lightgrey;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: inherit;
+  text-align: center;
+}
+
+.icon-box {
+  border-style: solid;
+  border-radius: 5px 0 0 5px;
+  border-width: 1px;
+  border-color: rgb(195, 192, 192);
+  margin: 0;
+  padding: 5px 10px 5px 10px;
+}
+
+.date-picker {
+  margin: 0;
+  border-radius: 0 5px 5px 0;
+  border-style: solid;
+  border-width: 1px;
+}
+
+.m-row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.m-form {
+  flex: 2;
+  padding-right: 20px;
+}
+
+.m-preview {
+  flex: 1;
+}
+
+.in-col {
+  display: flex;
+  flex-direction: column;
+}
+
 .container {
   max-width: 100%;
   margin-left: auto;
@@ -405,6 +526,449 @@ h2 small {
   width: 95px !important;
 }
 
+.important {
+  color: red;
+}
+
+/* discount boxes style */
+.form-fieldy {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  line-height: 25px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  /* border-radius: 6px; */
+  -webkit-appearance: none;
+  /* color: var(--input-color); */
+  border: 1px solid var(--input-border);
+  background: var(--input-background);
+  -webkit-transition: border 0.3s ease;
+  transition: border 0.3s ease;
+}
+.form-fieldy::-webkit-input-placeholder {
+  color: var(--input-placeholder);
+}
+.form-fieldy::-moz-placeholder {
+  color: var(--input-placeholder);
+}
+.form-fieldy:-ms-input-placeholder {
+  color: var(--input-placeholder);
+}
+.form-fieldy::-ms-input-placeholder {
+  color: var(--input-placeholder);
+}
+.form-fieldy::placeholder {
+  color: var(--input-placeholder);
+}
+.form-fieldy:focus {
+  outline: none;
+  border-color: var(--input-border-focus);
+}
+
+.form-groupy {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  width: 100%;
+  height: 35px;
+}
+.form-groupy > span,
+.form-groupy .form-fieldy {
+  white-space: nowrap;
+  display: block;
+}
+.form-groupy > span:not(:first-child):not(:last-child),
+.form-groupy .form-field:not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+.form-groupy > span:first-child,
+.form-groupy .form-fieldy:first-child {
+  border-radius: 6px 0 0 6px;
+}
+.form-groupy > span:last-child,
+.form-groupy .form-fieldy:last-child {
+  border-radius: 0 6px 6px 0;
+}
+.form-groupy > span:not(:first-child),
+.form-groupy .form-fieldy:not(:first-child) {
+  margin-left: -1px;
+}
+.form-groupy .form-fieldy {
+  position: relative;
+  z-index: 1;
+  -webkit-box-flex: 1;
+  flex: 1 1 auto;
+  width: 1%;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.form-groupy > span {
+  text-align: center;
+  padding: 8px 8px;
+  font-size: 11px;
+  line-height: 17px;
+  color: black;
+  background: white;
+  border: 1px solid var(--group-border);
+  -webkit-transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+  transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+}
+.form-groupy:focus-within > span {
+  color: black;
+  background: var(--group-background-focus);
+  border-color: var(--group-border-focus);
+}
+
+.m-root {
+  --input-color: #0d0d0e;
+  --input-border: #d7dadf;
+  --input-background: white;
+  --input-placeholder: #080809;
+  --input-border-focus: #f2f3f1;
+  --group-color: rgba(251, 246, 246, 0.251);
+  --group-border: var(--input-border);
+  --group-background: white;
+  --group-color-focus: #fff;
+  --group-border-focus: var(--input-border-focus);
+  --group-background-focus: white;
+}
+
+.m-body {
+  /* min-height: 100vh; */
+  font-family: 'Mukta Malar', Arial;
+  /* display: -webkit-box; */
+  display: flex;
+  -webkit-box-pack: center;
+  justify-content: center;
+  /* -webkit-box-align: center; */
+  /* align-items: center; */
+  /* -webkit-box-orient: vertical; */
+  /* -webkit-box-direction: normal; */
+  flex-direction: column;
+  /* background: #f5f9ff; */
+}
+.m-body .form-groupy {
+  max-width: 190px;
+}
+.m-body .form-groupy:not(:last-child) {
+  margin-bottom: 4px;
+}
+
+/* ======================== FORM CONTENT ============================ */
+.page-content {
+  width: 100%;
+  margin: 0 auto;
+  /* background: #75e2e9; */
+  display: flex;
+  display: -webkit-flex;
+  justify-content: center;
+  -o-justify-content: center;
+  -ms-justify-content: center;
+  -moz-justify-content: center;
+  -webkit-justify-content: center;
+  align-items: center;
+  -o-align-items: center;
+  -ms-align-items: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+}
+.form-v4-content {
+  background: #fff;
+  width: 100%;
+  border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  /* box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* -o-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* -ms-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* -moz-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* -webkit-box-shadow: 0px 8px 20px 0px rgba(0, 0, 0, 0.15); */
+  /* margin: 175px 0; */
+  position: relative;
+  display: flex;
+  display: -webkit-flex;
+  font-family: 'Open Sans', sans-serif;
+}
+.form-v4-content h2 {
+  font-weight: 700;
+  font-size: 30px;
+  padding: 6px 0 0;
+  margin-bottom: 34px;
+}
+.form-v4-content .form-left {
+  /* background: #3786bd; */
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  padding: 20px 40px;
+  position: relative;
+  width: 100%;
+  color: inherit;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #28a745;
+}
+.form-v4-content .form-left p {
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+}
+.form-v4-content .form-left span {
+  font-weight: 700;
+}
+.form-v4-content .form-left .text-2 {
+  margin: 20px 0 25px;
+}
+.form-v4-content .form-left .account {
+  background: #fff;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  width: 180px;
+  border: none;
+  margin: 15px 0 50px 0px;
+  cursor: pointer;
+  color: #333;
+  font-weight: 700;
+  font-size: 15px;
+  font-family: 'Open Sans', sans-serif;
+  appearance: unset;
+  -moz-appearance: unset;
+  -webkit-appearance: unset;
+  -o-appearance: unset;
+  -ms-appearance: unset;
+  outline: none;
+  -moz-outline: none;
+  -webkit-outline: none;
+  -o-outline: none;
+  -ms-outline: none;
+}
+.form-v4-content .form-left .account:hover {
+  background: #e5e5e5;
+}
+.form-v4-content .form-left .form-left-last input {
+  padding: 15px;
+}
+.form-v4-content .form-detail {
+  padding: 0px 20px;
+  position: relative;
+  width: 100%;
+}
+.form-v4-content .form-detail h2 {
+  color: #3786bd;
+}
+.form-v4-content .form-detail .form-group {
+  display: flex;
+  display: -webkit-flex;
+  margin: 0 -8px;
+}
+.form-v4-content .form-detail .form-row {
+  width: 100%;
+  position: relative;
+}
+.form-v4-content .form-detail .form-group .form-row.form-row-1 {
+  width: 50%;
+  padding: 0 8px;
+}
+.form-v4-content .form-detail label {
+  font-weight: 600;
+  font-size: 15px;
+  color: #666;
+  display: block;
+  margin-bottom: 8px;
+}
+.form-v4-content .form-detail .form-row label#valid {
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  background: #53c83c;
+}
+.form-v4-content .form-detail .form-row label#valid::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 3px;
+  height: 8px;
+  border: 1px solid #fff;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.form-v4-content .form-detail .form-row label.error {
+  padding-left: 0;
+  margin-left: 0;
+  display: block;
+  position: absolute;
+  bottom: -5px;
+  width: 100%;
+  background: none;
+  color: red;
+}
+.form-v4-content .form-detail .form-row label.error::after {
+  content: '\f343';
+  font-family: 'LineAwesome';
+  position: absolute;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  right: 10px;
+  top: -31px;
+  color: red;
+  font-size: 18px;
+  font-weight: 900;
+}
+.form-v4-content .form-detail .input-text {
+  margin-bottom: 27px;
+}
+.form-v4-content .form-detail input[type='text'] {
+  width: 100%;
+  padding: 11.5px 15px;
+  border: 1px solid #e5e5e5;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  appearance: unset;
+  -moz-appearance: unset;
+  -webkit-appearance: unset;
+  -o-appearance: unset;
+  -ms-appearance: unset;
+  outline: none;
+  -moz-outline: none;
+  -webkit-outline: none;
+  -o-outline: none;
+  -ms-outline: none;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 15px;
+  color: #333;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+}
+.form-v4-content .form-detail .form-row input:focus {
+  border: 1px solid #53c83c;
+}
+.form-v4-content .form-detail .form-checkbox {
+  margin-top: 1px;
+  position: relative;
+}
+.form-v4-content .form-detail .form-checkbox input {
+  position: absolute;
+  opacity: 0;
+}
+.form-v4-content .form-detail .form-checkbox .checkmark {
+  position: absolute;
+  top: 13px;
+  left: 0;
+  height: 15px;
+  width: 15px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+.form-v4-content .form-detail .form-checkbox .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 3px;
+  height: 8px;
+  border: 1px solid #3786bd;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  transform: rotate(45deg);
+  display: none;
+}
+.form-v4-content .form-detail .form-checkbox input:checked ~ .checkmark::after {
+  display: block;
+}
+.form-v4-content .form-detail .form-checkbox p {
+  margin-left: 34px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+.form-v4-content .form-detail .form-checkbox .text {
+  font-weight: 700;
+  color: #3786bd;
+  text-decoration: underline;
+}
+.form-v4-content .form-detail .register {
+  background: #3786bd;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  width: 130px;
+  border: none;
+  margin: 6px 0 50px 0px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+}
+.form-v4-content .form-detail .register:hover {
+  background: #2f73a3;
+}
+.form-v4-content .form-detail .form-row-last input {
+  padding: 12.5px;
+}
+
+/* Responsive */
+@media screen and (max-width: 991px) {
+  .form-v4-content {
+    /* margin: 180px 20px; */
+    flex-direction: column;
+    -o-flex-direction: column;
+    -ms-flex-direction: column;
+    -moz-flex-direction: column;
+    -webkit-flex-direction: column;
+  }
+  .form-v4-content .form-left {
+    width: auto;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+  }
+  .form-v4-content .form-detail {
+    padding: 30px 20px 30px 20px;
+    width: auto;
+  }
+}
+@media screen and (max-width: 575px) {
+  .form-v4-content .form-detail .form-group {
+    flex-direction: column;
+    -o-flex-direction: column;
+    -ms-flex-direction: column;
+    -moz-flex-direction: column;
+    -webkit-flex-direction: column;
+    margin: 0;
+  }
+  .form-v4-content .form-detail .form-group .form-row.form-row-1 {
+    width: 100%;
+    padding: 0;
+  }
+}
+
 /**======================================RESPONSIVE==================================== */
 @media all and (max-width: 767px) {
   .responsive-table .table-header {
@@ -427,5 +991,17 @@ h2 small {
     flex-basis: 50%;
     text-align: right;
   }
+}
+
+@media (max-width: 900px) {
+  /* .m-row {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  } */
+}
+
+.remove-bottom-margin {
+  margin-bottom: 0 !important;
 }
 </style>
