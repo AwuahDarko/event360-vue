@@ -152,6 +152,8 @@
           </div>
         </div>
       </div>
+      <div style="height: 20px"></div>
+      <PromoCode />
 
       <!-- default modal for free or paid ticket -->
       <div class="modal fade" id="modal-default">
@@ -323,14 +325,22 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               v-model="freeTicketSaleStartTime"
                               class="form-control"
                               type="time"
                               v-bind:class="{
                                     'is-empty': invalidFreeStartTime,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="freeTicketSaleStartTime"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeStartTime,
+                                  }"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -370,7 +380,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               v-model="freeTicketSaleEndTime"
                               class="form-control"
                               type="time"
@@ -378,7 +388,15 @@
                               v-bind:class="{
                                     'is-empty': invalidFreeEndTime,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="freeTicketSaleEndTime"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeEndTime,
+                                  }"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -585,14 +603,22 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="time"
                               v-model="freeTicketSaleStartTime_edit"
                               v-bind:class="{
                                     'is-empty': invalidFreeStartTime_edit,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="freeTicketSaleStartTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeStartTime_edit,
+                                  }"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -632,7 +658,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="time"
                               id="reservationtime"
@@ -640,7 +666,15 @@
                               v-bind:class="{
                                     'is-empty': invalidFreeEndTime_edit,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="freeTicketSaleEndTime_edit"
+                              v-bind:class="{
+                                    'is-empty': invalidFreeEndTime_edit,
+                                  }"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -872,7 +906,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="time"
                               v-model="paidTicketSaleStartTime"
@@ -880,7 +914,15 @@
                               v-bind:class="{
                                     'is-empty': invalidPaidStartTime,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="paidTicketSaleStartTime"
+                              v-bind:class="{
+                                    'is-empty': invalidPaidStartTime,
+                                  }"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -920,7 +962,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               v-model="paidTicketSaleEndTime"
                               type="time"
@@ -928,7 +970,12 @@
                               v-bind:class="{
                                     'is-empty': invalidPaidEndTime,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="paidTicketSaleEndTime"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1219,7 +1266,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="time"
                               id="reservationtime2"
@@ -1227,7 +1274,12 @@
                               v-bind:class="{
                                     'is-empty': invalidPaidStartTime_edit,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="paidTicketSaleStartTime_edit"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1267,7 +1319,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <input
+                            <!-- <input
                               class="form-control"
                               type="time"
                               id="reservationtime2"
@@ -1275,7 +1327,12 @@
                               v-bind:class="{
                                     'is-empty': invalidPaidEndTime_edit,
                                   }"
-                            />
+                            />-->
+                            <vue-timepicker
+                              close-on-complete
+                              :input-class="input"
+                              v-model="paidTicketSaleEndTime_edit"
+                            ></vue-timepicker>
                           </div>
                           <!-- /.input group -->
                         </div>
@@ -1438,11 +1495,15 @@ import currency from "../utils/currency";
 import { mapGetters, mapActions } from "vuex";
 import { apiUrl } from "../utils/config";
 import $ from "jquery";
+import PromoCode from "../components/PromoCode.vue";
+import VueTimepicker from "vue2-timepicker";
 
 export default {
   name: "TicketTable",
   components: {
-    Dropdown
+    Dropdown,
+    PromoCode,
+    VueTimepicker
   },
 
   props: {
@@ -1453,6 +1514,7 @@ export default {
 
   data() {
     return {
+      input: "ev-time-picker",
       countryOptions: countries,
       currencyOptions: currency,
       showHiddenOptions: false,
@@ -1526,7 +1588,7 @@ export default {
       processingFee: 0,
       attendeeFee: 0,
       organizerAmt: 0,
-      createdTickets: [],
+      // createdTickets: [],
       cedi: "(GH&#8373)",
       selectedTicket: null,
       // edit paid ticket
@@ -1565,7 +1627,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(["onCountryOfPaymentSet", "onCurrencyOfPaymentSet"]),
+    ...mapActions([
+      "onCountryOfPaymentSet",
+      "onCurrencyOfPaymentSet",
+      "onCreateTicket",
+      "onDeleteTicket",
+      "onUpdateTicket"
+    ]),
 
     onCountry(country) {
       this.onCountryOfPaymentSet(country);
@@ -1676,7 +1744,7 @@ export default {
             body.organizerAmt = this.organizerAmt.toFixed(2);
             body.ticketId = ticket.ticket_id;
 
-            this.createdTickets.push(body);
+            this.onCreateTicket(body);
 
             // this.showFreeTicketMessage = true;
             // setTimeout(() => {
@@ -1726,7 +1794,7 @@ export default {
             body.organizerAmt = this.organizerAmt;
             body.ticketId = ticket.ticket_id;
 
-            this.createdTickets.push(body);
+            this.onCreateTicket(body);
 
             this.resetPaidTicketData();
 
@@ -2042,10 +2110,11 @@ export default {
 
         if (res.status === 200) {
           // delete ticket from array
-          const index = this.createdTickets.indexOf(ticket);
-          if (index > -1) {
-            this.createdTickets.splice(index, 1);
-          }
+          this.onDeleteTicket(ticket);
+          // const index = this.createdTickets.indexOf(ticket);
+          // if (index > -1) {
+          //   this.createdTickets.splice(index, 1);
+          // }
         }
       });
     },
@@ -2161,17 +2230,14 @@ export default {
           if (res.status === 200) {
             // update value in array
             let newVal = new Object();
-            this.createdTickets.forEach((oneTicket, i) => {
-              if (oneTicket.ticketId === ticket.ticketId) {
-                newVal = body;
-                newVal.price = body.price.toFixed(2);
-                newVal.attendeePays = this.attendeeFee.toFixed(2);
-                newVal.organizerAmt = this.organizerAmt.toFixed(2);
-                newVal.ticketId = ticket.ticketId;
 
-                this.createdTickets[i] = newVal;
-              }
-            });
+            newVal = body;
+            newVal.price = body.price.toFixed(2);
+            newVal.attendeePays = this.attendeeFee.toFixed(2);
+            newVal.organizerAmt = this.organizerAmt.toFixed(2);
+            newVal.ticketId = ticket.ticketId;
+
+            this.onUpdateTicket(newVal);
 
             this.closeFreeTicketModal_edit(ticket.ticketId);
           }
@@ -2417,21 +2483,13 @@ export default {
           if (res.status === 200) {
             // update value in array
             let newVal = new Object();
-            this.createdTickets.forEach((oneTicket, i) => {
-              if (oneTicket.ticketId === ticket.ticketId) {
-                newVal = body;
-                newVal.price = parseFloat(body.price).toFixed(2);
-                newVal.attendeePays = parseFloat(this.attendeeFee_edit).toFixed(
-                  2
-                );
-                newVal.organizerAmt = parseFloat(
-                  this.organizerAmt_edit
-                ).toFixed(2);
-                newVal.ticketId = ticket.ticketId;
 
-                this.createdTickets[i] = newVal;
-              }
-            });
+            newVal = body;
+            newVal.price = parseFloat(body.price).toFixed(2);
+            newVal.attendeePays = parseFloat(this.attendeeFee_edit).toFixed(2);
+            newVal.organizerAmt = parseFloat(this.organizerAmt_edit).toFixed(2);
+            newVal.ticketId = ticket.ticketId;
+            this.onUpdateTicket(newVal);
 
             this.closePaidTicketModal_edit(ticket.ticketId);
           }
@@ -2535,7 +2593,8 @@ export default {
     ...mapGetters([
       "ticketCountryOfPayment",
       "ticketCurrencyOfPayment",
-      "proceedToTicketTable"
+      "proceedToTicketTable",
+      "createdTickets"
     ])
   },
 
@@ -2554,6 +2613,11 @@ export default {
   border-top: 1px solid rgb(120, 229, 30);
   margin: 1em 0;
   padding: 0;
+}
+
+.ev-time-picker {
+  border-radius: 5px !important;
+  width: 95px !important;
 }
 
 .modal {

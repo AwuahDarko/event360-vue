@@ -3,7 +3,7 @@
     <div class="card-body">
       <hr class="green-rule" />
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <p>Create codes to offer discounts to registrants.</p>
         </div>
         <div class="col-md-3"></div>
@@ -37,53 +37,48 @@
             <div class="col-ev col-c">Usage</div>
             <div class="col-ev col-e">Actions</div>
           </li>
-          <li class="table-row border border-success" v-if="false">
-            <div class="col-ev col-a" data-label="Code">42235</div>
-            <div class="col-ev col-b" data-label="Discount">John Doe</div>
-            <div class="col-ev col-c" data-label="Start">$350</div>
-            <div class="col-ev col-e" data-label="End">Pending</div>
-            <div class="col-ev col-c" data-label="Usage">$350</div>
-            <div class="col-ev col-e" data-label="Actions">
-              <button
-                class="edit-btn mr-2"
-                data-toggle="modal"
-                data-target="#edit_free_Ticket"
-              >
-                <i class="fas fa-pencil-alt"></i>
-              </button>
+          <div v-if="promo_codes.length > 0">
+            <li
+              class="table-row border border-success"
+              v-for="code in promo_codes"
+              :key="code.promo_id"
+            >
+              <div class="col-ev col-a" data-label="Code">{{ promo.code }}</div>
+              <div
+                class="col-ev col-b"
+                data-label="Discount"
+              >{{ promo.discount_type === 'per' ? `${promo.discount}%`: `GHC ${promo.discount}` }}</div>
+              <div class="col-ev col-c" data-label="Start">{{ promo.start_date }}</div>
+              <div class="col-ev col-e" data-label="End">{{ promo.end_date }}</div>
+              <div class="col-ev col-c" data-label="Usage">0/{{ promo.limit }}</div>
+              <div class="col-ev col-e" data-label="Actions">
+                <button class="edit-btn mr-2" data-toggle="modal" data-target="#edit_free_Ticket">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
 
-              <button class="del-btn ml-2">
-                <i class="fa fa-trash"></i>
-              </button>
-            </div>
-          </li>
-          <li class="table-row border border-success" v-else>
-            <div class="col-ev col-f" data-label>
-              Add codes by clicking "Create Code" button above
-            </div>
-          </li>
+                <button class="del-btn ml-2">
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+            </li>
+          </div>
+          <div v-else>
+            <li class="table-row border border-success">
+              <div class="col-ev col-f" data-label>Add codes by clicking "Create Code" button above</div>
+            </li>
+          </div>
         </ul>
       </div>
     </div>
     <!-- Create Promo code modal -->
     <div class="row">
       <div class="col-md-12">
-        <div
-          class="modal fade"
-          data-backdrop="static"
-          data-keyboard="false"
-          id="promo_code"
-        >
+        <div class="modal fade" data-backdrop="static" data-keyboard="false" id="promo_code">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header bg-success">
                 <h4 class="modal-title">Create Promo Code</h4>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-label="Close"
-                >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -91,81 +86,88 @@
                 <div class="form-v4">
                   <div class="page-content">
                     <div class="form-v4-content">
-                      <div
-                        class="form-detail"
-                        action="#"
-                        method="post"
-                        id="myform"
-                      >
+                      <div class="form-detail" action="#" method="post" id="myform">
                         <div class="mb-2">
-                          <label for="code"
-                            >Code <span class="important">*</span>
+                          <label for="code">
+                            Code
+                            <span class="important">*</span>
                           </label>
-                          <input type="text" id="code" class="form-control" />
+                          <input
+                            type="text"
+                            id="code"
+                            class="form-control"
+                            v-model="code"
+                            v-bind:class="{
+                                  'is-empty': invalid_code,
+                                }"
+                          />
                         </div>
-                        <div class="mb-2">
-                          <label for="tickets-box"
-                            >Applies To <span class="important">*</span>
+                        <div
+                          class="mb-2"
+                          v-bind:class="{
+                                  'is-empty': invalid_ticket,
+                                }"
+                        >
+                          <label for="tickets-box">
+                            Applies To
+                            <span class="important">*</span>
                           </label>
                           <multiselect
                             v-model="ticket_value"
-                            :options="ticket_options"
+                            :options="createdTickets"
                             :multiple="true"
                             :close-on-select="false"
                             :clear-on-select="false"
                             :preserve-search="true"
                             placeholder="Select Ticket(s)"
                             label="name"
-                            track-by="name"
+                            track-by="ticketId"
                             :preselect-first="false"
                           >
-                            <template
-                              slot="selection"
-                              slot-scope="{ values, search, isOpen }"
-                              ><span
+                            <template slot="selection" slot-scope="{ values, search, isOpen }">
+                              <span
                                 class="multiselect__single"
                                 v-if="values.length &amp;&amp; !isOpen"
-                                >{{ values.length }} tickets selected</span
-                              ></template
-                            >
+                              >{{ values.length }} tickets selected</span>
+                            </template>
                           </multiselect>
                         </div>
                         <div class="m-root mb-2">
                           <label>
-                            Discount Amount <span class="important">*</span>
+                            Discount Amount
+                            <span class="important">*</span>
                           </label>
-                          <div class="m-body">
+                          <div
+                            class="m-body"
+                            v-bind:class="{
+                                    'is-empty': invalid_discount,
+                                  }"
+                          >
                             <div class="form-groupy">
                               <span>
-                                <input
-                                  type="radio"
-                                  name="nam"
-                                  checked
-                                  @change="activateAmount"
-                                />
+                                <input type="radio" name="nam" checked @change="activateAmount" />
                               </span>
-                              <span>GHC</span>
+                              <span class="ghana-cedi" v-html="cedi">{{ cedi }}</span>
                               <input
                                 class="form-fieldy"
                                 type="number"
                                 placeholder="0.00"
                                 :disabled="disable_amount"
                                 @keypress="isNumberKey"
+                                v-model="amount_discount"
                               />
                             </div>
                             <div class="form-groupy">
-                              <span
-                                ><input
-                                  type="radio"
-                                  name="nam"
-                                  @change="activatePercentage"
-                              /></span>
+                              <span>
+                                <input type="radio" name="nam" @change="activatePercentage" />
+                              </span>
                               <input
                                 class="form-fieldy"
                                 type="number"
                                 placeholder="0.00"
                                 :disabled="disable_percent"
                                 @keypress="isNumberKey"
+                                v-model="percent_discount"
                               />
                               <span>%</span>
                             </div>
@@ -173,14 +175,22 @@
                         </div>
                         <div class="mb-2">
                           <label>
-                            Start <span class="important">*</span>
+                            Start
+                            <span class="important">*</span>
                           </label>
                           <div class="m-row">
                             <div class="m-row">
                               <div class="icon-box">
                                 <i class="far fa-calendar-alt"></i>
                               </div>
-                              <input class="date-picker" type="date" />
+                              <input
+                                class="date-picker"
+                                type="date"
+                                v-model="start_date"
+                                v-bind:class="{
+                                    'is-empty': invalid_start_date,
+                                  }"
+                              />
                             </div>
                             <div class="m-row ml-2">
                               <div class="icon-box">
@@ -189,18 +199,29 @@
                               <vue-timepicker
                                 close-on-complete
                                 :input-class="input"
+                                v-model="start_time"
                               ></vue-timepicker>
                             </div>
                           </div>
                         </div>
                         <div class="mb-2">
-                          <label> End <span class="important">*</span> </label>
+                          <label>
+                            End
+                            <span class="important">*</span>
+                          </label>
                           <div class="m-row">
                             <div class="m-row">
                               <div class="icon-box">
                                 <i class="far fa-calendar-alt"></i>
                               </div>
-                              <input class="date-picker" type="date" />
+                              <input
+                                class="date-picker"
+                                type="date"
+                                v-model="end_date"
+                                v-bind:class="{
+                                    'is-empty': invalid_end_date,
+                                  }"
+                              />
                             </div>
                             <div class="m-row ml-2">
                               <div class="icon-box">
@@ -209,13 +230,14 @@
                               <vue-timepicker
                                 close-on-complete
                                 :input-class="input"
+                                v-model="end_time"
                               ></vue-timepicker>
                             </div>
                           </div>
                         </div>
 
                         <div class="mb-2">
-                          <label> Uses</label>
+                          <label>Uses</label>
                           <div>
                             <div class="row">
                               <input
@@ -226,11 +248,7 @@
                                 checked
                                 @change="activateUnLimited"
                               />
-                              <label
-                                class="remove-bottom-margin ml-2"
-                                for="unlimited"
-                                >Unlimited</label
-                              >
+                              <label class="remove-bottom-margin ml-2" for="unlimited">Unlimited</label>
                             </div>
                             <div class="row mb-2">
                               <input
@@ -240,26 +258,24 @@
                                 id="limited"
                                 @change="activateLimited"
                               />
-                              <label
-                                class="remove-bottom-margin ml-2"
-                                for="limited"
-                                >Limited to:</label
-                              >
+                              <label class="remove-bottom-margin ml-2" for="limited">Limited to:</label>
                             </div>
                             <input
                               type="number"
                               placeholder="eg: 10"
+                              v-model="limited_number"
                               :disabled="disable_limited"
+                              v-bind:class="{
+                                    'is-empty': invalid_limit,
+                                  }"
                             />
                           </div>
                         </div>
                       </div>
                       <div class="form-left">
-                        <label> Applied To:</label>
+                        <label>Applied To:</label>
                         <hr />
-                        <div class="m-header">
-                          0 Days Passed
-                        </div>
+                        <div class="m-header">0 Days Passed</div>
                         <table class="table table-striped">
                           <thead>
                             <tr>
@@ -301,16 +317,8 @@
                 </div>
               </div>
               <div class="modal-footer justify-content-end">
-                <button
-                  type="button"
-                  class="btn btn-default"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-                <button type="button" class="btn btn-success">
-                  Create
-                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" @click="onCreatePromoCode">Create</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -324,34 +332,51 @@
 </template>
 
 <script>
-import VueTimepicker from 'vue2-timepicker';
-import 'vue2-timepicker/dist/VueTimepicker.css';
-import Multiselect from 'vue-multiselect';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
+import VueTimepicker from "vue2-timepicker";
+import "vue2-timepicker/dist/VueTimepicker.css";
+import Multiselect from "vue-multiselect";
+import "vue-multiselect/dist/vue-multiselect.min.css";
+import { apiUrl } from "../utils/config";
+import { mapGetters } from "vuex";
 
 export default {
-  name: 'PromoCode',
+  name: "PromoCode",
   components: {
     VueTimepicker,
-    Multiselect,
+    Multiselect
   },
 
   data() {
     return {
-      input: 'ev-time-picker',
-      ticket_options: [
-        { name: 'Vue.js', language: 'JavaScript' },
-        { name: 'Adonis', language: 'JavaScript' },
-        { name: 'Rails', language: 'Ruby' },
-        { name: 'Sinatra', language: 'Ruby' },
-        { name: 'Laravel', language: 'PHP' },
-        { name: 'Phoenix', language: 'Elixir' },
-      ],
+      cedi: "GH&#8373",
+      input: "ev-time-picker",
+      // ticket_options: this.createdTickets,
       ticket_value: [],
       disable_percent: true,
       disable_amount: false,
       disable_limited: true,
+      promo_codes: [],
+      code: "",
+      amount_discount: "",
+      percent_discount: "",
+      start_date: "",
+      start_time: "",
+      end_date: "",
+      end_time: "",
+      unlimited: true,
+      limited: false,
+      limited_number: "",
+      invalid_code: false,
+      invalid_ticket: false,
+      invalid_discount: false,
+      invalid_start_date: false,
+      invalid_end_date: false,
+      invalid_limit: false
     };
+  },
+
+  computed: {
+    ...mapGetters(["createdTickets"])
   },
 
   methods: {
@@ -380,34 +405,142 @@ export default {
     },
 
     activateLimited() {
+      this.limited = true;
+      this.unlimited = false;
       this.disable_limited = false;
     },
 
     activateUnLimited() {
+      this.limited = false;
+      this.unlimited = true;
       this.disable_limited = true;
     },
-  },
+
+    validateInputs() {
+      this.invalid_code = false;
+      this.invalid_ticket = false;
+      this.invalid_discount = false;
+      this.invalid_start_date = false;
+      this.invalid_end_date = false;
+      this.invalid_limit = false;
+
+      if (!this.code) {
+        this.invalid_code = true;
+      }
+
+      if (!this.amount_discount && !this.percent_discount) {
+        this.invalid_discount = true;
+      }
+
+      if (!this.start_date) {
+        this.invalid_start_date = true;
+      }
+
+      if (!this.end_date) {
+        this.invalid_end_date = true;
+      }
+
+      if (this.limited && !this.limited_number) {
+        this.invalid_limit = true;
+      }
+
+      if (this.ticket_value.length === 0) {
+        this.invalid_ticket = true;
+      }
+
+      if (
+        this.invalid_code ||
+        this.invalid_ticket ||
+        this.invalid_discount ||
+        this.invalid_start_date ||
+        this.invalid_end_date ||
+        this.invalid_limit
+      ) {
+        return false;
+      }
+
+      return true;
+    },
+
+    setPostBody() {
+      const bodyList = [];
+
+      for (const ticket of this.ticket_value) {
+        const body = {
+          ticket_id: ticket.id,
+          code: this.code,
+          discount: this.disable_percent
+            ? this.amount_discount
+            : this.percent_discount,
+          discount_type: this.disable_percent ? "amt" : "per",
+          start_date: `${this.start_date} ${this.start_time}`.trim(),
+          end_date: `${this.end_date} ${this.end_time}`.trim(),
+          limit: this.limited ? this.limited_number : ""
+        };
+
+        bodyList.push(body);
+      }
+
+      return bodyList;
+    },
+
+    onCreatePromoCode() {
+      this.validateInputs();
+      const bodyList = this.setPostBody();
+
+      bodyList.forEach(oneBody => {
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${window.localStorage.getItem("token")}`
+          },
+          body: JSON.stringify(oneBody)
+        };
+
+        fetch(`${apiUrl}/api/promo-ticket`, options)
+          .then(async res => {
+            if (res.status == 201) {
+              const ans = await res.json();
+              oneBody.promo_id = ans.promo_id;
+
+              this.promo_codes.push(oneBody);
+            }
+          })
+          .catch(err => console.log(err));
+      });
+    }
+  }
 };
 </script>
 
 <style scoped>
+.is-empty {
+  border-color: red !important;
+  border-style: solid !important;
+  border-width: 1px;
+}
+
 .m-header {
-  background-color: lightgrey;
+  background-color: rgb(78, 199, 8);
   border-style: solid;
   border-width: 1px;
   font-size: 1.2rem;
   font-weight: bold;
-  color: inherit;
+  color: white;
   text-align: center;
+  border-color: #28a745;
 }
 
 .icon-box {
-  border-style: solid;
+  /* border-style: solid; */
   border-radius: 5px 0 0 5px;
   border-width: 1px;
   border-color: rgb(195, 192, 192);
   margin: 0;
   padding: 5px 10px 5px 10px;
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
 }
 
 .date-picker {
@@ -614,6 +747,7 @@ h2 small {
   border: 1px solid var(--group-border);
   -webkit-transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
   transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+  background-color: #e9ecef;
 }
 .form-groupy:focus-within > span {
   color: black;
@@ -637,7 +771,7 @@ h2 small {
 
 .m-body {
   /* min-height: 100vh; */
-  font-family: 'Mukta Malar', Arial;
+  font-family: "Mukta Malar", Arial;
   /* display: -webkit-box; */
   display: flex;
   -webkit-box-pack: center;
@@ -691,7 +825,7 @@ h2 small {
   position: relative;
   display: flex;
   display: -webkit-flex;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 .form-v4-content h2 {
   font-weight: 700;
@@ -733,7 +867,7 @@ h2 small {
   color: #333;
   font-weight: 700;
   font-size: 15px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   appearance: unset;
   -moz-appearance: unset;
   -webkit-appearance: unset;
@@ -798,7 +932,7 @@ h2 small {
   background: #53c83c;
 }
 .form-v4-content .form-detail .form-row label#valid::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 5px;
   top: 1px;
@@ -823,8 +957,8 @@ h2 small {
   color: red;
 }
 .form-v4-content .form-detail .form-row label.error::after {
-  content: '\f343';
-  font-family: 'LineAwesome';
+  content: "\f343";
+  font-family: "LineAwesome";
   position: absolute;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -840,7 +974,7 @@ h2 small {
 .form-v4-content .form-detail .input-text {
   margin-bottom: 27px;
 }
-.form-v4-content .form-detail input[type='text'] {
+.form-v4-content .form-detail input[type="text"] {
   width: 100%;
   padding: 11.5px 15px;
   border: 1px solid #e5e5e5;
@@ -856,7 +990,7 @@ h2 small {
   -webkit-outline: none;
   -o-outline: none;
   -ms-outline: none;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-size: 15px;
   color: #333;
   box-sizing: border-box;
@@ -886,7 +1020,7 @@ h2 small {
   cursor: pointer;
 }
 .form-v4-content .form-detail .form-checkbox .checkmark::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 5px;
   top: 1px;
