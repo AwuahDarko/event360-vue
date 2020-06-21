@@ -17,6 +17,8 @@
             class="btn btn-block btn-success btn-md next"
             data-toggle="modal"
             data-target="#promo_code"
+            id="create-code-btn"
+            @click="setForUpdate = false"
           >
             <i class="fas fa-plus"></i> Create Code
           </button>
@@ -33,30 +35,38 @@
             <div class="col-ev col-a">Code</div>
             <div class="col-ev col-b">Discount</div>
             <div class="col-ev col-c">Start</div>
-            <div class="col-ev col-e">End</div>
+            <div class="col-ev col-c">End</div>
             <div class="col-ev col-c">Usage</div>
             <div class="col-ev col-e">Actions</div>
           </li>
           <div v-if="promo_codes.length > 0">
             <li
-              class="table-row border border-success"
-              v-for="code in promo_codes"
-              :key="code.promo_id"
+              class="table-row border border-success mb-4"
+              v-for="promo in promo_codes"
+              :key="promo.promo_id"
             >
               <div class="col-ev col-a" data-label="Code">{{ promo.code }}</div>
               <div
                 class="col-ev col-b"
                 data-label="Discount"
-              >{{ promo.discount_type === 'per' ? `${promo.discount}%`: `GHC ${promo.discount}` }}</div>
+              >{{ promo.discount_type === 'per' ? `${promo.discount}%`: `GH\u20B5 \n ${promo.discount}` }}</div>
               <div class="col-ev col-c" data-label="Start">{{ promo.start_date }}</div>
-              <div class="col-ev col-e" data-label="End">{{ promo.end_date }}</div>
-              <div class="col-ev col-c" data-label="Usage">0/{{ promo.limit }}</div>
+              <div class="col-ev col-c" data-label="End">{{ promo.end_date }}</div>
+              <div
+                class="col-ev col-c"
+                data-label="Usage"
+              >{{ promo.limit ? `0/${promo.limit}` : `unlimited` }}</div>
               <div class="col-ev col-e" data-label="Actions">
-                <button class="edit-btn mr-2" data-toggle="modal" data-target="#edit_free_Ticket">
+                <button
+                  class="edit-btn mr-2"
+                  data-toggle="modal"
+                  data-target="#promo_code"
+                  @click="setValuesOnEdit(promo)"
+                >
                   <i class="fas fa-pencil-alt"></i>
                 </button>
 
-                <button class="del-btn ml-2">
+                <button class="del-btn ml-2" @click="deletePromoCode(promo)">
                   <i class="fa fa-trash"></i>
                 </button>
               </div>
@@ -114,15 +124,16 @@
                           </label>
                           <multiselect
                             v-model="ticket_value"
-                            :options="createdTickets"
+                            :options="filteredTickets"
                             :multiple="true"
-                            :close-on-select="false"
-                            :clear-on-select="false"
+                            :close-on-select="true"
+                            :clear-on-select="true"
                             :preserve-search="true"
                             placeholder="Select Ticket(s)"
                             label="name"
                             track-by="ticketId"
                             :preselect-first="false"
+                            @input="calculateEarnings"
                           >
                             <template slot="selection" slot-scope="{ values, search, isOpen }">
                               <span
@@ -152,9 +163,11 @@
                                 class="form-fieldy"
                                 type="number"
                                 placeholder="0.00"
+                                step="0.01"
                                 :disabled="disable_amount"
                                 @keypress="isNumberKey"
                                 v-model="amount_discount"
+                                @input="calculateEarnings"
                               />
                             </div>
                             <div class="form-groupy">
@@ -165,9 +178,11 @@
                                 class="form-fieldy"
                                 type="number"
                                 placeholder="0.00"
+                                step="0.01"
                                 :disabled="disable_percent"
                                 @keypress="isNumberKey"
                                 v-model="percent_discount"
+                                @input="calculateEarnings"
                               />
                               <span>%</span>
                             </div>
@@ -178,7 +193,7 @@
                             Start
                             <span class="important">*</span>
                           </label>
-                          <div class="m-row">
+                          <div class="m-row-2">
                             <div class="m-row">
                               <div class="icon-box">
                                 <i class="far fa-calendar-alt"></i>
@@ -209,7 +224,7 @@
                             End
                             <span class="important">*</span>
                           </label>
-                          <div class="m-row">
+                          <div class="m-row-2">
                             <div class="m-row">
                               <div class="icon-box">
                                 <i class="far fa-calendar-alt"></i>
@@ -268,6 +283,7 @@
                               v-bind:class="{
                                     'is-empty': invalid_limit,
                                   }"
+                              @keypress="isOnlyNumberKey"
                             />
                           </div>
                         </div>
@@ -275,50 +291,62 @@
                       <div class="form-left">
                         <label>Applied To:</label>
                         <hr />
-                        <div class="m-header">0 Days Passed</div>
-                        <table class="table table-striped">
-                          <thead>
-                            <tr>
-                              <th scope="col"></th>
-                              <th scope="col"></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>Original Price</td>
-                              <td>2520</td>
-                            </tr>
 
-                            <tr>
-                              <td>You Earn</td>
-                              <td>125</td>
-                            </tr>
-                            <tr class="table-light">
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr class="table-light">
-                              <td></td>
-                              <td></td>
-                            </tr>
-                            <tr>
-                              <td>With Discount</td>
-                              <td>202</td>
-                            </tr>
-                            <tr>
-                              <td>You Earn</td>
-                              <td>22</td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <div v-if="summary_data.length > 0">
+                          <div v-for="(data, index) in summary_data" :key="index">
+                            <div class="m-header">{{ data.title }}</div>
+                            <table class="table table-striped">
+                              <thead>
+                                <tr>
+                                  <th scope="col"></th>
+                                  <th scope="col"></th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td>Original Price</td>
+                                  <td>{{ data.original }}</td>
+                                </tr>
+
+                                <tr>
+                                  <td>You Earn</td>
+                                  <td>{{ data.you_earn }}</td>
+                                </tr>
+                                <tr class="table-light">
+                                  <td></td>
+                                  <td></td>
+                                </tr>
+                                <tr>
+                                  <td>With Discount</td>
+                                  <td>{{ data.with_discount }}</td>
+                                </tr>
+                                <tr>
+                                  <td>You Earn</td>
+                                  <td>{{ data.you_earn_after_discount }}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                        <div v-else>Select a ticket to view how much you will earn after discount</div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="modal-footer justify-content-end">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" @click="onCreatePromoCode">Create</button>
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal"
+                  :disabled="isCloseDisable"
+                >Close</button>
+                <button
+                  type="button"
+                  class="btn btn-success"
+                  @click="onCreatePromoCode"
+                  :disabled="isCreateDisable"
+                >Create</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -338,6 +366,7 @@ import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import { apiUrl } from "../utils/config";
 import { mapGetters } from "vuex";
+import $ from "jquery";
 
 export default {
   name: "PromoCode",
@@ -371,12 +400,20 @@ export default {
       invalid_discount: false,
       invalid_start_date: false,
       invalid_end_date: false,
-      invalid_limit: false
+      invalid_limit: false,
+      summary_data: [],
+      isCloseDisable: false,
+      isCreateDisable: false,
+      setForUpdate: false
     };
   },
 
   computed: {
-    ...mapGetters(["createdTickets"])
+    ...mapGetters(["createdTickets"]),
+
+    filteredTickets: function() {
+      return this.createdTickets.filter(oneTick => oneTick.type === "paid");
+    }
   },
 
   methods: {
@@ -394,14 +431,29 @@ export default {
       }
     },
 
+    isOnlyNumberKey(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        (charCode > 31 && (charCode < 48 || charCode > 57)) ||
+        charCode == 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
     activatePercentage() {
       this.disable_percent = false;
       this.disable_amount = true;
+      this.amount_discount = "";
     },
 
     activateAmount() {
       this.disable_percent = true;
       this.disable_amount = false;
+      this.percent_discount = "";
     },
 
     activateLimited() {
@@ -467,10 +519,10 @@ export default {
 
       for (const ticket of this.ticket_value) {
         const body = {
-          ticket_id: ticket.id,
+          ticket_id: ticket.ticketId,
           code: this.code,
           discount: this.disable_percent
-            ? this.amount_discount
+            ? parseFloat(this.amount_discount).toFixed(2)
             : this.percent_discount,
           discount_type: this.disable_percent ? "amt" : "per",
           start_date: `${this.start_date} ${this.start_time}`.trim(),
@@ -485,12 +537,17 @@ export default {
     },
 
     onCreatePromoCode() {
-      this.validateInputs();
+      if (!this.validateInputs()) return;
+
+      this.disableBtn();
+
       const bodyList = this.setPostBody();
 
-      bodyList.forEach(oneBody => {
+      console.log("this.setForUpdate", this.setForUpdate);
+
+      bodyList.forEach((oneBody, index) => {
         const options = {
-          method: "POST",
+          method: !this.setForUpdate ? "POST" : "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${window.localStorage.getItem("token")}`
@@ -500,21 +557,210 @@ export default {
 
         fetch(`${apiUrl}/api/promo-ticket`, options)
           .then(async res => {
+            this.enableBtn();
             if (res.status == 201) {
-              const ans = await res.json();
-              oneBody.promo_id = ans.promo_id;
+              if (index === bodyList.length - 1) {
+                const ans = await res.json();
+                oneBody.promo_id = ans.promo_id;
+                oneBody.tickets = this.ticket_value;
 
-              this.promo_codes.push(oneBody);
+                this.promo_codes.push(oneBody);
+                this.reset();
+                this.closeModal();
+              }
             }
           })
-          .catch(err => console.log(err));
+          .catch(err => {
+            console.log(err);
+            this.enableBtn();
+          });
       });
+    },
+
+    disableBtn() {
+      this.isCloseDisable = true;
+      this.isCreateDisable = true;
+    },
+
+    enableBtn() {
+      this.isCloseDisable = false;
+      this.isCreateDisable = false;
+    },
+
+    calculateEarnings() {
+      // console.log(this.ticket_value);
+      if (this.ticket_value.length === 0) return;
+
+      this.summary_data.length = 0;
+      this.ticket_value.forEach(oneTick => {
+        const earnings = new Object();
+        earnings.title = oneTick.name;
+
+        const attendee = parseFloat(oneTick.attendeePays).toFixed(2);
+        const organizer = parseFloat(oneTick.organizerAmt).toFixed(2);
+
+        earnings.original = attendee;
+        earnings.you_earn = organizer;
+
+        const result = this.calculateAmount(earnings.you_earn);
+        earnings.you_earn_after_discount = result.you_earn_after_discount;
+        earnings.with_discount = (attendee - result.discount).toFixed(2);
+
+        this.summary_data.push(earnings);
+      });
+    },
+
+    calculateAmount(amt) {
+      const original = parseFloat(amt);
+      let finalAmt = new Object();
+
+      if (this.disable_percent) {
+        if (this.amount_discount !== "") {
+          const discount = parseFloat(this.amount_discount);
+
+          finalAmt.you_earn_after_discount = (original - discount).toFixed(2);
+          finalAmt.discount = discount;
+        } else {
+          finalAmt.you_earn_after_discount = original.toFixed(2);
+          finalAmt.discount = 0.0;
+        }
+      } else {
+        if (this.percent_discount !== "") {
+          const discount = (parseFloat(this.percent_discount) / 100) * original;
+          finalAmt.you_earn_after_discount = (original - discount).toFixed(2);
+          finalAmt.discount = discount;
+        } else {
+          finalAmt.you_earn_after_discount = original.toFixed(2);
+          finalAmt.discount = 0.0;
+        }
+      }
+
+      return finalAmt;
+    },
+
+    reset() {
+      this.ticket_value = [];
+      this.disable_percent = true;
+      this.disable_amount = false;
+      this.disable_limited = true;
+      this.code = "";
+      this.amount_discount = "";
+      this.percent_discount = "";
+      this.start_date = "";
+      this.start_time = "";
+      this.end_date = "";
+      this.end_time = "";
+      this.unlimited = true;
+      this.limited = false;
+      this.limited_number = "";
+      this.invalid_code = false;
+      this.invalid_ticket = false;
+      this.invalid_discount = false;
+      this.invalid_start_date = false;
+      this.invalid_end_date = false;
+      this.invalid_limit = false;
+      this.summary_data = [];
+
+      this.activateUnLimited();
+    },
+
+    closeModal() {
+      $("#promo_code")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#create-code-btn`).click();
+    },
+
+    deletePromoCode(promo) {
+      console.log(promo);
+      this.$emit("showOrHideProgressBar", true);
+
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`
+        }
+      };
+
+      const tick = promo.tickets;
+
+      tick.forEach((oneTick, i) => {
+        fetch(
+          `${apiUrl}/api/promo-ticket?code=${promo.code}&ticket_id=${oneTick.ticketId}`,
+          options
+        ).then(res => {
+          if (res.status === 200) {
+            if (i === tick.length - 1) {
+              this.$emit("showOrHideProgressBar", false);
+              // delete ticket from array
+              const index = this.promo_codes.indexOf(promo);
+              if (index > -1) {
+                this.promo_codes.splice(index, 1);
+              }
+            }
+          }
+        });
+      });
+    },
+
+    setValuesOnEdit(promo) {
+      console.log(promo);
+
+      this.ticket_value = promo.tickets;
+
+      if (promo.discount_type === "per") {
+        this.disable_percent = false;
+        this.percent_discount = promo.discount;
+      }
+
+      if (promo.discount_type === "amt") {
+        this.disable_amount = false;
+        this.amount_discount = promo.discount;
+      }
+
+      if (promo.limit === "") {
+        this.activateUnLimited();
+      } else {
+        this.activateLimited();
+        this.limited_number = promo.limit;
+      }
+
+      this.code = promo.code;
+
+      const li = promo.start_date.split(" ");
+
+      this.start_date = li[0];
+
+      if (li.length > 1) {
+        this.start_time = li[1];
+      }
+
+      const lin = promo.end_date.split(" ");
+
+      this.end_date = lin[0];
+
+      if (lin.length > 1) {
+        this.end_time = li[1];
+      }
+
+      this.calculateEarnings();
+
+      this.setForUpdate = true;
     }
   }
 };
 </script>
 
 <style scoped>
+.table td,
+.table th {
+  padding: 0.2rem !important;
+}
+
 .is-empty {
   border-color: red !important;
   border-style: solid !important;
@@ -555,6 +801,11 @@ export default {
   justify-content: flex-start;
 }
 
+.m-row-2 {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .m-form {
   flex: 2;
   padding-right: 20px;
@@ -588,10 +839,13 @@ h2 small {
 
 .responsive-table li {
   border-radius: 3px;
-  padding: 15px 30px;
+  padding: 15px 10px;
   display: flex;
   justify-content: space-between;
   /* margin-bottom: 25px; */
+}
+.responsive-table li div {
+  font-size: 0.8rem !important;
 }
 .responsive-table .table-header {
   /* background-color: #5de0ef; */
@@ -610,10 +864,10 @@ h2 small {
   flex-basis: 20%;
 }
 .responsive-table .col-c {
-  flex-basis: 25%;
+  flex-basis: 30%;
 }
 .responsive-table .col-e {
-  flex-basis: 25%;
+  flex-basis: 20%;
 }
 
 .responsive-table .col-f {
@@ -1127,12 +1381,17 @@ h2 small {
   }
 }
 
-@media (max-width: 900px) {
-  /* .m-row {
+@media (max-width: 360px) {
+  .m-row-2 {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-  } */
+    justify-content: flex-start;
+    flex-direction: column !important;
+    align-items: flex-start;
+  }
+
+  .m-row-2 .ml-2 {
+    margin-left: 0 !important;
+  }
 }
 
 .remove-bottom-margin {

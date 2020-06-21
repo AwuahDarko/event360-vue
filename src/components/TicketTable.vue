@@ -153,7 +153,7 @@
         </div>
       </div>
       <div style="height: 20px"></div>
-      <PromoCode />
+      <PromoCode v-on:showOrHideProgressBar="reEmitProgressEvent" />
 
       <!-- default modal for free or paid ticket -->
       <div class="modal fade" id="modal-default">
@@ -2097,7 +2097,7 @@ export default {
 
     deleteTicket(evt, ticket) {
       this.$emit("showOrHideProgressBar", true);
-
+      evt;
       const options = {
         method: "DELETE",
         headers: {
@@ -2586,6 +2586,10 @@ export default {
       $(".modal-backdrop").remove();
 
       $(`#open-paid-ticket-btn-edit-${ticketId}`).click();
+    },
+
+    reEmitProgressEvent(flag) {
+      this.$emit("showOrHideProgressBar", flag);
     }
   },
 
