@@ -1,11 +1,16 @@
 <template>
-    <div class="chip-container">
-      <div class="chip" v-for="(chip, i) of chips" :key="chip.label">
-        {{chip}}
-        <i class="material-icons" @click="deleteChip(i)">clear</i>
-      </div>
-      <input class="form-control" v-model="currentInput" @keypress.space="saveChip" @keydown.delete="backspaceDelete">
+  <div class="chip-container">
+    <div class="chip" v-for="(chip, i) of chips" :key="chip.label">
+      {{chip}}
+      <i class="material-icons" @click="deleteChip(i)">clear</i>
     </div>
+    <input
+      class="form-control"
+      v-model="currentInput"
+      @keypress.space="saveChip"
+      @keydown.delete="backspaceDelete"
+    />
+  </div>
 </template>
 
 
@@ -13,9 +18,9 @@
 
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 export default {
-    props: {
+  props: {
     set: {
       type: Boolean,
       default: true
@@ -23,26 +28,29 @@ export default {
   },
   data() {
     return {
-      chips:[],
-      currentInput: ''
-    }
+      chips: [],
+      currentInput: ""
+    };
   },
   methods: {
-    ...mapActions(['onChipSaved']),
+    ...mapActions(["onChipSaved"]),
     saveChip() {
-      const {chips, currentInput, set} = this;
-      ((set && chips.indexOf(currentInput) === -1) || !set) && chips.push(currentInput);
-      this.currentInput = '';
-      this.onChipSaved(chips)
+      const { chips, currentInput, set } = this;
+      ((set && chips.indexOf(currentInput) === -1) || !set) &&
+        chips.push(currentInput);
+      this.currentInput = "";
+      this.onChipSaved(chips);
     },
     deleteChip(index) {
       this.chips.splice(index, 1);
     },
-    backspaceDelete({which}) {
-      which == 8 && this.currentInput === '' && this.chips.splice(this.chips.length - 1);
+    backspaceDelete({ which }) {
+      which == 8 &&
+        this.currentInput === "" &&
+        this.chips.splice(this.chips.length - 1);
     }
-  },
-}
+  }
+};
 </script>
 
 
@@ -79,5 +87,4 @@ export default {
   outline: none;
   padding: 4px;
 }
-
 </style>

@@ -1626,8 +1626,8 @@ export default {
 
 <style scoped>
 @import url("../assets/css/adminlte.min.css");
-@import url("../assets/css/fontawesome-free/css/all.min.css");
-/*@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');*/
+/* @import url("../assets/css/fontawesome-free/css/all.min.css"); */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 
 body {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
