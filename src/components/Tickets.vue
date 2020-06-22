@@ -348,18 +348,14 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
-      /**
-       * ! REMOVE THIS COMMENT WHEN GOING TO PRODUCTION
-       */
-
-      // this.event_key = window.localStorage.getItem("current_event_key");
-      // if (this.event_key === null || this.event_key === "") {
-      //   this.$emit(
-      //     "showFlagFromTicket",
-      //     "To create a ticket you must first create an event."
-      //   );
-      //   return;
-      // }
+      this.event_key = window.localStorage.getItem("current_event_key");
+      if (this.event_key === null || this.event_key === "") {
+        this.$emit(
+          "showFlagFromTicket",
+          "To create a ticket you must first create an event."
+        );
+        return;
+      }
 
       this.countryNotSet = false;
       this.currencyNotSet = false;
@@ -436,7 +432,7 @@ export default {
     saveCountryCurrency() {
       const token = `Bearer ${window.localStorage.getItem("token")}`;
       const body = {
-        event_key: "8a064820-0546-452f-b618-73a5d134758f", //this.event_key,
+        event_key: this.event_key,
         country: this.ticketCountryOfPayment.name,
         currency: this.ticketCurrencyOfPayment.name
       };

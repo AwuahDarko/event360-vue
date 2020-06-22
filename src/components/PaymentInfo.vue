@@ -29,14 +29,28 @@
         placeholder="Country"
         ref="countdropdown"
         v-on:selected="onCountry"
+        v-bind:class="{ 'is-empty': invalidCountry}"
       ></Dropdown>
       <div class="row">
         <div class="m-2">
-          <input type="radio" id="individual" name="account" checked class="mr-2" />
+          <input
+            type="radio"
+            id="individual"
+            name="account"
+            checked
+            class="mr-2"
+            @change="setAsIndividualAccount"
+          />
           <label for="individual">Individual Account</label>
         </div>
         <div class="m-2">
-          <input type="radio" id="company" name="account" class="mr-2" />
+          <input
+            type="radio"
+            id="company"
+            name="account"
+            class="mr-2"
+            @change="setAsCompanyAccount"
+          />
           <label for="company">Company Account</label>
         </div>
       </div>
@@ -44,50 +58,82 @@
       <form>
         <div class="light-green p-2">Account Holder Information</div>
         <div class="row mt-4">
-          <div class="col col-md-3">
+          <div class="col col-md-4">
             <label for="fn">
               First Name
               <span class="text-danger">*</span>
             </label>
-            <input type="text" id="fn" placeholder="First Name" class="form-control" />
+            <input
+              type="text"
+              id="fn"
+              placeholder="First Name"
+              class="form-control"
+              v-model="first_name"
+              v-bind:class="{ 'is-empty': invalidFirst}"
+            />
           </div>
 
-          <div class="col col-md-3">
+          <div class="col col-md-4">
             <label for="ln">
               Last Name
               <span class="text-danger">*</span>
             </label>
-            <input type="text" id="ln" placeholder="Last Name" class="form-control" />
+            <input
+              type="text"
+              id="ln"
+              placeholder="Last Name"
+              class="form-control"
+              v-model="last_name"
+              v-bind:class="{ 'is-empty': invalidLast}"
+            />
           </div>
           <div class="col-md-6"></div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label for="email">
               Email
               <span class="text-danger">*</span>
             </label>
-            <input type="email" id="email" placeholder="Email" class="form-control" />
+            <input
+              type="email"
+              id="email"
+              placeholder="Email"
+              class="form-control"
+              v-model="email"
+              v-bind:class="{ 'is-empty': invalidLast}"
+            />
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label for="phone">
               Phone
               <span class="text-danger">*</span>
             </label>
-            <input type="tel" id="phone" placeholder="Phone Number" class="form-control" />
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Phone Number"
+              class="form-control"
+              v-model="phone"
+              v-bind:class="{ 'is-empty': invalidPhone}"
+            />
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label for="phone">
               Date of Birth
               <span class="text-danger">*</span>
             </label>
             <div class="row pl-2 pr-1">
               <!-- MONTHS -->
-              <select class="form-control col-md-4 mb-2">
+              <select
+                class="form-control col-md-4 mb-2"
+                v-model="month"
+                v-bind:class="{ 'is-empty': invalidMonth}"
+              >
                 <option value="0">Month</option>
                 <option value="1">January</option>
                 <option value="2">February</option>
@@ -103,7 +149,11 @@
                 <option value="12">December</option>
               </select>
               <!-- DAYS -->
-              <select class="form-control col-md-4 mb-2">
+              <select
+                class="form-control col-md-4 mb-2"
+                v-model="day"
+                v-bind:class="{ 'is-empty': invalidDay}"
+              >
                 <option value="0">Day</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -138,7 +188,11 @@
                 <option value="31">31</option>
               </select>
               <!-- YEARS -->
-              <select class="form-control col-md-4">
+              <select
+                class="form-control col-md-4"
+                v-model="year"
+                v-bind:class="{ 'is-empty': invalidYear}"
+              >
                 <option value="0">Year</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
@@ -259,29 +313,65 @@
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label>
               Last 4 Digits of Social Security Number
               <span class="text-danger">*</span>
               <a href="#" target="_blank" rel="noopener noreferrer">(Why do we need this ?)</a>
             </label>
-            <input type="text" placeholder="xxxx" class="form-control" />
+            <input
+              type="text"
+              placeholder="xxxx"
+              class="form-control"
+              v-model="last_digit"
+              v-bind:class="{ 'is-empty': invalidLastDigit}"
+              @keypress="isOnlyNumberKey"
+            />
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label>
               Address:
               <span class="text-danger">*</span>
             </label>
-            <input type="text" placeholder="Address Line 1" class="form-control mb-2" />
-            <input type="text" placeholder="Address Line 2" class="form-control mb-2" />
-            <input type="text" placeholder="City" class="form-control mb-2" />
+            <input
+              type="text"
+              placeholder="Address Line 1"
+              class="form-control mb-2"
+              v-model="address_1"
+              v-bind:class="{ 'is-empty': invalidAddress}"
+            />
+            <input
+              type="text"
+              placeholder="Address Line 2"
+              class="form-control mb-2"
+              v-model="address_2"
+            />
+            <input
+              type="text"
+              placeholder="City"
+              class="form-control mb-2"
+              v-model="city"
+              v-bind:class="{ 'is-empty': invalidCity}"
+            />
             <!-- <select>
                 <option value="0">Select Region</option>
             </select>-->
-            <input type="text" placeholder="State/Region" class="form-control mb-2" />
-            <input type="text" placeholder="Zip" class="form-control mb-2" />
+            <input
+              type="text"
+              placeholder="State/Region"
+              class="form-control mb-2"
+              v-model="region_state"
+              v-bind:class="{ 'is-empty': invalidRegion}"
+            />
+            <input
+              type="text"
+              placeholder="Zip"
+              class="form-control mb-2"
+              v-model="zip"
+              v-bind:class="{ 'is-empty': invalidZip}"
+            />
           </div>
         </div>
         <div class="light-green p-2 mt-3 mb-3">Bank Account Information</div>
@@ -290,28 +380,49 @@
         <label>Account Info</label>
         <div class="row">
           <div class="m-2">
-            <input type="radio" id="b" name="bank" checked class="mr-2" />
+            <input
+              type="radio"
+              id="b"
+              name="bank"
+              checked
+              class="mr-2"
+              @change="setAsCheckingAccount"
+            />
             <label for="b">Checking</label>
           </div>
           <div class="m-2">
-            <input type="radio" id="c" name="bank" class="mr-2" />
+            <input type="radio" id="c" name="bank" class="mr-2" @change="setAsSavingsAccount" />
             <label for="c">Savings</label>
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label>Routing Number</label>
-            <input type="text" placeholder="Routing Number" class="form-control" />
+            <input
+              type="text"
+              placeholder="Routing Number"
+              class="form-control"
+              v-model="routing_number"
+              @keypress="isNumberKey"
+              v-bind:class="{ 'is-empty': invalidRoutingNumber}"
+            />
           </div>
         </div>
         <div class="row mt-3">
-          <div class="col col-md-6">
+          <div class="col col-md-8">
             <label>Account Number</label>
-            <input type="text" placeholder="xxxx" class="form-control" />
-            <div
-              style="width: 100%; height: 150px; background-color: blue; margin-top: 10px; color: white"
-            >To Be Added Later</div>
+            <input
+              type="text"
+              placeholder="xxxx"
+              class="form-control"
+              v-model="account_number"
+              @keypress="isNumberKey"
+              v-bind:class="{ 'is-empty': invalidAccountNumber}"
+            />
           </div>
+        </div>
+        <div class="col-md-8 mt-1 pr-1 pl-0">
+          <img class="image-box" src="../assets/img/check.png" alt="check image" />
         </div>
         <div class="light-green p-2 mt-3 mb-3">Credit Card Statement Details</div>
 
@@ -319,16 +430,23 @@
           This information will appear on your attendees' credit card statements. Use the name for your event
           that your attendees will recognize to help prevent unintended chargebacks.
         </p>
-        <div class="col col-md-6">
+        <div class="col col-md-8">
           <label>
             Your Event Name
             <span class="text-danger">*</span>(max character limit 22; preferably short and easy to recognize)
           </label>
-          <input type="text" placeholder="e.g. AGRIBUS2020" />
+          <input
+            type="text"
+            placeholder="e.g. AGRIBUS2020"
+            class="form-control"
+            @keypress="limitToNumberCharacters"
+            v-model="credit_card_statement"
+            v-bind:class="{ 'is-empty': invalidCreditCard}"
+          />
         </div>
         <div class="light-green p-2 mt-3 mb-3">Agreement and Save</div>
         <div class="row pl-2">
-          <input type="checkbox" id="agree" class="mr-2" />
+          <input type="checkbox" id="agree" class="mr-2" v-model="acceptedTerms" />
           <label for="agree">
             I have read and accept the
             <a
@@ -338,7 +456,11 @@
             >Stripe Connected Account Agreement</a>
           </label>
         </div>
-        <button type="submit" class="btn btn-success pl-4 pr-4 float-right">Save</button>
+        <button
+          type="submit"
+          class="btn btn-success pl-4 pr-4 float-right"
+          @click="createPaymentInfo"
+        >Save</button>
       </form>
     </div>
   </div>
@@ -347,6 +469,8 @@
 <script>
 import Dropdown from "vue-simple-search-dropdown";
 import countries from "../utils/countries";
+import { apiUrl } from "../utils/config";
+
 export default {
   name: "PaymentInfo",
   components: {
@@ -355,13 +479,283 @@ export default {
 
   data() {
     return {
-      countryOptions: countries
+      countryOptions: countries,
+      isIndividualAccount: true,
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      day: "0",
+      month: "0",
+      year: "0",
+      last_digit: "",
+      address_1: "",
+      address_2: "",
+      city: "",
+      region_state: "",
+      zip: "",
+      isCheckingAccount: true,
+      routing_number: "",
+      account_number: "",
+      credit_card_statement: "",
+      country: "",
+      acceptedTerms: false,
+      setForUpdate: false,
+      invalidFirst: false,
+      invalidLast: false,
+      invalidEmail: false,
+      invalidPhone: false,
+      invalidDay: false,
+      invalidMonth: false,
+      invalidYear: false,
+      invalidLastDigit: false,
+      invalidAddress: false,
+      invalidCity: false,
+      invalidRegion: false,
+      invalidZip: false,
+      invalidRoutingNumber: false,
+      invalidAccountNumber: false,
+      invalidCreditCard: false,
+      invalidCountry: false
     };
   },
 
   methods: {
     onCountry(country) {
-      console.log(country);
+      this.country = country;
+    },
+
+    limitToNumberCharacters(evt, limit = 21) {
+      if (evt.target.value.length > limit) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    isOnlyNumberKey(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        (charCode > 31 && (charCode < 48 || charCode > 57)) ||
+        charCode == 46
+      ) {
+        evt.preventDefault();
+      } else if (!this.limitToNumberCharacters(evt, 3)) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    isNumberKey(evt) {
+      evt = evt ? evt : window.event;
+      var charCode = evt.which ? evt.which : evt.keyCode;
+      if (
+        (charCode > 31 && (charCode < 48 || charCode > 57)) ||
+        charCode == 46
+      ) {
+        evt.preventDefault();
+      } else {
+        return true;
+      }
+    },
+
+    setAsIndividualAccount() {
+      this.isIndividualAccount = true;
+    },
+
+    setAsCompanyAccount() {
+      this.isIndividualAccount = false;
+    },
+
+    setAsCheckingAccount() {
+      this.isCheckingAccount = true;
+    },
+
+    setAsSavingsAccount() {
+      this.isCheckingAccount = false;
+    },
+
+    setPostBody() {
+      return {
+        event_key: window.localStorage.getItem("current_event_key"),
+        country: this.country.name,
+        first_name: this.first_name.trim(),
+        last_name: this.last_name.trim(),
+        email: this.email.trim(),
+        phone: this.phone.trim(),
+        date_of_birth: `${this.year}-${this.month}-${this.day}`,
+        last_4_Social_security: this.last_digit.trim(),
+        address_line_1: this.address_1.trim(),
+        address_line_2: this.address_2.trim(),
+        city: this.city.trim(),
+        state_or_region: this.region_state.trim(),
+        zip: this.zip.trim(),
+        account_info: this.isCheckingAccount ? "Checking" : "Savings",
+        routing_number: this.routing_number,
+        account_number: this.account_number,
+        credit_card_statement: this.credit_card_statement,
+        account_type: this.isIndividualAccount
+          ? "Individual Account"
+          : "Company Account"
+      };
+    },
+
+    validateInputs() {
+      this.invalidFirst = false;
+      this.invalidLast = false;
+      this.invalidEmail = false;
+      this.invalidPhone = false;
+      this.invalidDay = false;
+      this.invalidMonth = false;
+      this.invalidYear = false;
+      this.invalidAddress = false;
+      this.invalidCity = false;
+      this.invalidRegion = false;
+      this.invalidZip = false;
+      this.invalidRoutingNumber = false;
+      this.invalidAccountNumber = false;
+      this.invalidCountry = false;
+      this.invalidCreditCard = false;
+
+      if (!this.first_name) {
+        this.invalidFirst = true;
+      }
+
+      if (!this.last_name) {
+        this.invalidLast = true;
+      }
+
+      if (!this.email) {
+        this.invalidEmail = true;
+      }
+
+      if (!this.phone) {
+        this.invalidPhone = true;
+      }
+
+      if (this.day === "0") {
+        this.invalidDay = true;
+      }
+
+      if (this.month === "0") {
+        this.invalidMonth = true;
+      }
+
+      if (this.year === "0") {
+        this.invalidYear = true;
+      }
+
+      if (!this.last_digit) {
+        this.invalidLastDigit = true;
+      }
+
+      if (!this.address_1) {
+        this.invalidAddress = true;
+      }
+
+      if (!this.city) {
+        this.invalidCity = true;
+      }
+
+      if (!this.region_state) {
+        this.invalidRegion = true;
+      }
+
+      if (!this.zip) {
+        this.invalidZip = true;
+      }
+
+      if (!this.routing_number) {
+        this.invalidRoutingNumber = true;
+      }
+
+      if (!this.account_number) {
+        this.invalidAccountNumber = true;
+      }
+
+      if (
+        Object.keys(this.country).length === 0 &&
+        this.country.constructor === Object
+      ) {
+        this.invalidCountry = true;
+      }
+
+      if (!this.credit_card_statement) {
+        this.invalidCreditCard = true;
+      }
+
+      if (!this.acceptedTerms) {
+        this.$emit(
+          "onTermsNotAccepted",
+          "Please read and accept account agreement"
+        );
+
+        return false;
+      }
+
+      if (
+        this.invalidFirst ||
+        this.invalidLast ||
+        this.invalidEmail ||
+        this.invalidPhone ||
+        this.invalidDay ||
+        this.invalidMonth ||
+        this.invalidYear ||
+        this.invalidAddress ||
+        this.invalidCity ||
+        this.invalidRegion ||
+        this.invalidZip ||
+        this.invalidRoutingNumber ||
+        this.invalidAccountNumber ||
+        this.invalidCountry ||
+        this.invalidCreditCard
+      ) {
+        this.$emit("onInvalidFields");
+
+        return false;
+      }
+
+      return true;
+    },
+
+    createPaymentInfo(evt) {
+      evt.preventDefault();
+
+      if (!this.validateInputs()) return;
+
+      const body = this.setPostBody();
+
+      const options = {
+        method: this.setForUpdate ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${window.localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(body)
+      };
+
+      // show progress bar
+      this.$emit("showProgressFromPaymentInfo", true);
+
+      fetch(`${apiUrl}/api/payment-info`, options)
+        .then(res => {
+          if (res.status === 201 || res.status === 200) {
+            this.$emit("showSuccessMessage", "Saved Successfully");
+
+            if (!this.setForUpdate) {
+              this.$emit("switchTabs", "registration-tab");
+            }
+
+            this.setForUpdate = true;
+            this.$emit("showProgressFromPaymentInfo", false);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          this.$emit("showProgressFromPaymentInfo", false);
+        });
     }
   }
 };
@@ -384,11 +778,22 @@ label {
 }
 
 .light-green {
-  background-color: rgb(170, 243, 96);
+  background-color: rgb(133, 236, 29);
 }
 
 h3 {
   font-size: 1.2rem !important;
+}
+
+.is-empty {
+  border-color: red !important;
+  border-style: solid !important;
+  border-width: 1px;
+}
+
+.image-box {
+  width: 100%;
+  height: 200px;
 }
 
 /* RESPONSIVE */

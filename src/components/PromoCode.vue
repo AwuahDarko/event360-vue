@@ -543,8 +543,6 @@ export default {
 
       const bodyList = this.setPostBody();
 
-      console.log("this.setForUpdate", this.setForUpdate);
-
       bodyList.forEach((oneBody, index) => {
         const options = {
           method: !this.setForUpdate ? "POST" : "PUT",
@@ -676,7 +674,6 @@ export default {
     },
 
     deletePromoCode(promo) {
-      console.log(promo);
       this.$emit("showOrHideProgressBar", true);
 
       const options = {
@@ -708,8 +705,6 @@ export default {
     },
 
     setValuesOnEdit(promo) {
-      console.log(promo);
-
       this.ticket_value = promo.tickets;
 
       if (promo.discount_type === "per") {

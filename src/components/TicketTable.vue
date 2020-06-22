@@ -5,8 +5,8 @@
       <h3 class="card-title">
         <b>Create Tickets</b>
       </h3>
-      <div style="width: 70%"></div>
-      <button class="btn btn-success">Next</button>
+      <div style="width: 70%; "></div>
+      <button class="btn btn-success" style="display: none">Next</button>
     </div>
     <div class="card-body">
       <div class="pl-3 pr-3">
@@ -154,6 +154,13 @@
       </div>
       <div style="height: 20px"></div>
       <PromoCode v-on:showOrHideProgressBar="reEmitProgressEvent" />
+      <PaymentInfo
+        v-on:onInvalidFields="handleInvalidFieldFromPaymentInfo"
+        v-on:showSuccessMessage="handleShowMessageFromPaymentInfo"
+        v-on:onTermsNotAccepted="handleTermsNotAccepted"
+        v-on:switchTabs="handleSwitchTab"
+        v-on:showProgressFromPaymentInfo="handleProgressFromPaymentInfo"
+      />
 
       <!-- default modal for free or paid ticket -->
       <div class="modal fade" id="modal-default">
@@ -1497,13 +1504,15 @@ import { apiUrl } from "../utils/config";
 import $ from "jquery";
 import PromoCode from "../components/PromoCode.vue";
 import VueTimepicker from "vue2-timepicker";
+import PaymentInfo from "../components/PaymentInfo.vue";
 
 export default {
   name: "TicketTable",
   components: {
     Dropdown,
     PromoCode,
-    VueTimepicker
+    VueTimepicker,
+    PaymentInfo
   },
 
   props: {
@@ -1817,7 +1826,7 @@ export default {
         name: this.freeTicketName.trim(),
         price: 0,
         type: "free",
-        event_key: "8a064820-0546-452f-b618-73a5d134758f", //window.localStorage.getItem("current_event_key")
+        event_key: window.localStorage.getItem("current_event_key"),
         limit_per_person: this.freeTicketLimitPerson,
         sale_start: `${this.freeTicketSaleStartDate} ${this.freeTicketSaleStartTime}`.trim(),
         sale_end: `${this.freeTicketSaleEndDate} ${this.freeTicketSaleEndTime}`.trim(),
@@ -1834,7 +1843,7 @@ export default {
         name: this.paidTicketName.trim(),
         price: this.ticketPrice,
         type: "paid",
-        event_key: "8a064820-0546-452f-b618-73a5d134758f", //window.localStorage.getItem("current_event_key")
+        event_key: window.localStorage.getItem("current_event_key"),
         limit_per_person: this.paidTicketLimitPerson,
         sale_start: `${this.paidTicketSaleStartDate} ${this.paidTicketSaleStartTime}`.trim(),
         sale_end: `${this.paidTicketSaleEndDate} ${this.paidTicketSaleEndTime}`.trim(),
@@ -2044,6 +2053,8 @@ export default {
       this.invalidFreeStartTime = false;
       this.invalidFreeEndDate = false;
       this.invalidFreeEndTime = false;
+      this.freeTicketSaleEndTime = "";
+      this.freeTicketSaleStartTime = "";
     },
 
     resetPaidTicketData() {
@@ -2067,12 +2078,14 @@ export default {
       this.processingFee = 0;
       this.attendeeFee = 0;
       this.organizerAmt = 0;
+      this.paidTicketSaleEndTime = "";
+      this.paidTicketSaleStartTime = "";
     },
 
     saveCountryCurrency() {
       // const token = `Bearer ${window.localStorage.getItem("token")}`;
       const body = {
-        event_key: "8a064820-0546-452f-b618-73a5d134758f", //window.localStorage.getItem("current_event_key"),
+        event_key: window.localStorage.getItem("current_event_key"),
         country: this.ticketCountryOfPayment.name,
         currency: this.ticketCurrencyOfPayment.name
       };
@@ -2111,10 +2124,6 @@ export default {
         if (res.status === 200) {
           // delete ticket from array
           this.onDeleteTicket(ticket);
-          // const index = this.createdTickets.indexOf(ticket);
-          // if (index > -1) {
-          //   this.createdTickets.splice(index, 1);
-          // }
         }
       });
     },
@@ -2590,6 +2599,26 @@ export default {
 
     reEmitProgressEvent(flag) {
       this.$emit("showOrHideProgressBar", flag);
+    },
+
+    handleInvalidFieldFromPaymentInfo() {
+      this.$emit("onInvalidFields");
+    },
+
+    handleShowMessageFromPaymentInfo(flag) {
+      this.$emit("showSuccessMessage", flag);
+    },
+
+    handleTermsNotAccepted(flag) {
+      this.$emit("onTermsNotAccepted", flag);
+    },
+
+    handleSwitchTab(flag) {
+      this.$emit("onSwitchTab", flag);
+    },
+
+    handleProgressFromPaymentInfo(flag) {
+      this.$emit("showProgressFromPaymentInfo", flag);
     }
   },
 

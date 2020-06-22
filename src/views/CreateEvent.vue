@@ -189,7 +189,7 @@
                             <a
                               v-if="event_profile_done"
                               class="nav-link active"
-                              id="custom-tabs-one-home-tab"
+                              id="event-profile-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-home"
                               role="tab"
@@ -202,7 +202,7 @@
                             <a
                               v-else
                               class="nav-link active"
-                              id="custom-tabs-one-home-tab"
+                              id="event-profile-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-home"
                               role="tab"
@@ -217,7 +217,7 @@
                             <a
                               v-if="tickets_done"
                               class="nav-link"
-                              id="features"
+                              id="tickets-tabs"
                               data-toggle="pill"
                               href="#custom-tabs-one-profile"
                               role="tab"
@@ -230,7 +230,7 @@
                             <a
                               v-else
                               class="nav-link"
-                              id="features"
+                              id="tickets-tabs"
                               data-toggle="pill"
                               href="#custom-tabs-one-profile"
                               role="tab"
@@ -245,7 +245,7 @@
                             <a
                               v-if="registration_done"
                               class="nav-link"
-                              id="messages"
+                              id="registration-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-messages"
                               role="tab"
@@ -258,7 +258,7 @@
                             <a
                               v-else
                               class="nav-link"
-                              id="messages"
+                              id="registration-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-messages"
                               role="tab"
@@ -273,7 +273,7 @@
                             <a
                               v-if="subscription_done"
                               class="nav-link"
-                              id="custom-tabs-one-settings-tab"
+                              id="subscription-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-settings"
                               role="tab"
@@ -286,7 +286,7 @@
                             <a
                               v-else
                               class="nav-link"
-                              id="custom-tabs-one-settings-tab"
+                              id="subscription-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-settings"
                               role="tab"
@@ -300,7 +300,7 @@
                           <li class="nav-item">
                             <a
                               class="nav-link"
-                              id="publish"
+                              id="publish-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-publish"
                               role="tab"
@@ -944,6 +944,11 @@
                             :token="token"
                             v-on:showFlagFromTicketTable="showFlagsFromTicketTable"
                             v-on:showOrHideProgressBar="showOrHideProgress"
+                            v-on:onInvalidFields="handleInvalidFieldFromPaymentInfo"
+                            v-on:showSuccessMessage="handleShowMessageFromPaymentInfo"
+                            v-on:onTermsNotAccepted="handleTermsNotAccepted"
+                            v-on:onSwitchTab="switchTabs"
+                            v-on:showProgressFromPaymentInfo="showOrHideProgress"
                           />
                         </div>
                         <div v-else key="till">
@@ -1117,7 +1122,6 @@
 </template>
 
 <script>
-// import $ from 'jquery'
 import moment from "moment";
 import ChipInput from "../components/ChipInput.vue";
 import Map from "../components/Map.vue";
@@ -1524,6 +1528,7 @@ export default {
           // store event key
           window.localStorage.setItem("current_event_key", message.event_key);
           this.$refs.snackbar.info(message.message);
+          this.switchTabs("event-profile");
         })
         .catch(err => {
           console.log(err);
@@ -1534,6 +1539,22 @@ export default {
 
     setTicketDone(flag) {
       this.tickets_done = flag;
+    },
+
+    handleInvalidFieldFromPaymentInfo() {
+      this.$refs.snackbar.error("You missed some required fields");
+    },
+
+    handleShowMessageFromPaymentInfo(flag) {
+      this.$refs.snackbar.info(flag);
+    },
+
+    handleTermsNotAccepted(flag) {
+      this.$refs.snackbar.error(flag);
+    },
+
+    switchTabs(where) {
+      $(`#${where}`).tab("show");
     }
   },
 
