@@ -217,7 +217,7 @@
                             <a
                               v-if="tickets_done"
                               class="nav-link"
-                              id="tickets-tabs"
+                              id="tickets-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-profile"
                               role="tab"
@@ -230,7 +230,7 @@
                             <a
                               v-else
                               class="nav-link"
-                              id="tickets-tabs"
+                              id="tickets-tab"
                               data-toggle="pill"
                               href="#custom-tabs-one-profile"
                               role="tab"
@@ -316,8 +316,8 @@
               </div>
 
               <div class="row">
-                <section class="col-lg-8 connectedSortable myyy">
-                  <div class="card card-body">
+                <section class="col-lg-12 connectedSortable myyy">
+                  <div>
                     <div class="tab-content" id="event_profile">
                       <div
                         class="tab-pane fade active show"
@@ -325,176 +325,164 @@
                         role="tabpanel"
                         aria-labelledby="custom-tabs-one-home-tab"
                       >
-                        <div class="card-default">
-                          <div class="card-header">
-                            <h3 class="card-title event__info">
-                              Event Information
-                              <i class="fas fa-info-circle"></i>
-                            </h3>
-                          </div>
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label for="exampleInputEmail1">
-                                    Event Name
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <input
-                                    type="email"
-                                    class="form-control"
-                                    v-bind:class="{
+                        <div class="row">
+                          <div class="card-default card col-lg-8 col-md-8 col-sm-12">
+                            <div class="card-header">
+                              <h3 class="card-title event__info">
+                                Event Information
+                                <i class="fas fa-info-circle"></i>
+                              </h3>
+                            </div>
+                            <div class="card-body">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label for="exampleInputEmail1">
+                                      Event Name
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <input
+                                      type="email"
+                                      class="form-control"
+                                      v-bind:class="{
                                   'is-empty': invalidEventName,
                                 }"
-                                    v-on:input="
+                                      v-on:input="
                                   setEventPreview($event.target.value)
                                 "
-                                    placeholder="Enter name"
-                                  />
+                                      placeholder="Enter name"
+                                    />
+                                  </div>
                                 </div>
-                              </div>
 
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>
-                                    Type
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <select
-                                    v-bind:class="{
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>
+                                      Type
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <select
+                                      v-bind:class="{
                                   'is-empty': invalidEventType,
                                 }"
-                                    v-model="eventType"
-                                    class="form-control select2"
-                                    style="width: 100%;"
-                                  >
-                                    <!-- <option selected >Select event type</option> -->
-                                    <option>Camp, Trip or Retreat</option>
-                                    <option>Camp, Trip or Retreat</option>
-                                    <option>Conference</option>
-                                    <option>Convention</option>
-                                    <option>Dinner or Gala</option>
-                                    <option>Festival or Fair</option>
-                                    <option>Forum</option>
-                                    <option>Meeting or Networking Event</option>
-                                    <option>Meetup</option>
-                                    <option>Seminar or Talk</option>
-                                    <option>Submit</option>
-                                    <option>Tradeshow, Consumershow, Expo</option>
-                                  </select>
+                                      v-model="eventType"
+                                      class="form-control select2"
+                                      style="width: 100%;"
+                                    >
+                                      <!-- <option selected >Select event type</option> -->
+                                      <option>Camp, Trip or Retreat</option>
+                                      <option>Conference</option>
+                                      <option>Convention</option>
+                                      <option>Dinner or Gala</option>
+                                      <option>Festival or Fair</option>
+                                      <option>Forum</option>
+                                      <option>Meeting or Networking Event</option>
+                                      <option>Meetup</option>
+                                      <option>Seminar or Talk</option>
+                                      <option>Submit</option>
+                                      <option>Tradeshow, Consumershow, Expo</option>
+                                    </select>
+                                  </div>
                                 </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>
-                                    Category
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <select
-                                    v-bind:class="{
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>
+                                      Category
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <select
+                                      v-bind:class="{
                                   'is-empty': invalidCategory,
                                 }"
-                                    v-model="category"
-                                    class="form-control select2"
-                                    style="width: 100%;"
-                                  >
-                                    <!-- <option selected> Select category</option> -->
-                                    <option
-                                      :key="category.id"
-                                      v-for="category in allCategories"
-                                      :value="category.id"
-                                    >{{ category.name }}</option>
-                                    <!-- <option>Business & Career</option>
-                <option>Film, Media & Entertainment</option>
-                <option>Government & Politics</option>
-                <option>Music</option>
-                <option>Religious & Spirituality</option>
-                <option>Education</option>
-                <option>Food & Drink</option>
-                <option>Agriculture</option>
-                <option>Fashion & Beauty</option>
-                <option>Health & Wellness</option>
-                                    <option>Trade fair shows</option>-->
-                                  </select>
+                                      v-model="category"
+                                      class="form-control select2"
+                                      style="width: 100%;"
+                                    >
+                                      <option
+                                        :key="category.id"
+                                        v-for="category in allCategories"
+                                        :value="category.id"
+                                      >{{ category.name }}</option>
+                                    </select>
+                                  </div>
                                 </div>
-                              </div>
 
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label for="tags">
-                                    Enter Tags
-                                    <small
-                                      style="font-weight: lighter; color: #6610f2"
-                                    >(press spacebar after each tag)</small>
-                                  </label>
-                                  <ChipInput />
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label for="tags">
+                                      Enter Tags
+                                      <small
+                                        style="font-weight: lighter; color: #6610f2"
+                                      >(press spacebar after each tag)</small>
+                                    </label>
+                                    <ChipInput />
+                                  </div>
                                 </div>
-                              </div>
 
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label for="exampleInputEmail1">
-                                    Organiser
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <input
-                                    v-bind:class="{
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label for="exampleInputEmail1">
+                                      Organiser
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <input
+                                      v-bind:class="{
                                   'is-empty': invalidOrganiser,
                                 }"
-                                    v-model="orgainser"
-                                    type="email"
-                                    class="form-control"
-                                    id="exampleInputEmail1"
-                                    placeholder="Name of organiser"
-                                  />
-                                </div>
-                              </div>
-
-                              <div class="flex-column">
-                                <div class="form-group flow-row">
-                                  <label for="exampleFormControlSelect1">
-                                    Number of Attendees
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <select
-                                    v-model="numOfAttendees"
-                                    class="form-control"
-                                    id="exampleFormControlSelect1"
-                                  >
-                                    <option>Fewer than 500</option>
-                                    <option>500 - 1500</option>
-                                    <option>1500 - 3000</option>
-                                    <option>3000 - 5000</option>
-                                    <option>5000 - 10000</option>
-                                    <option>10000 - 30000</option>
-                                    <option>More than 30000</option>
-                                  </select>
+                                      v-model="orgainser"
+                                      type="email"
+                                      class="form-control"
+                                      id="exampleInputEmail1"
+                                      placeholder="Name of organiser"
+                                    />
+                                  </div>
                                 </div>
 
-                                <div class="mb-2 mt-2">
-                                  <input
-                                    class
-                                    name="checkboxPrimary3"
-                                    type="checkbox"
-                                    checked
-                                    v-model="includeTicketsBtn"
-                                  />
-                                  <label
-                                    for="checkboxPrimary3"
-                                    style=" font-weight: lighter !important;"
-                                  >Include a "Buy Tickets" button</label>
-                                </div>
-                              </div>
+                                <div class="flex-column">
+                                  <div class="form-group flow-row">
+                                    <label for="exampleFormControlSelect1">
+                                      Number of Attendees
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <select
+                                      v-model="numOfAttendees"
+                                      class="form-control"
+                                      id="exampleFormControlSelect1"
+                                    >
+                                      <option>Fewer than 500</option>
+                                      <option>500 - 1500</option>
+                                      <option>1500 - 3000</option>
+                                      <option>3000 - 5000</option>
+                                      <option>5000 - 10000</option>
+                                      <option>10000 - 30000</option>
+                                      <option>More than 30000</option>
+                                    </select>
+                                  </div>
 
-                              <div class="col-md-12">
-                                <div class="form-group editor-box">
-                                  <label>
-                                    Description
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <editor
-                                    api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
-                                    :init="{
+                                  <div class="mb-2 mt-2">
+                                    <input
+                                      class
+                                      name="checkboxPrimary3"
+                                      type="checkbox"
+                                      checked
+                                      v-model="includeTicketsBtn"
+                                    />
+                                    <label
+                                      for="checkboxPrimary3"
+                                      style=" font-weight: lighter !important;"
+                                    >Include a "Buy Tickets" button</label>
+                                  </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                  <div class="form-group editor-box">
+                                    <label>
+                                      Description
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <editor
+                                      api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
+                                      :init="{
                                   height: 400,
                                   paste_data_images: true,
                                   menubar: true,
@@ -514,376 +502,377 @@
                                   file_picker_callback: callbaavkFile,
                                   file_picker_types: 'image',
                                 }"
-                                    v-model="textEditorData"
-                                    @onChange="getTextEditorData"
-                                    v-bind:class="{
+                                      v-model="textEditorData"
+                                      @onChange="getTextEditorData"
+                                      v-bind:class="{
                                   'is-empty': invalidShortDescription,
                                 }"
-                                  />
-                                  <input name="image" type="file" id="upload" class="hidden" />
-                                </div>
-                              </div>
-
-                              <!-- date start -->
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>
-                                    Start Date
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <!-- <input type="date" class="form-control float-right"  :value="startDate"> -->
-                                    <input
-                                      v-bind:class="{
-                                    'is-empty': invalidStartDate,
-                                  }"
-                                      type="date"
-                                      class="form-control float-right"
-                                      v-model="startDate"
-                                      @change="
-                                    setStartDatePreview($event.target.value)
-                                  "
                                     />
+                                    <input name="image" type="file" id="upload" class="hidden" />
                                   </div>
                                 </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="form-group">
-                                  <label>
-                                    End Date
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                  <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input
-                                      v-bind:class="{
-                                    'is-empty': invalidEndDate,
-                                  }"
-                                      type="date"
-                                      v-model="endDate"
-                                      class="form-control float-right"
-                                      @change="
-                                    setEndDatePreview($event.target.value)
-                                  "
-                                    />
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-md-12">
-                                <div class="form-group">
-                                  <label>
-                                    Location
-                                    <span style="color: red;">*</span>
-                                  </label>
-                                </div>
-                              </div>
-                              <div class="row col-md-12">
-                                <div class="map-view col-md-6 card">
-                                  <Map />
-                                </div>
 
+                                <!-- date start -->
                                 <div class="col-md-6">
                                   <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      v-bind:class="{
-                                    'is-empty': invalidVenue,
-                                  }"
-                                      ref="venueInput"
-                                      @input="getVenue"
-                                      v-model="getLocation.venue"
-                                      placeholder="Venue name"
-                                    />
-                                  </div>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      v-bind:class="{
-                                    'is-empty': invalidStreet,
-                                  }"
-                                      ref="streetInput"
-                                      v-model="getLocation.street"
-                                      placeholder="Street"
-                                    />
-                                  </div>
-                                  <div class="form-group">
-                                    <input
-                                      type="text"
-                                      class="form-control"
-                                      v-bind:class="{ 'is-empty': invalidCity }"
-                                      ref="cityInput"
-                                      v-model="getLocation.city"
-                                      placeholder="City"
-                                    />
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-6">
-                                      <div class="form-group">
-                                        <input
-                                          type="text"
-                                          class="form-control"
-                                          v-bind:class="{
-                                        'is-empty': invalidState,
-                                      }"
-                                          ref="stateInput"
-                                          v-model="getLocation.state"
-                                          placeholder="State"
-                                        />
+                                    <label>
+                                      Start Date
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="far fa-calendar-alt"></i>
+                                        </span>
                                       </div>
+                                      <!-- <input type="date" class="form-control float-right"  :value="startDate"> -->
+                                      <input
+                                        v-bind:class="{
+                                    'is-empty': invalidStartDate,
+                                  }"
+                                        type="date"
+                                        class="form-control float-right"
+                                        v-model="startDate"
+                                        @change="
+                                    setStartDatePreview($event.target.value)
+                                  "
+                                      />
                                     </div>
-                                    <div class="col-md-6">
-                                      <div class="form-group">
-                                        <input
-                                          type="text"
-                                          class="form-control"
-                                          v-bind:class="{
-                                        'is-empty': invalidpostal_zip,
-                                      }"
-                                          v-model="postal_zip"
-                                          @input="setPostalCode"
-                                          placeholder="Postal/Zip Code"
-                                        />
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div
-                                    v-bind:class="{
-                                  'country-empty': invalidCountry,
-                                }"
-                                  >
-                                    <Dropdown
-                                      :options="allCountries"
-                                      v-on:selected="getSelectedCountry"
-                                      v-on:filter="getDropdownValues"
-                                      :disabled="false"
-                                      name="country"
-                                      :maxItem="256"
-                                      placeholder="Country"
-                                      ref="dropdown"
-                                    ></Dropdown>
                                   </div>
                                 </div>
-                              </div>
-                              <br />
-
-                              <!-- IMAGE UPLOAD -->
-                              <div class="col-md-12 mt-3">
-                                <div class="card card-widget">
-                                  <div class="card-header">
-                                    <h3 class="card-title event__info">
-                                      Branding
-                                      <i class="fas fa-info-circle"></i>
-                                    </h3>
-                                    <div class="card-tools"></div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>
+                                      End Date
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                      <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                          <i class="far fa-calendar-alt"></i>
+                                        </span>
+                                      </div>
+                                      <input
+                                        v-bind:class="{
+                                    'is-empty': invalidEndDate,
+                                  }"
+                                        type="date"
+                                        v-model="endDate"
+                                        class="form-control float-right"
+                                        @change="
+                                    setEndDatePreview($event.target.value)
+                                  "
+                                      />
+                                    </div>
                                   </div>
-                                  <div class="card-body">
-                                    <div>
-                                      <button
-                                        type="button"
-                                        class="btn btn-block btn-success btn-flat"
-                                      >
-                                        Add Banner Image
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label>
+                                      Location
+                                      <span style="color: red;">*</span>
+                                    </label>
+                                  </div>
+                                </div>
+                                <div class="row col-md-12">
+                                  <div class="map-view col-md-6 card">
+                                    <Map />
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        v-bind:class="{
+                                    'is-empty': invalidVenue,
+                                  }"
+                                        ref="venueInput"
+                                        @input="getVenue"
+                                        v-model="getLocation.venue"
+                                        placeholder="Venue name"
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        v-bind:class="{
+                                    'is-empty': invalidStreet,
+                                  }"
+                                        ref="streetInput"
+                                        v-model="getLocation.street"
+                                        placeholder="Street"
+                                      />
+                                    </div>
+                                    <div class="form-group">
+                                      <input
+                                        type="text"
+                                        class="form-control"
+                                        v-bind:class="{ 'is-empty': invalidCity }"
+                                        ref="cityInput"
+                                        v-model="getLocation.city"
+                                        placeholder="City"
+                                      />
+                                    </div>
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            v-bind:class="{
+                                        'is-empty': invalidState,
+                                      }"
+                                            ref="stateInput"
+                                            v-model="getLocation.state"
+                                            placeholder="State"
+                                          />
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                          <input
+                                            type="text"
+                                            class="form-control"
+                                            v-bind:class="{
+                                        'is-empty': invalidpostal_zip,
+                                      }"
+                                            v-model="postal_zip"
+                                            @input="setPostalCode"
+                                            placeholder="Postal/Zip Code"
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div
+                                      v-bind:class="{
+                                  'country-empty': invalidCountry,
+                                }"
+                                    >
+                                      <Dropdown
+                                        :options="allCountries"
+                                        v-on:selected="getSelectedCountry"
+                                        v-on:filter="getDropdownValues"
+                                        :disabled="false"
+                                        name="country"
+                                        :maxItem="256"
+                                        placeholder="Country"
+                                        ref="dropdown"
+                                      ></Dropdown>
+                                    </div>
+                                  </div>
+                                </div>
+                                <br />
+
+                                <!-- IMAGE UPLOAD -->
+                                <div class="col-md-12 mt-3">
+                                  <div class="card card-widget">
+                                    <div class="card-header">
+                                      <h3 class="card-title event__info">
+                                        Branding
+                                        <i class="fas fa-info-circle"></i>
+                                      </h3>
+                                      <div class="card-tools"></div>
+                                    </div>
+                                    <div class="card-body">
+                                      <div>
+                                        <button
+                                          type="button"
+                                          class="btn btn-block btn-success btn-flat"
+                                        >
+                                          Add Banner Image
+                                          <span class="badge badge-light">
+                                            {{
+                                            bannerName
+                                            }}
+                                          </span>
+                                        </button>
+
+                                        <div class="image-upload-wrap">
+                                          <input
+                                            class="file-upload-input bring-to-front"
+                                            type="file"
+                                            accept="image/*"
+                                            @change="getSelectedBanner"
+                                          />
+                                          <div class="drag-text">
+                                            <img
+                                              :src="bannerSrc"
+                                              v-if="bannerLoaded"
+                                              class="logo-image"
+                                            />
+                                            <h3 class="bring-to-front-2">
+                                              Drag and drop a file or select add
+                                              Banner Image
+                                            </h3>
+                                          </div>
+                                        </div>
+                                        <div class="file-upload-content"></div>
+                                      </div>
+                                      <!-- NE UPLOAD END -->
+                                    </div>
+                                  </div>
+                                  <!-- new logo -->
+                                  <div class="card-body myLogocard mb-2" style="width: 50%;">
+                                    <div style="width: 100%;">
+                                      <button type="button" class="btn btn-block btn-success mb-2">
+                                        Add logo
                                         <span class="badge badge-light">
                                           {{
-                                          bannerName
+                                          logoName
                                           }}
                                         </span>
                                       </button>
-
-                                      <div class="image-upload-wrap">
-                                        <input
-                                          class="file-upload-input bring-to-front"
-                                          type="file"
-                                          accept="image/*"
-                                          @change="getSelectedBanner"
-                                        />
-                                        <div class="drag-text">
-                                          <img
-                                            :src="bannerSrc"
-                                            v-if="bannerLoaded"
-                                            class="logo-image"
-                                          />
-                                          <h3 class="bring-to-front-2">
-                                            Drag and drop a file or select add
-                                            Banner Image
-                                          </h3>
-                                        </div>
+                                    </div>
+                                    <div class="image-upload-wrap2">
+                                      <input
+                                        class="file-upload-input2 bring-to-front"
+                                        type="file"
+                                        accept="image/*"
+                                        @change="getSelectedLogo"
+                                      />
+                                      <div class="drag-text">
+                                        <img :src="logoSrc" v-if="logoLoaded" class="logo-image" />
+                                        <h5 class="bring-to-front-2">Drag or Add logo</h5>
                                       </div>
-                                      <div class="file-upload-content"></div>
                                     </div>
-                                    <!-- NE UPLOAD END -->
-                                  </div>
-                                </div>
-                                <!-- new logo -->
-                                <div class="card-body myLogocard mb-2" style="width: 50%;">
-                                  <div style="width: 100%;">
-                                    <button type="button" class="btn btn-block btn-success mb-2">
-                                      Add logo
-                                      <span class="badge badge-light">
-                                        {{
-                                        logoName
-                                        }}
-                                      </span>
-                                    </button>
-                                  </div>
-                                  <div class="image-upload-wrap2">
-                                    <input
-                                      class="file-upload-input2 bring-to-front"
-                                      type="file"
-                                      accept="image/*"
-                                      @change="getSelectedLogo"
-                                    />
-                                    <div class="drag-text">
-                                      <img :src="logoSrc" v-if="logoLoaded" class="logo-image" />
-                                      <h5 class="bring-to-front-2">Drag or Add logo</h5>
+                                    <div class="file-upload-content2" style="background-color: red">
+                                      <img class="attachment-img" src="#" alt="your image" />
+                                      <div class="image-title-wrap2">
+                                        <button type="button" class="btn btn-default btn-sm mt-2">
+                                          <i
+                                            class="fa fa-fw"
+                                            aria-hidden="true"
+                                            title="Copy to use close"
+                                          ></i>Remove
+                                        </button>
+                                      </div>
                                     </div>
                                   </div>
-                                  <div class="file-upload-content2" style="background-color: red">
-                                    <img class="attachment-img" src="#" alt="your image" />
-                                    <div class="image-title-wrap2">
-                                      <button type="button" class="btn btn-default btn-sm mt-2">
-                                        <i
-                                          class="fa fa-fw"
-                                          aria-hidden="true"
-                                          title="Copy to use close"
-                                        ></i>Remove
-                                      </button>
-                                    </div>
-                                  </div>
+
+                                  <!-- ends -->
                                 </div>
 
-                                <!-- ends -->
-                              </div>
+                                <!-- IMAGE UPLOAD ENDS -->
 
-                              <!-- IMAGE UPLOAD ENDS -->
-
-                              <!-- ACCESS MANAGEMENT -->
-                              <div v-bind:class="{ 'access-empty': accessInvalid }">
-                                <div class="col-md-12">
-                                  <!-- <div class=""> -->
-                                  <div class="card-header">
-                                    <h3 class="card-title event__info">
-                                      Access Management
-                                      <i class="fas fa-info-circle"></i>
-                                    </h3>
-                                  </div>
-                                  <!-- /.card-header -->
-                                  <div>
-                                    <div class="carousel slide" data-ride="carousel">
-                                      <div class="col-md-12">
-                                        <div class="card">
-                                          <div class="card-body divBorder">
-                                            <div class="row">
-                                              <div class="col-md-9">
-                                                <h6>
-                                                  <i
-                                                    class="fa fa-fw"
-                                                    aria-hidden="true"
-                                                    title="Copy to use bullhorn"
-                                                  ></i>
-                                                  Open Access (Default)
-                                                </h6>
-                                                <p>
-                                                  Anyone can search for and join
-                                                  your event.
-                                                </p>
-                                              </div>
-                                              <div class="col-md-3">
-                                                <div
-                                                  class="custom-control custom-switch float-right"
-                                                >
-                                                  <input
-                                                    type="checkbox"
-                                                    class="custom-control-input"
-                                                    v-model="isopenAccess"
-                                                    @change="setOpenAccess"
-                                                    id="customSwitch1"
-                                                  />
-                                                  <label
-                                                    class="custom-control-label"
-                                                    for="customSwitch1"
-                                                  ></label>
+                                <!-- ACCESS MANAGEMENT -->
+                                <div v-bind:class="{ 'access-empty': accessInvalid }">
+                                  <div class="col-md-12">
+                                    <!-- <div class=""> -->
+                                    <div class="card-header">
+                                      <h3 class="card-title event__info">
+                                        Access Management
+                                        <i class="fas fa-info-circle"></i>
+                                      </h3>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <div>
+                                      <div class="carousel slide" data-ride="carousel">
+                                        <div class="col-md-12">
+                                          <div class="card">
+                                            <div class="card-body divBorder">
+                                              <div class="row">
+                                                <div class="col-md-9">
+                                                  <h6>
+                                                    <i
+                                                      class="fa fa-fw"
+                                                      aria-hidden="true"
+                                                      title="Copy to use bullhorn"
+                                                    ></i>
+                                                    Open Access (Default)
+                                                  </h6>
+                                                  <p>
+                                                    Anyone can search for and join
+                                                    your event.
+                                                  </p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <div
+                                                    class="custom-control custom-switch float-right"
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      class="custom-control-input"
+                                                      v-model="isopenAccess"
+                                                      @change="setOpenAccess"
+                                                      id="customSwitch1"
+                                                    />
+                                                    <label
+                                                      class="custom-control-label"
+                                                      for="customSwitch1"
+                                                    ></label>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
-                                          <!-- second access -->
-                                          <div class="card-body divBorder">
-                                            <div class="row">
-                                              <div class="col-md-9">
-                                                <h6>
-                                                  <i
-                                                    class="fa fa-fw"
-                                                    aria-hidden="true"
-                                                    title="Copy to use user"
-                                                  ></i>
-                                                  Attendee List
-                                                </h6>
-                                                <p>
-                                                  Restrict Access to your event
-                                                  by uploading a list of
-                                                  authorized attendees.
-                                                </p>
-                                              </div>
-                                              <div class="col-md-3">
-                                                <div
-                                                  class="custom-control custom-switch float-right"
-                                                >
-                                                  <input
-                                                    type="checkbox"
-                                                    class="custom-control-input"
-                                                    v-model="isattendeeList"
-                                                    @change="setAttendeeList"
-                                                    id="customSwitch2"
-                                                  />
-                                                  <label
-                                                    class="custom-control-label"
-                                                    for="customSwitch2"
-                                                  ></label>
+                                            <!-- second access -->
+                                            <div class="card-body divBorder">
+                                              <div class="row">
+                                                <div class="col-md-9">
+                                                  <h6>
+                                                    <i
+                                                      class="fa fa-fw"
+                                                      aria-hidden="true"
+                                                      title="Copy to use user"
+                                                    ></i>
+                                                    Attendee List
+                                                  </h6>
+                                                  <p>
+                                                    Restrict Access to your event
+                                                    by uploading a list of
+                                                    authorized attendees.
+                                                  </p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <div
+                                                    class="custom-control custom-switch float-right"
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      class="custom-control-input"
+                                                      v-model="isattendeeList"
+                                                      @change="setAttendeeList"
+                                                      id="customSwitch2"
+                                                    />
+                                                    <label
+                                                      class="custom-control-label"
+                                                      for="customSwitch2"
+                                                    ></label>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
-                                          </div>
-                                          <!-- Third Access -->
-                                          <div class="card-body divBorder">
-                                            <div class="row">
-                                              <div class="col-md-9">
-                                                <h6>
-                                                  <i class="fas fa-lock"></i>
-                                                  Event Code
-                                                </h6>
-                                                <p>
-                                                  Restrict Access to your event
-                                                  by using an event code
-                                                  (Password).
-                                                </p>
-                                              </div>
-                                              <div class="col-md-3">
-                                                <div
-                                                  class="custom-control custom-switch float-right"
-                                                >
-                                                  <input
-                                                    type="checkbox"
-                                                    class="custom-control-input"
-                                                    v-model="iseventCode"
-                                                    @change="setEventCode"
-                                                    id="customSwitch3"
-                                                  />
-                                                  <label
-                                                    class="custom-control-label"
-                                                    for="customSwitch3"
-                                                  ></label>
+                                            <!-- Third Access -->
+                                            <div class="card-body divBorder">
+                                              <div class="row">
+                                                <div class="col-md-9">
+                                                  <h6>
+                                                    <i class="fas fa-lock"></i>
+                                                    Event Code
+                                                  </h6>
+                                                  <p>
+                                                    Restrict Access to your event
+                                                    by using an event code
+                                                    (Password).
+                                                  </p>
+                                                </div>
+                                                <div class="col-md-3">
+                                                  <div
+                                                    class="custom-control custom-switch float-right"
+                                                  >
+                                                    <input
+                                                      type="checkbox"
+                                                      class="custom-control-input"
+                                                      v-model="iseventCode"
+                                                      @change="setEventCode"
+                                                      id="customSwitch3"
+                                                    />
+                                                    <label
+                                                      class="custom-control-label"
+                                                      for="customSwitch3"
+                                                    ></label>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
@@ -893,46 +882,177 @@
                                     </div>
                                   </div>
                                 </div>
-                              </div>
 
-                              <div class="card-body">
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    <div class="custom-control float-left" style="display: none;">
-                                      <button
-                                        type="button"
-                                        class="btn btn-block btn-success btn-md"
-                                      >Next</button>
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-md-3">
+                                      <div class="custom-control float-left" style="display: none;">
+                                        <button
+                                          type="button"
+                                          class="btn btn-block btn-success btn-md"
+                                        >Next</button>
+                                      </div>
                                     </div>
-                                  </div>
-                                  <div class="col-md-3">
-                                    <!-- <h6><i class="fas fa-lock"></i>  Event Code</h6>
-                                    <p>Restrict Access to your event by using an event code (Password).</p>-->
-                                  </div>
-                                  <div class="col-md-3">
-                                    <!--  <h6><i class="fas fa-lock"></i>  Event Code</h6>
-                                    <p>Restrict Access to your event by using an event code (Password).</p>-->
-                                  </div>
-                                  <div class="col-md-3">
-                                    <div class="custom-control custom-switch float-right">
-                                      <button
-                                        type="button"
-                                        class="btn btn-block btn-success btn-md next"
-                                        @click="postEventProfile"
-                                      >Next</button>
+                                    <div class="col-md-3">
+                                      <!-- <h6><i class="fas fa-lock"></i>  Event Code</h6>
+                                      <p>Restrict Access to your event by using an event code (Password).</p>-->
+                                    </div>
+                                    <div class="col-md-3">
+                                      <!--  <h6><i class="fas fa-lock"></i>  Event Code</h6>
+                                      <p>Restrict Access to your event by using an event code (Password).</p>-->
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="custom-control custom-switch float-right">
+                                        <button
+                                          type="button"
+                                          class="btn btn-block btn-success btn-md next"
+                                          @click="postEventProfile"
+                                        >Next</button>
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           </div>
+
+                          <!-- <div class="card card-body col-md-4"> -->
+                          <!-- PREVIEW -->
+                          <section class="col-md-4 connectedSortable col-lg-4 col-sm-12">
+                            <div class="card profile-card-2 js-sticky-header">
+                              <div class="card-img-block" v-if="bannerLoaded">
+                                <img class="img-fluid" :src="bannerSrc" alt="Card image cap" />
+                              </div>
+                              <div class="card-img-block" v-else>
+                                <img
+                                  class="img-fluid"
+                                  src="../assets/img/photo2.jpg"
+                                  alt="Card image cap"
+                                />
+                              </div>
+                              <div class="card-body pt-5">
+                                <img
+                                  v-if="logoLoaded"
+                                  :src="logoSrc"
+                                  alt="profile-image"
+                                  class="profile"
+                                />
+                                <img
+                                  v-else
+                                  src="../assets/img/user8-128x128.jpg"
+                                  alt="profile-image"
+                                  class="profile"
+                                />
+                                <div class="meta">
+                                  <ul>
+                                    <li>
+                                      <span>
+                                        <i class="far fa-clock"></i>
+                                        {{ startDateData }} - {{ endDateData }}
+                                      </span>
+                                    </li>
+                                    <li
+                                      v-if="this.getLocation.venue === '' ||this.getLocation.venue === undefined"
+                                      key="vunue1"
+                                    >
+                                      <span>
+                                        <i class="fa fa-map-marker"></i> Venue
+                                      </span>
+                                    </li>
+                                    <li v-else>
+                                      <span>
+                                        <i class="fa fa-map-marker" key="vunue2"></i>
+                                        {{ this.getLocation.venue }}
+                                      </span>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <h5 class="card-title">{{ this.eventNameData }}</h5>
+                                <p class="card-text">{{ decriptionExcerpt }}</p>
+                                <div class="icon-block">
+                                  <a href>
+                                    <h6 class="card-title">
+                                      Read More
+                                      <i
+                                        class="fas fa-chevron-right"
+                                        style="font-size: 14px;"
+                                      ></i>
+                                    </h6>
+                                  </a>
+                                </div>
+                                <div class="icon-block" v-if="includeTicketsBtn" key="includebtn">
+                                  <button
+                                    type="button"
+                                    class="btn btn-block btn-success btn-sm mt-3 mb-3"
+                                  >Get Tickets</button>
+                                </div>
+
+                                <div class="mt-1 float-left text-center">
+                                  <div
+                                    class="row icon-block sharethings"
+                                    style="text-align: center; padding-right: 20px; padding-left: 0px; list-style: none;"
+                                  >
+                                    <div class="col-md-3 col-sm-3 col-xm-4">
+                                      <ul style="display: inline;">
+                                        <li>
+                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                        </li>
+                                        <li>
+                                          <button type="button" class="btn btn-sm">Interested</button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xm-4">
+                                      <ul style="display: inline;">
+                                        <li>
+                                          <i class="far fa-check-circle"></i>
+                                        </li>
+                                        <li>
+                                          <button type="button" class="btn btn-sm">Going</button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xm-4">
+                                      <ul style="display: inline;">
+                                        <li>
+                                          <i class="fas fa-share"></i>
+                                        </li>
+                                        <li>
+                                          <button type="button" class="btn btn-sm">Share</button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="col-md-3 col-sm-3 col-xm-4">
+                                      <ul style="display: inline;">
+                                        <li>
+                                          <i class="far fa-bookmark"></i>
+                                        </li>
+                                        <li>
+                                          <button type="button" class="btn btn-sm">Save</button>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                              <div class="row">
+                                <div class="col-4 text-center">
+                                  <div id="sparkline-1"></div>
+                                </div>
+                              </div>
+                            </div>
+                          </section>
+                          <!-- PREVIEW ENDS -->
+                          <!-- </div> -->
                         </div>
-                        <!-- end -->
                       </div>
+
                       <!-- ticket section -->
 
                       <div
-                        class="tab-pane fade"
+                        class="tab-pane fade card card-body"
                         id="custom-tabs-one-profile"
                         role="tabpanel"
                         aria-labelledby="features"
@@ -959,23 +1079,23 @@
                         </div>
                       </div>
 
-                      <!--  -->
-
                       <!-- ticket section ends -->
                       <div
-                        class="tab-pane fade"
+                        class="tab-pane fade card card-body"
                         id="custom-tabs-one-messages"
                         role="tabpanel"
                         aria-labelledby="messages"
-                      >Registration</div>
+                      >
+                        <Registration />
+                      </div>
                       <div
-                        class="tab-pane fade"
+                        class="tab-pane fade card card-body"
                         id="custom-tabs-one-settings"
                         role="tabpanel"
                         aria-labelledby="custom-tabs-one-settings-tab"
                       >Subscription</div>
                       <div
-                        class="tab-pane fade"
+                        class="tab-pane fade card card-body"
                         id="custom-tabs-one-publish"
                         role="tabpanel"
                         aria-labelledby="publish"
@@ -984,7 +1104,7 @@
                   </div>
                   <!-- /.card -->
                 </section>
-                <section class="col-lg-4 connectedSortable">
+                <!-- <section class="col-lg-4 connectedSortable">
                   <div class="card profile-card-2 js-sticky-header">
                     <div class="card-img-block" v-if="bannerLoaded">
                       <img class="img-fluid" :src="bannerSrc" alt="Card image cap" />
@@ -1100,7 +1220,7 @@
                       </div>
                     </div>
                   </div>
-                </section>
+                </section>-->
               </div>
             </div>
           </section>
@@ -1134,6 +1254,7 @@ import Snackbar from "vuejs-snackbar";
 import { apiUrl } from "../utils/config";
 import Tickets from "../components/Tickets.vue";
 import TicketTable from "../components/TicketTable.vue";
+import Registration from "../components/Registration.vue";
 
 // setTitleMethod('title')
 //  vue.$refs.snackbar.error('Error function triggered')
@@ -1151,7 +1272,8 @@ export default {
     editor: Editor,
     snackbar: Snackbar,
     Tickets,
-    TicketTable
+    TicketTable,
+    Registration
   },
   props: {},
   data() {
@@ -1514,7 +1636,6 @@ export default {
       };
       fetch(`${apiUrl}/api/event`, options)
         .then(res => {
-          this.$Progress.finish();
           if (res.status === 201) {
             this.event_profile_done = true;
           }
@@ -1528,7 +1649,8 @@ export default {
           // store event key
           window.localStorage.setItem("current_event_key", message.event_key);
           this.$refs.snackbar.info(message.message);
-          this.switchTabs("event-profile");
+          this.switchTabs("tickets-tab");
+          this.$Progress.finish();
         })
         .catch(err => {
           console.log(err);
@@ -1646,6 +1768,10 @@ body {
   left: 0;
   right: 0;
   z-index: 50;
+}
+
+.connectedSortable {
+  min-height: 80px !important;
 }
 
 .hidden {

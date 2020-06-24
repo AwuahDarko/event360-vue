@@ -114,7 +114,7 @@ export default {
             }
           }
 
-          console.log(selected);
+          // console.log(selected);
           this.getNewLocation(selected);
           return result.label;
         }

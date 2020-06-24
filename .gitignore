@@ -19,3 +19,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+/src/assets/css/fontawesome-free-5.13.1-web
