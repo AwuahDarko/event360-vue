@@ -1086,7 +1086,7 @@
                         role="tabpanel"
                         aria-labelledby="messages"
                       >
-                        <Registration />
+                        <Registration :token="token" v-on:showProgress="showOrHideProgress" />
                       </div>
                       <div
                         class="tab-pane fade card card-body"

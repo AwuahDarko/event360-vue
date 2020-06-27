@@ -11,9 +11,9 @@
 }
 
 body {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol';
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -66,5 +66,9 @@ body {
   padding: 0.3em 0.5em;
   font-size: 1em;
   border-radius: 0 5px 5px 0;
+}
+
+.vm--modal {
+  box-shadow: none !important;
 }
 </style>

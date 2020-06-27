@@ -283,7 +283,7 @@
                 <div class="modal-body">
                   <div class="col-md-12">
                     <div>
-                      <input type="checkbox" id="req" />
+                      <input type="checkbox" id="req" v-model="required" />
                       <label class="ml-2" for="req">Required</label>
                     </div>
                     <div class="col pt-2">
@@ -299,19 +299,28 @@
                         </select>
                       </div>
                     </div>
-                    <div class="col pt-3">
+                    <div class="col pt-3" v-if="selectedOption !== '6'">
                       <label>
                         Question
                         <span class="text-danger">*</span>
                       </label>
-                      <div class="row">
-                        <input class="form-control col-md-12" placeholder="Enter question" />
+                      <div class="row" v-bind:class="{'is-empty': invalidQuestion}">
+                        <input
+                          class="form-control col-md-12"
+                          placeholder="Enter question"
+                          v-model="main_question"
+                          @input="invalidQuestion = false"
+                        />
                       </div>
                     </div>
-                    <div class="col pt-3">
+                    <div class="col pt-3" v-if="selectedOption !== '6'">
                       <label>Help Text</label>
                       <div class="row">
-                        <input class="form-control col-md-12" placeholder="Enter help text" />
+                        <input
+                          class="form-control col-md-12"
+                          placeholder="Enter help text"
+                          v-model="help_text"
+                        />
                       </div>
                     </div>
                     <div class="col pt-3" v-if="is_multiple_or_dropdown_or_checkbox">
@@ -322,11 +331,12 @@
                         :key="i"
                         :id="`opt-${i}`"
                       >
-                        <div class="input-group">
+                        <div class="input-group" v-bind:class="{'is-empty': invalidMainOptions[i]}">
                           <input
                             class="form-control col-md-12"
                             :placeholder="`Option ${i + 1}`"
                             v-model="number_of_options[i]"
+                            @input="invalidMainOptions[i] = false"
                           />
                           <div class="input-group-append" v-if="showDeleteBtn">
                             <button
@@ -375,19 +385,29 @@
                             <div class="col pt-1">
                               <label>If the attendee chooses</label>
                               <div class="row">
-                                <select class="form-control col-md-12">
+                                <select
+                                  class="form-control col-md-12"
+                                  @change="onSelected($event.target.value, sub_question)"
+                                >
                                   <option
-                                    :value="sub_question.options[index]"
+                                    :value="sub_question.attendee_choose[index]"
                                     v-for="(oneOpt, index) in sub_question.attendee_choose"
-                                    :key="index"
-                                  >{{ number_of_options[index] }}</option>
+                                    :key="`option-${index}`"
+                                  >{{oneOpt }}</option>
                                 </select>
                               </div>
                             </div>
                             <div class="col pt-1">
                               <label>Ask the question</label>
-                              <div class="row">
-                                <input class="form-control col-md-12" />
+                              <div
+                                class="row"
+                                v-bind:class="{'is-empty': sub_question.invalidQuestion}"
+                              >
+                                <input
+                                  class="form-control col-md-12"
+                                  v-model="sub_question.question"
+                                  @input="sub_question.invalidQuestion = false"
+                                />
                               </div>
                             </div>
                             <div class="col pt-1">
@@ -416,11 +436,15 @@
                                 :key="sub"
                                 :id="`sub-opt-${sub + num}`"
                               >
-                                <div class="input-group">
+                                <div
+                                  class="input-group"
+                                  v-bind:class="{'is-empty': sub_question.invalidOptions[sub]}"
+                                >
                                   <input
                                     class="form-control col-md-12"
                                     :placeholder="`Option ${sub + 1}`"
                                     v-model="sub_question.options[sub]"
+                                    @input="sub_question.invalidOptions[sub] = false"
                                   />
                                   <div class="input-group-append" v-if="sub_question.showDelBtn">
                                     <button
@@ -454,14 +478,26 @@
                         <span class="text-danger">*</span>
                       </label>
                       <div class="row">
-                        <input type="text" class="form-control col-md-12 mb-2 p-0" />
+                        <input
+                          type="text"
+                          class="form-control col-md-12 mb-2 p-0"
+                          v-model="terms_title"
+                          @input="invalidTermsTitle = false"
+                          v-bind:class="{'is-empty': invalidTermsTitle}"
+                        />
                       </div>
                       <label>
                         Terms Content
                         <span class="text-danger">*</span>
                       </label>
-                      <div class="row">
-                        <textarea cols="30" rows="5" class="col-md-12 form-control"></textarea>
+                      <div class="row" v-bind:class="{'is-empty': invalidTermsContent}">
+                        <textarea
+                          cols="30"
+                          rows="5"
+                          class="col-md-12 form-control"
+                          v-model="terms_content"
+                          @input="invalidTermsContent = false"
+                        ></textarea>
                       </div>
                     </div>
                     <div class="col">
@@ -469,17 +505,32 @@
                         <strong>Optional Settings</strong>
                       </label>
                       <div class="row">
-                        <input type="checkbox" id="specify-ticket" class="mr-1" />
+                        <input
+                          type="checkbox"
+                          id="specify-ticket"
+                          class="mr-1"
+                          v-model="add_to_specific_ticket"
+                        />
                         <label
                           for="specify-ticket"
                         >Show this question only for specific ticket types</label>
+                      </div>
+                      <div class="ml-2" v-if="add_to_specific_ticket">
+                        <div v-for="ticket in createdTickets" :key="ticket.ticketId">
+                          <input
+                            type="checkbox"
+                            :id="`tick-${ticket.ticketId}`"
+                            @change="addSpecifiedTickets($event.target.checked, ticket.ticketId)"
+                          />
+                          <label class="ml-2" :for="`tick-${ticket.ticketId}`">{{ ticket.name }}</label>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success">Create</button>
+                  <button type="button" class="btn btn-success" @click="createForm">Create</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -491,7 +542,7 @@
         <modal
           name="delete-question-modal"
           :width="width"
-          :height="infoModalHeight"
+          :height="height"
           :reset="true"
           :styles="infoBoxStyles"
         >
@@ -516,15 +567,21 @@
 
 
 <script>
+import { mapGetters } from "vuex";
+import { apiUrl } from "../utils/config";
+
 export default {
   name: "Registration",
+  props: {
+    token: String
+  },
   components: {},
 
   data() {
     return {
       infoBoxStyles: "background: none;",
       width: "50%",
-      height: "50px",
+      height: "auto",
       is_multiple_or_dropdown_or_checkbox: true,
       number_of_options: ["", ""],
       showDeleteBtn: false,
@@ -532,7 +589,18 @@ export default {
       selectedOption: "1",
       add_conditional_sub_question: false,
       conditional_sub_questions: [],
-      selected_sub_question: new Object()
+      selected_sub_question: new Object(),
+      invalidQuestion: false,
+      invalidMainOptions: [false, false],
+      main_question: "",
+      terms_title: "",
+      terms_content: "",
+      invalidTermsTitle: false,
+      invalidTermsContent: false,
+      required: false,
+      help_text: "",
+      add_to_specific_ticket: false,
+      specifiedTickets: new Set()
     };
   },
 
@@ -559,20 +627,24 @@ export default {
       } else if (this.selectedOption === "6") {
         this.is_additional_terms = true;
         this.is_multiple_or_dropdown_or_checkbox = false;
+        this.number_of_options = ["", ""];
       } else {
         this.is_additional_terms = false;
         this.is_multiple_or_dropdown_or_checkbox = false;
+        this.number_of_options = ["", ""];
       }
     },
 
     addAnswerOption() {
       this.number_of_options.push("");
+      this.invalidMainOptions.push(false);
       this.showDeleteBtn = true;
     },
 
     onDeleteOption(opt) {
       const index = this.number_of_options.indexOf(opt);
       this.number_of_options.splice(index, 1);
+      this.invalidMainOptions.splice(index, 1);
 
       if (
         this.number_of_options.length === 2 &&
@@ -591,7 +663,18 @@ export default {
     onAddConditionalSubQuestion(evt) {
       this.add_conditional_sub_question = evt.target.checked;
       if (evt.target.checked) {
-        this.addSubQuestion();
+        // this.addSubQuestion();
+        const sub_question = new Object();
+        sub_question.attendee_choose = this.number_of_options;
+        sub_question.options = ["", ""];
+        sub_question.showDelBtn = false;
+        sub_question.question_type = "1";
+        sub_question.invalidQuestion = false;
+        sub_question.question = "";
+        sub_question.choice = this.number_of_options[0];
+        sub_question.invalidOptions = [false, false];
+        sub_question.is_multiple_or_dropdown_or_checkbox = true;
+        this.conditional_sub_questions.push(sub_question);
       } else {
         this.conditional_sub_questions = [];
       }
@@ -603,6 +686,10 @@ export default {
       sub_question.options = ["", ""];
       sub_question.showDelBtn = false;
       sub_question.question_type = "1";
+      sub_question.invalidQuestion = false;
+      sub_question.question = "";
+      sub_question.choice = this.number_of_options[0];
+      sub_question.invalidOptions = [false, false];
       sub_question.is_multiple_or_dropdown_or_checkbox = true;
       this.conditional_sub_questions.push(sub_question);
     },
@@ -637,12 +724,14 @@ export default {
 
     addSubQuestionAnswerOption(sub_question) {
       sub_question.options.push("");
+      sub_question.invalidOptions.push(false);
       sub_question.showDelBtn = true;
     },
 
     onDeleteSubQuestionOption(sub_question, opt) {
       const index = sub_question.options.indexOf(opt);
       sub_question.options.splice(index, 1);
+      sub_question.invalidOptions.splice(index, 1);
 
       if (
         sub_question.options.length === 2 &&
@@ -674,6 +763,7 @@ export default {
       const index = this.conditional_sub_questions.indexOf(
         this.selected_sub_question
       );
+
       this.conditional_sub_questions.splice(index, 1);
 
       if (this.conditional_sub_questions.length === 0) {
@@ -681,7 +771,257 @@ export default {
       }
 
       this.$modal.hide("delete-question-modal");
+    },
+
+    onSelected(value, sub_question) {
+      sub_question.choice = value;
+    },
+
+    validateFields() {
+      if (this.selectedOption == "6") {
+        /**
+         * * validate terms title
+         */
+        if (this.terms_title === "") {
+          this.invalidTermsTitle = true;
+        }
+
+        /**
+         * * validate terms contents
+         */
+        if (this.terms_content === "") {
+          this.invalidTermsContent = true;
+        }
+
+        return !this.invalidTermsContent && !this.invalidTermsTitle;
+      } else if (this.selectedOption == "4" || this.selectedOption == "5") {
+        if (this.main_question === "") {
+          this.invalidQuestion = true;
+        }
+        return !this.invalidQuestion;
+      } else {
+        let proceed = true;
+
+        /**
+         * * validate question
+         *  */
+        if (this.main_question === "") {
+          this.invalidQuestion = true;
+          proceed = false;
+        }
+
+        /**
+         * * validate options
+         * */
+        this.number_of_options.forEach((opt, i) => {
+          if (opt === "") {
+            this.invalidMainOptions[i] = true;
+            proceed = false;
+          }
+        });
+
+        this.conditional_sub_questions.forEach(one_sub_ques => {
+          /**
+           * * validate sub question
+           *  */
+          if (one_sub_ques.question === "") {
+            one_sub_ques.invalidQuestion = true;
+            proceed = false;
+          }
+
+          /**
+           * * validate sub options
+           *  */
+          one_sub_ques.options.forEach((opt, index) => {
+            if (opt === "") {
+              one_sub_ques.invalidOptions[index] = true;
+              proceed = false;
+            }
+          });
+        });
+
+        return proceed;
+      }
+    },
+
+    addSpecifiedTickets(value, ticketId) {
+      if (value) this.specifiedTickets.add(ticketId);
+    },
+
+    getBody() {
+      let type = "";
+
+      switch (this.selectedOption) {
+        case "1":
+          type = "multiple";
+          break;
+        case "2":
+          type = "select";
+          break;
+        case "3":
+          type = "checkbox";
+          break;
+        case "4":
+          type = "text";
+          break;
+        case "5":
+          type = "textarea";
+          break;
+        case "6":
+          type = "terms";
+          break;
+        default:
+          type = "text";
+          break;
+      }
+
+      // check if has options
+      let has_options = false;
+      this.number_of_options.forEach(one => {
+        if (one.length > 0) {
+          has_options = true;
+        }
+      });
+
+      // set the tickets
+      let ticks = "";
+      this.specifiedTickets.forEach((tick, i) => {
+        ticks += tick;
+
+        if (i != this.specifiedTickets - 1) {
+          ticks += ";";
+        }
+      });
+
+      const choices = new Array();
+
+      if (
+        this.selectedOption == "1" ||
+        this.selectedOption == "2" ||
+        this.selectedOption == "3"
+      ) {
+        // if there are no sub conditional questions
+        if (this.conditional_sub_questions.length === 0) {
+          this.number_of_options.forEach(oneOpt => {
+            choices.push({
+              value: oneOpt,
+              conditional_question: {}
+            });
+          });
+        } else {
+          this.conditional_sub_questions.forEach(sub_question => {
+            let type = "";
+            switch (sub_question.question_type) {
+              case "1":
+                type = "multiple";
+                break;
+              case "2":
+                type = "select";
+                break;
+              case "3":
+                type = "checkbox";
+                break;
+              case "4":
+                type = "text";
+                break;
+              case "5":
+                type = "textarea";
+                break;
+              case "6":
+                type = "terms";
+                break;
+              default:
+                type = "text";
+                break;
+            }
+            // check if has options
+            let has_option = false;
+            sub_question.options.forEach(one => {
+              if (one.length > 0) {
+                has_option = true;
+              }
+            });
+
+            choices.push({
+              value: sub_question.choice,
+              conditional_question: {
+                sub_field: sub_question.question,
+                sub_type: type,
+                sub_has_options: has_option,
+                sub_choice: sub_question.options
+              }
+            });
+          });
+        }
+      }
+
+      const body = {
+        event_key: "bb4d373a-80f4-4535-896f-e270abd64c1c", // window.localStorage.getItem("current_event_key"),
+        field:
+          this.selectedOption == "6" ? this.terms_title : this.main_question,
+        type: type,
+        option: this.required ? "required" : "not required",
+        placeholder:
+          this.selectedOption == "6" ? this.terms_content : this.help_text,
+        has_options: has_options,
+        ticket_id: ticks,
+        include_this: true,
+        choice: choices
+      };
+      return body;
+    },
+
+    createForm() {
+      if (!this.validateFields()) return;
+
+      const body = this.getBody();
+
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: this.token
+        },
+        body: JSON.stringify(body)
+      };
+      this.$emit("showProgress", true);
+      fetch(`${apiUrl}/api/registration-form`, options)
+        .then(res => {
+          this.$emit("showProgress", true);
+          if (res.status === 202) {
+            this.reset();
+          }
+          // return res.text();
+        })
+        // .then(data => this.$emit('showSnackbar', data))
+        .catch(err => console.log(err));
+    },
+
+    reset() {
+      this.is_multiple_or_dropdown_or_checkbox = true;
+      this.number_of_options = ["", ""];
+      this.showDeleteBtn = false;
+      this.is_additional_terms = false;
+      this.selectedOption = "1";
+      this.add_conditional_sub_question = false;
+      this.conditional_sub_questions = [];
+      this.selected_sub_question = new Object();
+      this.invalidQuestion = false;
+      this.invalidMainOptions = [false, false];
+      this.main_question = "";
+      this.terms_title = "";
+      this.terms_content = "";
+      this.invalidTermsTitle = false;
+      this.invalidTermsContent = false;
+      this.required = false;
+      this.help_text = "";
+      this.add_to_specific_ticket = false;
+      this.specifiedTickets = new Set();
     }
+  },
+
+  computed: {
+    ...mapGetters(["createdTickets"])
   }
 };
 </script>
@@ -702,6 +1042,13 @@ table tbody tr td {
 
 .align-content-center {
   text-align: center;
+}
+
+.is-empty {
+  border-color: red !important;
+  border-style: solid !important;
+  border-width: 1px;
+  border-radius: 5px;
 }
 
 .ruler {
@@ -769,9 +1116,6 @@ label {
   width: 100%;
   height: 100vh;
   z-index: 999999;
-}
-.vm--modal {
-  box-shadow: none;
 }
 
 .send-right {

@@ -348,14 +348,14 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
-      this.event_key = window.localStorage.getItem("current_event_key");
-      if (this.event_key === null || this.event_key === "") {
-        this.$emit(
-          "showFlagFromTicket",
-          "To create a ticket you must first create an event."
-        );
-        return;
-      }
+      // this.event_key = window.localStorage.getItem("current_event_key");
+      // if (this.event_key === null || this.event_key === "") {
+      //   this.$emit(
+      //     "showFlagFromTicket",
+      //     "To create a ticket you must first create an event."
+      //   );
+      //   return;
+      // }
 
       this.countryNotSet = false;
       this.currencyNotSet = false;
