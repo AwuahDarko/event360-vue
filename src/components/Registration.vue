@@ -22,6 +22,7 @@
               class="btn btn-block btn-success btn-md next"
               data-toggle="modal"
               data-target="#option-modal"
+              id="add-question-btn"
             >
               <i class="fas fa-plus"></i> Add Question
             </button>
@@ -45,10 +46,16 @@
                   <tr>
                     <td>Prefix</td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Prefix', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Prefix', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
@@ -81,10 +88,16 @@
                   <tr>
                     <td>Gender</td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Gender', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Gender', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
@@ -93,10 +106,16 @@
                   <tr>
                     <td>Birth Date</td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Birth Date', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Birth Date', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
@@ -105,46 +124,16 @@
                   <tr>
                     <td>Home Phone</td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Home Phone', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td>
-                      <!-- LEAVE EMPTY -->
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Book Hotel</td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td>
-                      <!-- LEAVE EMPTY -->
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Book Airport Pick up</td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td>
-                      <!-- LEAVE EMPTY -->
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Job Title</td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
-                    </td>
-                    <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Home Phone', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
@@ -153,10 +142,16 @@
                   <tr>
                     <td>Cell Phone</td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Cell Phone', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Cell Phone', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
@@ -165,42 +160,130 @@
                   <tr>
                     <td>Work Phone</td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Work Phone', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Work Phone', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
                     </td>
                   </tr>
-
+                  <tr>
+                    <td>Job Title</td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Job Title', $event.target.checked ? 1 : 0)"
+                      />
+                    </td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Job Title', $event.target.checked ? 'required': 'not required')"
+                      />
+                    </td>
+                    <td>
+                      <!-- LEAVE EMPTY -->
+                    </td>
+                  </tr>
                   <tr>
                     <td>Company</td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Company', $event.target.checked ? 1 : 0)"
+                      />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" />
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Company', $event.target.checked ? 'required': 'not required')"
+                      />
+                    </td>
+                    <td>
+                      <!-- LEAVE EMPTY -->
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Book Hotel</td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Book Hotel', $event.target.checked ? 1 : 0)"
+                      />
+                    </td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Book Hotel', $event.target.checked ? 'required': 'not required')"
+                      />
+                    </td>
+                    <td>
+                      <!-- LEAVE EMPTY -->
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Book Airport Pick up</td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionInclude('Book Airport Pick up', $event.target.checked ? 1 : 0)"
+                      />
+                    </td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        @change="updateMainQuestionRequired('Book Airport Pick up', $event.target.checked ? 'required': 'not required')"
+                      />
                     </td>
                     <td>
                       <!-- LEAVE EMPTY -->
                     </td>
                   </tr>
                   <tr class="special-tr"></tr>
-                  <tr>
-                    <td>Custom Question</td>
+                  <tr v-if="formQuestions.length === 0" style="visibility: hidden">
+                    <td>This is a hidden row</td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input type="checkbox" />
                     </td>
                     <td class="align-content-center">
-                      <input type="checkbox" checked />
+                      <input type="checkbox" />
+                    </td>
+                    <td>
+                      <!-- LEAVE EMPTY -->
+                    </td>
+                  </tr>
+                  <tr v-for="custom_question in formQuestions" :key="custom_question.formId">
+                    <td>{{ custom_question.field }}</td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        :checked="custom_question.include_this"
+                        @change="setCustomQuestionRequiredInclude(custom_question, custom_question.option, $event.target.checked ? 1 : 0)"
+                      />
+                    </td>
+                    <td class="align-content-center">
+                      <input
+                        type="checkbox"
+                        :checked="custom_question.option === 'required' ? true : false"
+                        @change="setCustomQuestionRequiredInclude(custom_question, $event.target.checked ? 'required' : 'not required', custom_question.include_this ? 1 : 0)"
+                      />
                     </td>
                     <td>
                       <button class="edit-btn">
                         <i class="fas fa-pencil-alt"></i>
                       </button>
-                      <button class="del-btn">
+                      <button
+                        class="del-btn"
+                        @click="setCustomQuestionToBeDeleted(custom_question)"
+                      >
                         <i class="fa fa-trash"></i>
                       </button>
                     </td>
@@ -247,7 +330,7 @@
                     class="btn btn-block bg-light"
                     data-toggle="modal"
                     data-target="#new-question-modal"
-                    id="open-paid-ticket-btn"
+                    id="open-scratch-btn"
                   >
                     <img class="dialog-btn-image" src="../assets/img/scroll.png" alt="scroll image" />
                     <small>Start a new question from scratch</small>
@@ -289,7 +372,11 @@
                     <div class="col pt-2">
                       <label>Question Type</label>
                       <div class="row">
-                        <select class="form-control col-md-12" @change="onQuestionTypeSelected">
+                        <select
+                          class="form-control col-md-12"
+                          v-model="selectedOption"
+                          @change="onQuestionTypeSelected"
+                        >
                           <option value="1">Multiple choice</option>
                           <option value="2">Dropdown menu</option>
                           <option value="3">Checkbox</option>
@@ -529,8 +616,18 @@
                   </div>
                 </div>
                 <div class="modal-footer justify-content-end">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-success" @click="createForm">Create</button>
+                  <button
+                    type="button"
+                    class="btn btn-default"
+                    data-dismiss="modal"
+                    :disabled="disableCloseBtn"
+                  >Close</button>
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    @click="createForm"
+                    :disabled="disableCreateBtn"
+                  >Create</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -558,6 +655,25 @@
             </div>
           </div>
         </modal>
+        <modal
+          name="delete-custom-question-modal"
+          :width="width"
+          :height="height"
+          :reset="true"
+          :styles="infoBoxStyles"
+        >
+          <div class="card">
+            <div class="card-body">
+              <p>Are you sure you want to delete this?</p>
+            </div>
+            <div class="card-footer">
+              <div class="send-right">
+                <button class="my-btn btn-info" @click="closeCustomQuestionModal">No</button>
+                <button class="my-btn btn-danger ml-2" @click="deleteCustomQuestion">Yes</button>
+              </div>
+            </div>
+          </div>
+        </modal>
       </div>
     </div>
   </section>
@@ -567,8 +683,9 @@
 
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import { apiUrl } from "../utils/config";
+import $ from "jquery";
 
 export default {
   name: "Registration",
@@ -600,11 +717,20 @@ export default {
       required: false,
       help_text: "",
       add_to_specific_ticket: false,
-      specifiedTickets: new Set()
+      specifiedTickets: new Set(),
+      disableCloseBtn: false,
+      disableCreateBtn: false,
+      custom_question_to_be_deleted: new Object()
     };
   },
 
   methods: {
+    ...mapActions([
+      "onFormQuestionCreated",
+      "onFormQuestionDeleted",
+      "onUpdateFormQuestion"
+    ]),
+
     onQuestionTypeSelected(evt) {
       this.selectedOption = evt.target.value;
       if (
@@ -798,7 +924,7 @@ export default {
         if (this.main_question === "") {
           this.invalidQuestion = true;
         }
-        return !this.invalidQuestion;
+        return this.invalidQuestion ? false : true;
       } else {
         let proceed = true;
 
@@ -832,12 +958,18 @@ export default {
           /**
            * * validate sub options
            *  */
-          one_sub_ques.options.forEach((opt, index) => {
-            if (opt === "") {
-              one_sub_ques.invalidOptions[index] = true;
-              proceed = false;
-            }
-          });
+          if (
+            one_sub_ques.question_type == "1" ||
+            one_sub_ques.question_type == "2" ||
+            one_sub_ques.question_type == "3"
+          ) {
+            one_sub_ques.options.forEach((opt, index) => {
+              if (opt === "") {
+                one_sub_ques.invalidOptions[index] = true;
+                proceed = false;
+              }
+            });
+          }
         });
 
         return proceed;
@@ -984,16 +1116,26 @@ export default {
         },
         body: JSON.stringify(body)
       };
+
+      this.disableBtn();
       this.$emit("showProgress", true);
+
       fetch(`${apiUrl}/api/registration-form`, options)
-        .then(res => {
-          this.$emit("showProgress", true);
+        .then(async res => {
+          this.$emit("showProgress", false);
+          this.enableBtn();
+
           if (res.status === 202) {
+            const form = await res.json();
+            console.log(form);
+            body.formId = form.form_id;
+            console.log(body);
+
+            this.onFormQuestionCreated(body);
+            this.closeModals();
             this.reset();
           }
-          // return res.text();
         })
-        // .then(data => this.$emit('showSnackbar', data))
         .catch(err => console.log(err));
     },
 
@@ -1017,11 +1159,130 @@ export default {
       this.help_text = "";
       this.add_to_specific_ticket = false;
       this.specifiedTickets = new Set();
+    },
+
+    closeModals() {
+      //  for option modal
+      $("#option-modal")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#add-question-btn`).click();
+
+      // for question modal
+      $("#new-question-modal")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#open-scratch-btn`).click();
+    },
+
+    disableBtn() {
+      this.disableCloseBtn = true;
+      this.disableCreateBtn = true;
+    },
+
+    enableBtn() {
+      this.disableCloseBtn = false;
+      this.disableCreateBtn = false;
+    },
+
+    updateMainQuestionRequired(field, option) {
+      const event_key = "bb4d373a-80f4-4535-896f-e270abd64c1c"; // window.localStorage.getItem("current_event_key");
+
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: this.token
+        }
+      };
+
+      fetch(
+        `${apiUrl}/api/registration-form?event_key=${event_key}&option=${option}&field=${field}`,
+        options
+      ).catch(err => console.log(err));
+    },
+
+    updateMainQuestionInclude(field, include) {
+      const event_key = "bb4d373a-80f4-4535-896f-e270abd64c1c"; // window.localStorage.getItem("current_event_key");
+
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: this.token
+        }
+      };
+
+      fetch(
+        `${apiUrl}/api/registration-form?event_key=${event_key}&include=${include}&field=${field}`,
+        options
+      ).catch(err => console.log(err));
+    },
+
+    setCustomQuestionRequiredInclude(question, option, include) {
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: this.token
+        }
+      };
+
+      fetch(
+        `${apiUrl}/api/custom-registration-form?id=${question.formId}&option=${option}&include=${include}`,
+        options
+      )
+        .then(res => {
+          console.log(res);
+          question.include_this = include == 1 ? true : false;
+          question.option = option;
+          this.onUpdateFormQuestion(question);
+        })
+        .catch(err => console.log(err));
+    },
+
+    closeCustomQuestionModal() {
+      this.$modal.hide("delete-custom-question-modal");
+    },
+
+    deleteCustomQuestion() {
+      const options = {
+        method: "DELETE",
+        headers: {
+          Authorization: this.token
+        }
+      };
+
+      this.$emit("showProgress", true);
+
+      fetch(
+        `${apiUrl}/api/registration-form?form_id=${this.custom_question_to_be_deleted.formId}`,
+        options
+      )
+        .then(res => {
+          this.$emit("showProgress", false);
+          if (res.status === 200) {
+            this.onFormQuestionDeleted(this.custom_question_to_be_deleted);
+          }
+
+          this.$modal.hide("delete-custom-question-modal");
+        })
+        .catch(err => console.log(err));
+    },
+
+    setCustomQuestionToBeDeleted(question) {
+      this.custom_question_to_be_deleted = question;
+      this.$modal.show("delete-custom-question-modal");
     }
   },
 
   computed: {
-    ...mapGetters(["createdTickets"])
+    ...mapGetters(["createdTickets", "formQuestions"])
   }
 };
 </script>

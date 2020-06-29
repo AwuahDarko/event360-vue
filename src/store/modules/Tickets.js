@@ -7,6 +7,7 @@ const state = {
   currency: null,
   proceed: false,
   createdTickets: [],
+  formQuestions: [],
 };
 
 const getters = {
@@ -15,6 +16,7 @@ const getters = {
   ticketCountryOfPayment: (state) => state.country,
   ticketCurrencyOfPayment: (state) => state.currency,
   createdTickets: (state) => state.createdTickets,
+  formQuestions: (state) => state.formQuestions,
 };
 
 const actions = {
@@ -45,6 +47,18 @@ const actions = {
   onUpdateTicket({ commit }, ticket) {
     commit('updateTicket', ticket);
   },
+
+  onFormQuestionCreated({ commit }, question) {
+    commit('addNewQuestion', question);
+  },
+
+  onFormQuestionDeleted({ commit }, question) {
+    commit('deleteQuestion', question);
+  },
+
+  onUpdateFormQuestion({ commit }, question) {
+    commit('updateQuestion', question);
+  },
 };
 
 const mutations = {
@@ -63,6 +77,20 @@ const mutations = {
     state.createdTickets.forEach((tick, i) => {
       if (tick.ticketId == ticket.ticketId) {
         state.createdTickets[i] = ticket;
+      }
+    });
+  },
+  addNewQuestion: (state, question) => state.formQuestions.push(question),
+  deleteQuestion: (state, question) => {
+    const index = state.formQuestions.indexOf(question);
+    if (index > -1) {
+      state.formQuestions.splice(index, 1);
+    }
+  },
+  updateQuestion: (state, question) => {
+    state.formQuestions.forEach((oneQues, i) => {
+      if (oneQues.formId === question.formId) {
+        state.formQuestions[i] = question;
       }
     });
   },
