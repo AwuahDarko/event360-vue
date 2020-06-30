@@ -277,7 +277,13 @@
                       />
                     </td>
                     <td>
-                      <button class="edit-btn">
+                      <button
+                        class="edit-btn"
+                        data-toggle="modal"
+                        data-target="#new-question-modal"
+                        :id="`edit-btn-${custom_question.formId}`"
+                        @click="onEditQuestion(custom_question)"
+                      >
                         <i class="fas fa-pencil-alt"></i>
                       </button>
                       <button
@@ -359,7 +365,13 @@
               <div class="modal-content">
                 <div class="modal-header bg-success">
                   <h4 class="modal-title" id="questionmodal">Create Question</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                    @click="reset"
+                  >
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
@@ -429,7 +441,7 @@
                             <button
                               class="btn btn-outline-secondary"
                               type="button"
-                              @click="onDeleteOption"
+                              @click="onDeleteOption(opt)"
                             >
                               <i class="fa fa-trash-alt"></i>
                             </button>
@@ -475,6 +487,7 @@
                                 <select
                                   class="form-control col-md-12"
                                   @change="onSelected($event.target.value, sub_question)"
+                                  v-model="sub_question.choice"
                                 >
                                   <option
                                     :value="sub_question.attendee_choose[index]"
@@ -503,6 +516,7 @@
                                 <select
                                   class="form-control col-md-12"
                                   @change="onSubQuestionTypeSelected($event.target.value, sub_question)"
+                                  v-model="sub_question.question_type"
                                 >
                                   <option value="1">Multiple choice</option>
                                   <option value="2">Dropdown menu</option>
@@ -514,7 +528,7 @@
                             </div>
                             <div
                               class="col pt-1"
-                              v-if=" sub_question.is_multiple_or_dropdown_or_checkbox"
+                              v-if="sub_question.is_multiple_or_dropdown_or_checkbox"
                             >
                               <label>Answer Options</label>
                               <div
@@ -607,6 +621,7 @@
                           <input
                             type="checkbox"
                             :id="`tick-${ticket.ticketId}`"
+                            :checked="specifiedTickets.has(String(ticket.ticketId))"
                             @change="addSpecifiedTickets($event.target.checked, ticket.ticketId)"
                           />
                           <label class="ml-2" :for="`tick-${ticket.ticketId}`">{{ ticket.name }}</label>
@@ -621,13 +636,14 @@
                     class="btn btn-default"
                     data-dismiss="modal"
                     :disabled="disableCloseBtn"
+                    @click="reset"
                   >Close</button>
                   <button
                     type="button"
                     class="btn btn-success"
                     @click="createForm"
                     :disabled="disableCreateBtn"
-                  >Create</button>
+                  >{{setForUpdate ? 'Update': 'Create'}}</button>
                 </div>
               </div>
               <!-- /.modal-content -->
@@ -686,6 +702,7 @@
 import { mapGetters, mapActions } from "vuex";
 import { apiUrl } from "../utils/config";
 import $ from "jquery";
+import { objectIsEmpty } from "../utils/utility";
 
 export default {
   name: "Registration",
@@ -720,7 +737,9 @@ export default {
       specifiedTickets: new Set(),
       disableCloseBtn: false,
       disableCreateBtn: false,
-      custom_question_to_be_deleted: new Object()
+      custom_question_to_be_deleted: new Object(),
+      setForUpdate: false,
+      selected_question_for_edit: new Object()
     };
   },
 
@@ -982,7 +1001,7 @@ export default {
 
     getBody() {
       let type = "";
-
+      // set the type based on the option selected for question type
       switch (this.selectedOption) {
         case "1":
           type = "multiple";
@@ -1015,12 +1034,12 @@ export default {
         }
       });
 
-      // set the tickets
+      // set the tickets to attach question to
       let ticks = "";
       this.specifiedTickets.forEach((tick, i) => {
         ticks += tick;
 
-        if (i != this.specifiedTickets - 1) {
+        if (i != this.specifiedTickets.length - 1) {
           ticks += ";";
         }
       });
@@ -1041,6 +1060,7 @@ export default {
             });
           });
         } else {
+          // if there are sub-question
           this.conditional_sub_questions.forEach(sub_question => {
             let type = "";
             switch (sub_question.question_type) {
@@ -1085,6 +1105,21 @@ export default {
             });
           });
         }
+
+        // check those options which did not have sub-questions and add then too
+        const temp = [];
+        this.conditional_sub_questions.forEach(one => {
+          temp.push(one.choice);
+        });
+
+        this.number_of_options.map(oneOpt => {
+          if (!temp.includes(oneOpt)) {
+            choices.push({
+              value: oneOpt,
+              conditional_question: {}
+            });
+          }
+        });
       }
 
       const body = {
@@ -1100,6 +1135,16 @@ export default {
         include_this: true,
         choice: choices
       };
+
+      if (this.setForUpdate) {
+        /**
+         * ? i have a naming conflict here; the backend expects form_id but this frontend used formId
+         * ? i don't want to go back and make changes hennce i have both property availabe with the same value
+         */
+        body.form_id = this.selected_question_for_edit.formId;
+        body.formId = this.selected_question_for_edit.formId;
+      }
+
       return body;
     },
 
@@ -1109,7 +1154,7 @@ export default {
       const body = this.getBody();
 
       const options = {
-        method: "POST",
+        method: !this.setForUpdate ? "POST" : "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: this.token
@@ -1126,14 +1171,23 @@ export default {
           this.enableBtn();
 
           if (res.status === 202) {
-            const form = await res.json();
-            console.log(form);
-            body.formId = form.form_id;
-            console.log(body);
+            if (!this.setForUpdate) {
+              const form = await res.json();
+              body.formId = form.form_id;
+              this.onFormQuestionCreated(body);
+              this.closeModals();
+            } else {
+              this.onUpdateFormQuestion(body);
+              this.setForUpdate = false;
+              this.closeModal2();
+            }
 
-            this.onFormQuestionCreated(body);
-            this.closeModals();
             this.reset();
+          }
+
+          if (res.status === 400) {
+            const t = await res.text();
+            console.log(t);
           }
         })
         .catch(err => console.log(err));
@@ -1159,6 +1213,7 @@ export default {
       this.help_text = "";
       this.add_to_specific_ticket = false;
       this.specifiedTickets = new Set();
+      this.setForUpdate = false;
     },
 
     closeModals() {
@@ -1181,6 +1236,17 @@ export default {
       $(".modal-backdrop").remove();
 
       $(`#open-scratch-btn`).click();
+    },
+
+    closeModal2() {
+      $("#new-question-modal")
+        .modal()
+        .hide();
+
+      $("body").removeClass("modal-open");
+      $(".modal-backdrop").remove();
+
+      $(`#edit-btn-${this.selected_question_for_edit.formId}`).click();
     },
 
     disableBtn() {
@@ -1278,6 +1344,144 @@ export default {
     setCustomQuestionToBeDeleted(question) {
       this.custom_question_to_be_deleted = question;
       this.$modal.show("delete-custom-question-modal");
+    },
+
+    onEditQuestion(custom_question) {
+      this.setForUpdate = true;
+      this.selected_question_for_edit = custom_question;
+
+      this.conditional_sub_questions = [];
+
+      if (
+        custom_question.type === "multiple" ||
+        custom_question.type === "select" ||
+        custom_question.type === "checkbox"
+      ) {
+        this.is_multiple_or_dropdown_or_checkbox = true;
+        this.main_question = custom_question.field;
+        this.help_text = custom_question.placeholder;
+        this.number_of_options = [];
+
+        switch (custom_question.type) {
+          case "multiple":
+            this.selectedOption = "1";
+            break;
+          case "select":
+            this.selectedOption = "2";
+            break;
+          case "checkbox":
+            this.selectedOption = "3";
+            break;
+        }
+
+        custom_question.choice.forEach(oneChoice => {
+          this.number_of_options.push(oneChoice.value);
+          if (
+            custom_question.type === "checkbox" &&
+            this.number_of_options.length > 1
+          ) {
+            this.showDeleteBtn = true;
+          } else if (
+            (custom_question.type === "multiple" ||
+              custom_question.type === "select") &&
+            this.number_of_options.length > 2
+          ) {
+            this.showDeleteBtn = true;
+          }
+
+          if (!objectIsEmpty(oneChoice.conditional_question)) {
+            this.add_conditional_sub_question = true;
+
+            const sub_question = new Object();
+            sub_question.attendee_choose = this.number_of_options; // wait a cotton pickin minute
+            sub_question.options = oneChoice.conditional_question.sub_choice;
+
+            if (
+              sub_question.options.length > 1 &&
+              oneChoice.conditional_question.sub_type === "checkbox"
+            ) {
+              sub_question.showDelBtn = true;
+            } else if (
+              sub_question.options.length > 2 &&
+              (oneChoice.conditional_question.sub_type === "select" ||
+                oneChoice.conditional_question.sub_type === "multiple")
+            ) {
+              sub_question.showDelBtn = true;
+            }
+
+            switch (oneChoice.conditional_question.sub_type) {
+              case "multiple":
+                sub_question.question_type = "1";
+                sub_question.is_multiple_or_dropdown_or_checkbox = true;
+                break;
+              case "select":
+                sub_question.question_type = "2";
+                sub_question.is_multiple_or_dropdown_or_checkbox = true;
+                break;
+              case "checkbox":
+                sub_question.question_type = "3";
+                sub_question.is_multiple_or_dropdown_or_checkbox = true;
+                break;
+              case "text":
+                sub_question.question_type = "4";
+                break;
+              case "textarea":
+                sub_question.question_type = "5";
+                break;
+              case "terms":
+                sub_question.question_type = "6";
+                break;
+            }
+
+            sub_question.invalidQuestion = false;
+            sub_question.question = oneChoice.conditional_question.sub_field;
+            sub_question.choice = oneChoice.value;
+            sub_question.invalidOptions = [false, false];
+
+            this.conditional_sub_questions.push(sub_question);
+          }
+        });
+      } else if (
+        custom_question.type === "text" ||
+        custom_question.type === "textarea"
+      ) {
+        this.is_multiple_or_dropdown_or_checkbox = false;
+        this.main_question = custom_question.field;
+        this.help_text = custom_question.placeholder;
+
+        switch (custom_question.type) {
+          case "text":
+            this.selectedOption = "4";
+            break;
+          case "textarea":
+            this.selectedOption = "5";
+            break;
+        }
+      } else if (custom_question.type === "terms") {
+        this.is_multiple_or_dropdown_or_checkbox = false;
+        this.selectedOption = "6";
+
+        this.terms_title = custom_question.field;
+        this.terms_content = custom_question.placeholder;
+      }
+
+      this.required = custom_question.option === "required" ? true : false;
+
+      this.invalidQuestion = false;
+      this.invalidMainOptions = [false, false];
+
+      this.invalidTermsTitle = false;
+      this.invalidTermsContent = false;
+
+      if (custom_question.ticket_id === "") {
+        this.add_to_specific_ticket = false;
+        this.specifiedTickets = new Set();
+      } else {
+        this.specifiedTickets = new Set();
+        this.add_to_specific_ticket = true;
+        const list = custom_question.ticket_id.split(";");
+        this.specifiedTickets.add(...list);
+      }
     }
   },
 
