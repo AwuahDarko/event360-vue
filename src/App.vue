@@ -11,13 +11,13 @@
 }
 
 body {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #212529;
+  color: #212529 !important;
   text-align: left;
 }
 
@@ -46,7 +46,13 @@ body {
 
 .ghana-cedi {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: lighter;
+}
+
+.ghana-cedi-2 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 0.7rem;
   font-weight: lighter;
 }
 
@@ -62,7 +68,7 @@ body {
 .vue__time-picker input.display-time {
   border: 1px solid #d2d2d2;
   width: 5em !important;
-  height: 2.4em !important;
+  height: 2.4rem !important;
   padding: 0.3em 0.5em;
   font-size: 1em;
   border-radius: 0 5px 5px 0;
@@ -70,5 +76,12 @@ body {
 
 .vm--modal {
   box-shadow: none !important;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  color: inherit !important;
+  font-weight: 500;
 }
 </style>

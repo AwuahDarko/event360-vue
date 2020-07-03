@@ -48,7 +48,9 @@
               </a>
 
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
+              <a href="#" class="dropdown-item dropdown-footer"
+                >See All Messages</a
+              >
             </div>
           </li>
           <!-- Notifications Dropdown Menu -->
@@ -67,7 +69,10 @@
                           class="p-0 btn"
                         >
                           Help
-                          <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+                          <i
+                            class="fa fa-angle-down ml-2 opacity-10"
+                            style="color: #000;"
+                          ></i>
                         </a>
                         <div
                           tabindex="-1"
@@ -76,25 +81,41 @@
                           class="dropdown-menu dropdown-menu-right"
                         >
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Product Update</button>
+                            <button
+                              type="button"
+                              tabindex="0"
+                              class="dropdown-item"
+                            >
+                              Product Update
+                            </button>
                           </a>
                           <a href="#">
                             <button
                               type="button"
                               tabindex="0"
                               class="dropdown-item"
-                            >How do i create an event</button>
+                            >
+                              How do i create an event
+                            </button>
                           </a>
                           <a href="#">
                             <button
                               type="button"
                               tabindex="0"
                               class="dropdown-item"
-                            >How does it cost to create an event?</button>
+                            >
+                              How does it cost to create an event?
+                            </button>
                           </a>
                           <div tabindex="-1" class="dropdown-divider"></div>
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Help Center</button>
+                            <button
+                              type="button"
+                              tabindex="0"
+                              class="dropdown-item"
+                            >
+                              Help Center
+                            </button>
                           </a>
                         </div>
                       </div>
@@ -117,8 +138,16 @@
                           aria-expanded="false"
                           class="p-0 btn"
                         >
-                          <img width="30" class="rounded-circle" src="../assets/img/avatar.png" alt />
-                          <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+                          <img
+                            width="30"
+                            class="rounded-circle"
+                            src="../assets/img/avatar.png"
+                            alt
+                          />
+                          <i
+                            class="fa fa-angle-down ml-2 opacity-10"
+                            style="color: #000;"
+                          ></i>
                         </a>
                         <div
                           tabindex="-1"
@@ -128,10 +157,22 @@
                         >
                           <!--  <div tabindex="-1" class="dropdown-divider"></div> -->
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Tickets</button>
+                            <button
+                              type="button"
+                              tabindex="0"
+                              class="dropdown-item"
+                            >
+                              Tickets
+                            </button>
                           </a>
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Liked</button>
+                            <button
+                              type="button"
+                              tabindex="0"
+                              class="dropdown-item"
+                            >
+                              Liked
+                            </button>
                           </a>
                           <a href="#">
                             <button
@@ -139,7 +180,9 @@
                               tabindex="0"
                               class="dropdown-item"
                               @click="logout"
-                            >Log Out</button>
+                            >
+                              Log Out
+                            </button>
                           </a>
                         </div>
                       </div>
@@ -175,7 +218,10 @@
             <div class="container-fluid">
               <div class="row">
                 <section class="col-lg-2 connectedSortable">
-                  <button type="button" class="btn btn-block btn-default btn-lg">
+                  <button
+                    type="button"
+                    class="btn btn-block btn-default btn-lg"
+                  >
                     <i style="font-size:16px;" class="fa">&#xf104;</i> Dashboard
                   </button>
                 </section>
@@ -184,7 +230,11 @@
                   <div class="col-sm-12">
                     <div class="card card-primary card-tabss">
                       <div class="card-headers p-0 pt-1">
-                        <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                        <ul
+                          class="nav nav-tabs"
+                          id="custom-tabs-one-tab"
+                          role="tablist"
+                        >
                           <li class="nav-item">
                             <a
                               v-if="event_profile_done"
@@ -196,7 +246,10 @@
                               aria-controls="custom-tabs-one-home"
                               aria-selected="true"
                             >
-                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-check-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Event Profile
                             </a>
                             <a
@@ -209,7 +262,10 @@
                               aria-controls="custom-tabs-one-home"
                               aria-selected="true"
                             >
-                              <i class="far fa-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Event Profile
                             </a>
                           </li>
@@ -224,7 +280,10 @@
                               aria-controls="custom-tabs-one-profile"
                               aria-selected="false"
                             >
-                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-check-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Tickets
                             </a>
                             <a
@@ -237,7 +296,10 @@
                               aria-controls="custom-tabs-one-profile"
                               aria-selected="false"
                             >
-                              <i class="far fa-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Tickets
                             </a>
                           </li>
@@ -252,7 +314,10 @@
                               aria-controls="custom-tabs-one-messages"
                               aria-selected="false"
                             >
-                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-check-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Registration
                             </a>
                             <a
@@ -265,7 +330,10 @@
                               aria-controls="custom-tabs-one-messages"
                               aria-selected="false"
                             >
-                              <i class="far fa-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Registration
                             </a>
                           </li>
@@ -280,7 +348,10 @@
                               aria-controls="custom-tabs-one-settings"
                               aria-selected="false"
                             >
-                              <i class="far fa-check-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-check-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Subscription
                             </a>
                             <a
@@ -293,7 +364,10 @@
                               aria-controls="custom-tabs-one-settings"
                               aria-selected="false"
                             >
-                              <i class="far fa-circle" style="font-size: 1rem;"></i>
+                              <i
+                                class="far fa-circle"
+                                style="font-size: 1rem;"
+                              ></i>
                               Subscription
                             </a>
                           </li>
@@ -306,7 +380,8 @@
                               role="tab"
                               aria-controls="custom-tabs-one-publish"
                               aria-selected="false"
-                            >Publish</a>
+                              >Publish</a
+                            >
                           </li>
                         </ul>
                       </div>
@@ -326,7 +401,9 @@
                         aria-labelledby="custom-tabs-one-home-tab"
                       >
                         <div class="row">
-                          <div class="card-default card col-lg-8 col-md-8 col-sm-12">
+                          <div
+                            class="card-default card col-lg-8 col-md-8 col-sm-12"
+                          >
                             <div class="card-header">
                               <h3 class="card-title event__info">
                                 Event Information
@@ -345,11 +422,11 @@
                                       type="email"
                                       class="form-control"
                                       v-bind:class="{
-                                  'is-empty': invalidEventName,
-                                }"
+                                        'is-empty': invalidEventName,
+                                      }"
                                       v-on:input="
-                                  setEventPreview($event.target.value)
-                                "
+                                        setEventPreview($event.target.value)
+                                      "
                                       placeholder="Enter name"
                                     />
                                   </div>
@@ -363,8 +440,8 @@
                                     </label>
                                     <select
                                       v-bind:class="{
-                                  'is-empty': invalidEventType,
-                                }"
+                                        'is-empty': invalidEventType,
+                                      }"
                                       v-model="eventType"
                                       class="form-control select2"
                                       style="width: 100%;"
@@ -376,11 +453,15 @@
                                       <option>Dinner or Gala</option>
                                       <option>Festival or Fair</option>
                                       <option>Forum</option>
-                                      <option>Meeting or Networking Event</option>
+                                      <option
+                                        >Meeting or Networking Event</option
+                                      >
                                       <option>Meetup</option>
                                       <option>Seminar or Talk</option>
                                       <option>Submit</option>
-                                      <option>Tradeshow, Consumershow, Expo</option>
+                                      <option
+                                        >Tradeshow, Consumershow, Expo</option
+                                      >
                                     </select>
                                   </div>
                                 </div>
@@ -392,8 +473,8 @@
                                     </label>
                                     <select
                                       v-bind:class="{
-                                  'is-empty': invalidCategory,
-                                }"
+                                        'is-empty': invalidCategory,
+                                      }"
                                       v-model="category"
                                       class="form-control select2"
                                       style="width: 100%;"
@@ -402,7 +483,8 @@
                                         :key="category.id"
                                         v-for="category in allCategories"
                                         :value="category.id"
-                                      >{{ category.name }}</option>
+                                        >{{ category.name }}</option
+                                      >
                                     </select>
                                   </div>
                                 </div>
@@ -413,7 +495,8 @@
                                       Enter Tags
                                       <small
                                         style="font-weight: lighter; color: #6610f2"
-                                      >(press spacebar after each tag)</small>
+                                        >(press spacebar after each tag)</small
+                                      >
                                     </label>
                                     <ChipInput />
                                   </div>
@@ -427,8 +510,8 @@
                                     </label>
                                     <input
                                       v-bind:class="{
-                                  'is-empty': invalidOrganiser,
-                                }"
+                                        'is-empty': invalidOrganiser,
+                                      }"
                                       v-model="orgainser"
                                       type="email"
                                       class="form-control"
@@ -470,7 +553,8 @@
                                     <label
                                       for="checkboxPrimary3"
                                       style=" font-weight: lighter !important;"
-                                    >Include a "Buy Tickets" button</label>
+                                      >Include a "Buy Tickets" button</label
+                                    >
                                   </div>
                                 </div>
 
@@ -483,32 +567,37 @@
                                     <editor
                                       api-key="phevds72510mw4s5asyx4exfqzdxg7cipelpwnvevcee9qx6"
                                       :init="{
-                                  height: 400,
-                                  paste_data_images: true,
-                                  menubar: true,
-                                  themes: 'modern',
-                                  image_advtab: true,
-                                  selector: 'textarea',
-                                  plugins: [
-                                    'advlist autolink lists link image charmap print preview anchor',
-                                    'searchreplace visualblocks code fullscreen',
-                                    'insertdatetime media table paste code help wordcount link code imagetools filepicker',
-                                  ],
-                                  toolbar:
-                                    'undo redo | formatselect | bold italic backcolor | \
+                                        height: 400,
+                                        paste_data_images: true,
+                                        menubar: true,
+                                        themes: 'modern',
+                                        image_advtab: true,
+                                        selector: 'textarea',
+                                        plugins: [
+                                          'advlist autolink lists link image charmap print preview anchor',
+                                          'searchreplace visualblocks code fullscreen',
+                                          'insertdatetime media table paste code help wordcount link code imagetools filepicker',
+                                        ],
+                                        toolbar:
+                                          'undo redo | formatselect | bold italic backcolor | \
                         alignleft aligncenter alignright alignjustify | \
                         bullist numlist outdent indent | removeformat | ' +
-                                    ' help image media table forecolor backcolor emoticons preview insertfile',
-                                  file_picker_callback: callbaavkFile,
-                                  file_picker_types: 'image',
-                                }"
+                                          ' help image media table forecolor backcolor emoticons preview insertfile',
+                                        file_picker_callback: callbaavkFile,
+                                        file_picker_types: 'image',
+                                      }"
                                       v-model="textEditorData"
                                       @onChange="getTextEditorData"
                                       v-bind:class="{
-                                  'is-empty': invalidShortDescription,
-                                }"
+                                        'is-empty': invalidShortDescription,
+                                      }"
                                     />
-                                    <input name="image" type="file" id="upload" class="hidden" />
+                                    <input
+                                      name="image"
+                                      type="file"
+                                      id="upload"
+                                      class="hidden"
+                                    />
                                   </div>
                                 </div>
 
@@ -528,14 +617,16 @@
                                       <!-- <input type="date" class="form-control float-right"  :value="startDate"> -->
                                       <input
                                         v-bind:class="{
-                                    'is-empty': invalidStartDate,
-                                  }"
+                                          'is-empty': invalidStartDate,
+                                        }"
                                         type="date"
                                         class="form-control float-right"
                                         v-model="startDate"
                                         @change="
-                                    setStartDatePreview($event.target.value)
-                                  "
+                                          setStartDatePreview(
+                                            $event.target.value
+                                          )
+                                        "
                                       />
                                     </div>
                                   </div>
@@ -554,14 +645,14 @@
                                       </div>
                                       <input
                                         v-bind:class="{
-                                    'is-empty': invalidEndDate,
-                                  }"
+                                          'is-empty': invalidEndDate,
+                                        }"
                                         type="date"
                                         v-model="endDate"
                                         class="form-control float-right"
                                         @change="
-                                    setEndDatePreview($event.target.value)
-                                  "
+                                          setEndDatePreview($event.target.value)
+                                        "
                                       />
                                     </div>
                                   </div>
@@ -585,8 +676,8 @@
                                         type="text"
                                         class="form-control"
                                         v-bind:class="{
-                                    'is-empty': invalidVenue,
-                                  }"
+                                          'is-empty': invalidVenue,
+                                        }"
                                         ref="venueInput"
                                         @input="getVenue"
                                         v-model="getLocation.venue"
@@ -598,8 +689,8 @@
                                         type="text"
                                         class="form-control"
                                         v-bind:class="{
-                                    'is-empty': invalidStreet,
-                                  }"
+                                          'is-empty': invalidStreet,
+                                        }"
                                         ref="streetInput"
                                         v-model="getLocation.street"
                                         placeholder="Street"
@@ -609,7 +700,9 @@
                                       <input
                                         type="text"
                                         class="form-control"
-                                        v-bind:class="{ 'is-empty': invalidCity }"
+                                        v-bind:class="{
+                                          'is-empty': invalidCity,
+                                        }"
                                         ref="cityInput"
                                         v-model="getLocation.city"
                                         placeholder="City"
@@ -622,8 +715,8 @@
                                             type="text"
                                             class="form-control"
                                             v-bind:class="{
-                                        'is-empty': invalidState,
-                                      }"
+                                              'is-empty': invalidState,
+                                            }"
                                             ref="stateInput"
                                             v-model="getLocation.state"
                                             placeholder="State"
@@ -636,8 +729,8 @@
                                             type="text"
                                             class="form-control"
                                             v-bind:class="{
-                                        'is-empty': invalidpostal_zip,
-                                      }"
+                                              'is-empty': invalidpostal_zip,
+                                            }"
                                             v-model="postal_zip"
                                             @input="setPostalCode"
                                             placeholder="Postal/Zip Code"
@@ -647,8 +740,8 @@
                                     </div>
                                     <div
                                       v-bind:class="{
-                                  'country-empty': invalidCountry,
-                                }"
+                                        'country-empty': invalidCountry,
+                                      }"
                                     >
                                       <Dropdown
                                         :options="allCountries"
@@ -683,9 +776,7 @@
                                         >
                                           Add Banner Image
                                           <span class="badge badge-light">
-                                            {{
-                                            bannerName
-                                            }}
+                                            {{ bannerName }}
                                           </span>
                                         </button>
 
@@ -714,14 +805,18 @@
                                     </div>
                                   </div>
                                   <!-- new logo -->
-                                  <div class="card-body myLogocard mb-2" style="width: 50%;">
+                                  <div
+                                    class="card-body myLogocard mb-2"
+                                    style="width: 50%;"
+                                  >
                                     <div style="width: 100%;">
-                                      <button type="button" class="btn btn-block btn-success mb-2">
+                                      <button
+                                        type="button"
+                                        class="btn btn-block btn-success mb-2"
+                                      >
                                         Add logo
                                         <span class="badge badge-light">
-                                          {{
-                                          logoName
-                                          }}
+                                          {{ logoName }}
                                         </span>
                                       </button>
                                     </div>
@@ -733,19 +828,36 @@
                                         @change="getSelectedLogo"
                                       />
                                       <div class="drag-text">
-                                        <img :src="logoSrc" v-if="logoLoaded" class="logo-image" />
-                                        <h5 class="bring-to-front-2">Drag or Add logo</h5>
+                                        <img
+                                          :src="logoSrc"
+                                          v-if="logoLoaded"
+                                          class="logo-image"
+                                        />
+                                        <h5 class="bring-to-front-2">
+                                          Drag or Add logo
+                                        </h5>
                                       </div>
                                     </div>
-                                    <div class="file-upload-content2" style="background-color: red">
-                                      <img class="attachment-img" src="#" alt="your image" />
+                                    <div
+                                      class="file-upload-content2"
+                                      style="background-color: red"
+                                    >
+                                      <img
+                                        class="attachment-img"
+                                        src="#"
+                                        alt="your image"
+                                      />
                                       <div class="image-title-wrap2">
-                                        <button type="button" class="btn btn-default btn-sm mt-2">
+                                        <button
+                                          type="button"
+                                          class="btn btn-default btn-sm mt-2"
+                                        >
                                           <i
                                             class="fa fa-fw"
                                             aria-hidden="true"
                                             title="Copy to use close"
-                                          ></i>Remove
+                                            ></i
+                                          >Remove
                                         </button>
                                       </div>
                                     </div>
@@ -757,7 +869,11 @@
                                 <!-- IMAGE UPLOAD ENDS -->
 
                                 <!-- ACCESS MANAGEMENT -->
-                                <div v-bind:class="{ 'access-empty': accessInvalid }">
+                                <div
+                                  v-bind:class="{
+                                    'access-empty': accessInvalid,
+                                  }"
+                                >
                                   <div class="col-md-12">
                                     <!-- <div class=""> -->
                                     <div class="card-header">
@@ -768,7 +884,10 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <div>
-                                      <div class="carousel slide" data-ride="carousel">
+                                      <div
+                                        class="carousel slide"
+                                        data-ride="carousel"
+                                      >
                                         <div class="col-md-12">
                                           <div class="card">
                                             <div class="card-body divBorder">
@@ -779,12 +898,13 @@
                                                       class="fa fa-fw"
                                                       aria-hidden="true"
                                                       title="Copy to use bullhorn"
-                                                    ></i>
+                                                      ></i
+                                                    >
                                                     Open Access (Default)
                                                   </h6>
                                                   <p>
-                                                    Anyone can search for and join
-                                                    your event.
+                                                    Anyone can search for and
+                                                    join your event.
                                                   </p>
                                                 </div>
                                                 <div class="col-md-3">
@@ -815,12 +935,13 @@
                                                       class="fa fa-fw"
                                                       aria-hidden="true"
                                                       title="Copy to use user"
-                                                    ></i>
+                                                      ></i
+                                                    >
                                                     Attendee List
                                                   </h6>
                                                   <p>
-                                                    Restrict Access to your event
-                                                    by uploading a list of
+                                                    Restrict Access to your
+                                                    event by uploading a list of
                                                     authorized attendees.
                                                   </p>
                                                 </div>
@@ -852,8 +973,8 @@
                                                     Event Code
                                                   </h6>
                                                   <p>
-                                                    Restrict Access to your event
-                                                    by using an event code
+                                                    Restrict Access to your
+                                                    event by using an event code
                                                     (Password).
                                                   </p>
                                                 </div>
@@ -886,11 +1007,16 @@
                                 <div class="card-body">
                                   <div class="row">
                                     <div class="col-md-3">
-                                      <div class="custom-control float-left" style="display: none;">
+                                      <div
+                                        class="custom-control float-left"
+                                        style="display: none;"
+                                      >
                                         <button
                                           type="button"
                                           class="btn btn-block btn-success btn-md"
-                                        >Next</button>
+                                        >
+                                          Next
+                                        </button>
                                       </div>
                                     </div>
                                     <div class="col-md-3">
@@ -902,12 +1028,16 @@
                                       <p>Restrict Access to your event by using an event code (Password).</p>-->
                                     </div>
                                     <div class="col-md-3">
-                                      <div class="custom-control custom-switch float-right">
+                                      <div
+                                        class="custom-control custom-switch float-right"
+                                      >
                                         <button
                                           type="button"
                                           class="btn btn-block btn-success btn-md next"
                                           @click="postEventProfile"
-                                        >Next</button>
+                                        >
+                                          Next
+                                        </button>
                                       </div>
                                     </div>
                                   </div>
@@ -918,10 +1048,16 @@
 
                           <!-- <div class="card card-body col-md-4"> -->
                           <!-- PREVIEW -->
-                          <section class="col-md-4 connectedSortable col-lg-4 col-sm-12">
+                          <section
+                            class="col-md-4 connectedSortable col-lg-4 col-sm-12"
+                          >
                             <div class="card profile-card-2 js-sticky-header">
                               <div class="card-img-block" v-if="bannerLoaded">
-                                <img class="img-fluid" :src="bannerSrc" alt="Card image cap" />
+                                <img
+                                  class="img-fluid"
+                                  :src="bannerSrc"
+                                  alt="Card image cap"
+                                />
                               </div>
                               <div class="card-img-block" v-else>
                                 <img
@@ -952,7 +1088,10 @@
                                       </span>
                                     </li>
                                     <li
-                                      v-if="this.getLocation.venue === '' ||this.getLocation.venue === undefined"
+                                      v-if="
+                                        this.getLocation.venue === '' ||
+                                          this.getLocation.venue === undefined
+                                      "
                                       key="vunue1"
                                     >
                                       <span>
@@ -961,13 +1100,18 @@
                                     </li>
                                     <li v-else>
                                       <span>
-                                        <i class="fa fa-map-marker" key="vunue2"></i>
+                                        <i
+                                          class="fa fa-map-marker"
+                                          key="vunue2"
+                                        ></i>
                                         {{ this.getLocation.venue }}
                                       </span>
                                     </li>
                                   </ul>
                                 </div>
-                                <h5 class="card-title">{{ this.eventNameData }}</h5>
+                                <h5 class="card-title">
+                                  {{ this.eventNameData }}
+                                </h5>
                                 <p class="card-text">{{ decriptionExcerpt }}</p>
                                 <div class="icon-block">
                                   <a href>
@@ -980,11 +1124,17 @@
                                     </h6>
                                   </a>
                                 </div>
-                                <div class="icon-block" v-if="includeTicketsBtn" key="includebtn">
+                                <div
+                                  class="icon-block"
+                                  v-if="includeTicketsBtn"
+                                  key="includebtn"
+                                >
                                   <button
                                     type="button"
                                     class="btn btn-block btn-success btn-sm mt-3 mb-3"
-                                  >Get Tickets</button>
+                                  >
+                                    Get Tickets
+                                  </button>
                                 </div>
 
                                 <div class="mt-1 float-left text-center">
@@ -995,10 +1145,18 @@
                                     <div class="col-md-3 col-sm-3 col-xm-4">
                                       <ul style="display: inline;">
                                         <li>
-                                          <i class="fa fa-star" aria-hidden="true"></i>
+                                          <i
+                                            class="fa fa-star"
+                                            aria-hidden="true"
+                                          ></i>
                                         </li>
                                         <li>
-                                          <button type="button" class="btn btn-sm">Interested</button>
+                                          <button
+                                            type="button"
+                                            class="btn btn-sm"
+                                          >
+                                            Interested
+                                          </button>
                                         </li>
                                       </ul>
                                     </div>
@@ -1008,7 +1166,12 @@
                                           <i class="far fa-check-circle"></i>
                                         </li>
                                         <li>
-                                          <button type="button" class="btn btn-sm">Going</button>
+                                          <button
+                                            type="button"
+                                            class="btn btn-sm"
+                                          >
+                                            Going
+                                          </button>
                                         </li>
                                       </ul>
                                     </div>
@@ -1018,7 +1181,12 @@
                                           <i class="fas fa-share"></i>
                                         </li>
                                         <li>
-                                          <button type="button" class="btn btn-sm">Share</button>
+                                          <button
+                                            type="button"
+                                            class="btn btn-sm"
+                                          >
+                                            Share
+                                          </button>
                                         </li>
                                       </ul>
                                     </div>
@@ -1028,7 +1196,12 @@
                                           <i class="far fa-bookmark"></i>
                                         </li>
                                         <li>
-                                          <button type="button" class="btn btn-sm">Save</button>
+                                          <button
+                                            type="button"
+                                            class="btn btn-sm"
+                                          >
+                                            Save
+                                          </button>
                                         </li>
                                       </ul>
                                     </div>
@@ -1062,13 +1235,21 @@
                             :selectedCountry="ticketCountryOfPayment"
                             :selectedCurrency="ticketCurrencyOfPayment"
                             :token="token"
-                            v-on:showFlagFromTicketTable="showFlagsFromTicketTable"
+                            v-on:showFlagFromTicketTable="
+                              showFlagsFromTicketTable
+                            "
                             v-on:showOrHideProgressBar="showOrHideProgress"
-                            v-on:onInvalidFields="handleInvalidFieldFromPaymentInfo"
-                            v-on:showSuccessMessage="handleShowMessageFromPaymentInfo"
+                            v-on:onInvalidFields="
+                              handleInvalidFieldFromPaymentInfo
+                            "
+                            v-on:showSuccessMessage="
+                              handleShowMessageFromPaymentInfo
+                            "
                             v-on:onTermsNotAccepted="handleTermsNotAccepted"
                             v-on:onSwitchTab="switchTabs"
-                            v-on:showProgressFromPaymentInfo="showOrHideProgress"
+                            v-on:showProgressFromPaymentInfo="
+                              showOrHideProgress
+                            "
                           />
                         </div>
                         <div v-else key="till">
@@ -1086,20 +1267,27 @@
                         role="tabpanel"
                         aria-labelledby="messages"
                       >
-                        <Registration :token="token" v-on:showProgress="showOrHideProgress" />
+                        <Registration
+                          :token="token"
+                          v-on:showProgress="showOrHideProgress"
+                        />
                       </div>
                       <div
                         class="tab-pane fade card card-body"
                         id="custom-tabs-one-settings"
                         role="tabpanel"
                         aria-labelledby="custom-tabs-one-settings-tab"
-                      >Subscription</div>
+                      >
+                        Subscription
+                      </div>
                       <div
                         class="tab-pane fade card card-body"
                         id="custom-tabs-one-publish"
                         role="tabpanel"
                         aria-labelledby="publish"
-                      >Publish</div>
+                      >
+                        Publish
+                      </div>
                     </div>
                   </div>
                   <!-- /.card -->
@@ -1242,19 +1430,19 @@
 </template>
 
 <script>
-import moment from "moment";
-import ChipInput from "../components/ChipInput.vue";
-import Map from "../components/Map.vue";
-import Dropdown from "vue-simple-search-dropdown";
-import countries from "../utils/countries";
-import { mapGetters, mapActions } from "vuex";
-import Editor from "@tinymce/tinymce-vue";
-import $ from "jquery";
-import Snackbar from "vuejs-snackbar";
-import { apiUrl } from "../utils/config";
-import Tickets from "../components/Tickets.vue";
-import TicketTable from "../components/TicketTable.vue";
-import Registration from "../components/Registration.vue";
+import moment from 'moment';
+import ChipInput from '../components/ChipInput.vue';
+import Map from '../components/Map.vue';
+import Dropdown from 'vue-simple-search-dropdown';
+import countries from '../utils/countries';
+import { mapGetters, mapActions } from 'vuex';
+import Editor from '@tinymce/tinymce-vue';
+import $ from 'jquery';
+import Snackbar from 'vuejs-snackbar';
+import { apiUrl } from '../utils/config';
+import Tickets from '../components/Tickets.vue';
+import TicketTable from '../components/TicketTable.vue';
+import Registration from '../components/Registration.vue';
 
 // setTitleMethod('title')
 //  vue.$refs.snackbar.error('Error function triggered')
@@ -1263,8 +1451,8 @@ import Registration from "../components/Registration.vue";
 // vue.$refs.snackbar.open('Open function triggered')
 
 export default {
-  name: "CreateEvent",
-  title: "Create Event",
+  name: 'CreateEvent',
+  title: 'Create Event',
   components: {
     ChipInput,
     Map,
@@ -1273,38 +1461,38 @@ export default {
     snackbar: Snackbar,
     Tickets,
     TicketTable,
-    Registration
+    Registration,
   },
   props: {},
   data() {
     return {
-      position: "top-right",
-      eventNameData: "Event name",
-      startDateData: moment().format("LL"),
-      startDate: "",
-      endDate: "",
-      endDateData: moment().format("LL"),
-      logoSrc: "",
-      logoName: "no logo added",
+      position: 'top-right',
+      eventNameData: 'Event name',
+      startDateData: moment().format('LL'),
+      startDate: '',
+      endDate: '',
+      endDateData: moment().format('LL'),
+      logoSrc: '',
+      logoName: 'no logo added',
       logoLoaded: false,
-      bannerSrc: "",
-      bannerName: "no banner added",
+      bannerSrc: '',
+      bannerName: 'no banner added',
       bannerLoaded: false,
       allCountries: countries,
       // venueName: 'Venue',
-      street: "",
-      city: "",
-      state: "",
-      postal_zip: "",
-      selectedCountry: "",
-      textEditorData: "",
-      decriptionExcerpt: "The greatest event yet... Come one, come all",
+      street: '',
+      city: '',
+      state: '',
+      postal_zip: '',
+      selectedCountry: '',
+      textEditorData: '',
+      decriptionExcerpt: 'The greatest event yet... Come one, come all',
       isopenAccess: true,
       isattendeeList: false,
       iseventCode: false,
-      eventType: "",
-      category: "",
-      orgainser: "",
+      eventType: '',
+      category: '',
+      orgainser: '',
       numOfAttendees: 0,
       invalidEventName: false,
       invalidOrganiser: false,
@@ -1326,35 +1514,40 @@ export default {
       loading: false,
       invalidCategory: false,
       invalidEventType: false,
-      token: "",
+      token: '',
       includeTicketsBtn: true,
       logoImage: null,
-      bannerImage: null
+      bannerImage: null,
     };
   },
   methods: {
-    ...mapActions(["onLocationSelected", "fetchAllCategories"]),
+    ...mapActions([
+      'onLocationSelected',
+      'fetchAllCategories',
+      'onFetchAllCreatedEvents',
+      'onFetchPreviousFormQuestion',
+    ]),
 
     setEventPreview(value) {
-      if (value === "") {
-        this.eventNameData = "Event name";
+      if (value === '') {
+        this.eventNameData = 'Event name';
       } else {
         this.eventNameData = value;
       }
     },
 
     setStartDatePreview(value) {
-      this.startDateData = moment(value, "YYYY-MM-DD").format("LL");
+      this.startDateData = moment(value, 'YYYY-MM-DD').format('LL');
     },
 
     setEndDatePreview(value) {
-      this.endDateData = moment(value, "YYYY-MM-DD").format("LL");
+      this.endDateData = moment(value, 'YYYY-MM-DD').format('LL');
     },
 
     logout() {
       this.getLocation = {};
-      window.localStorage.removeItem("token");
-      this.$router.push("login");
+      window.localStorage.removeItem('token');
+      this.$router.push('login');
     },
 
     getSelectedLogo(event) {
@@ -1393,7 +1586,7 @@ export default {
     getDescriptionExcerpt(event) {
       const value = event.target.value;
       if (value.length == 0) {
-        this.decriptionExcerpt = "The greatest event yet... Come one, come all";
+        this.decriptionExcerpt = 'The greatest event yet... Come one, come all';
       } else {
         this.decriptionExcerpt = value;
       }
@@ -1406,14 +1599,14 @@ export default {
     },
 
     callbaavkFile(callback, value, meta) {
-      if (meta.filetype == "image") {
-        $("#upload").trigger("click");
-        $("#upload").on("change", function() {
+      if (meta.filetype == 'image') {
+        $('#upload').trigger('click');
+        $('#upload').on('change', function() {
           var file = this.files[0];
           var reader = new FileReader();
           reader.onload = function(e) {
             callback(e.target.result, {
-              alt: ""
+              alt: '',
             });
           };
           reader.readAsDataURL(file);
@@ -1423,43 +1616,43 @@ export default {
 
     async uploadLogo(event_key) {
       const formData = new FormData();
-      formData.append("image", this.logoImage);
-      formData.append("event_key", event_key);
+      formData.append('image', this.logoImage);
+      formData.append('event_key', event_key);
 
       const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: this.token
+          Authorization: this.token,
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData
+        body: formData,
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-logo`, options)
-          .then(res => resolve(res))
-          .catch(err => reject(err));
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
       });
     },
 
     async uploadBanner(event_key) {
       const formData = new FormData();
-      formData.append("image", this.bannerImage);
-      formData.append("event_key", event_key);
+      formData.append('image', this.bannerImage);
+      formData.append('event_key', event_key);
 
       const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          Authorization: this.token
+          Authorization: this.token,
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData
+        body: formData,
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-banner`, options)
-          .then(res => resolve(res))
-          .catch(err => reject(err));
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
       });
     },
 
@@ -1503,11 +1696,11 @@ export default {
     validateFields() {
       this.invalidEventName = this.invalidOrganiser = this.invalidShortDescription = this.invalidStartDate = this.invalidEndDate = this.invalidVenue = this.invalidStreet = this.invalidCity = this.invalidState = this.invalidpostal_zip = this.invalidCountry = false;
 
-      if (this.eventNameData === "Event Name") this.invalidEventName = true;
-      if (this.orgainser === "") this.invalidOrganiser = true;
+      if (this.eventNameData === 'Event Name') this.invalidEventName = true;
+      if (this.orgainser === '') this.invalidOrganiser = true;
       if (
         this.decriptionExcerpt ===
-        "The greatest event yet... Come one, come all"
+        'The greatest event yet... Come one, come all'
       )
         this.invalidShortDescription = true;
       if (!this.startDate) this.invalidStartDate = true;
@@ -1517,13 +1710,13 @@ export default {
       if (!this.$refs.cityInput) this.invalidCity = true;
       if (!this.$refs.stateInput) this.invalidState = true;
       if (!this.postal_zip) this.invalidpostal_zip = true;
-      if (!document.querySelector(".dropdown-input").value)
+      if (!document.querySelector('.dropdown-input').value)
         this.invalidCountry = true;
       if (!this.isopenAccess && !this.isattendeeList && !this.iseventCode)
         this.accessInvalid = true;
-      if (!this.category || this.category === "Select category")
+      if (!this.category || this.category === 'Select category')
         this.invalidCategory = true;
-      if (!this.eventType || this.eventType === "Select event type")
+      if (!this.eventType || this.eventType === 'Select event type')
         this.invalidEventType = true;
       if (
         this.invalidEventName ||
@@ -1545,8 +1738,8 @@ export default {
     },
 
     parseHTML(html) {
-      const doc = new DOMParser().parseFromString(html, "text/html");
-      return doc.body.textContent || "";
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      return doc.body.textContent || '';
     },
 
     setPostalCode() {
@@ -1559,19 +1752,19 @@ export default {
       this.decriptionExcerpt = this.parseHTML(this.textEditorData)
         .trim()
         .substring(0, 45);
-      if (this.getDescriptionExcerpt === "") {
+      if (this.getDescriptionExcerpt === '') {
         this.descriptionExcerpt =
-          "The greatest event yet... Come one, come all";
+          'The greatest event yet... Come one, come all';
       }
     },
 
     setPostBody() {
       const chips = this.allChips;
-      let chipString = "";
+      let chipString = '';
       chips.forEach((oneChip, index) => {
         chipString += oneChip;
         if (index != chips.length - 1) {
-          chipString += ",";
+          chipString += ',';
         }
       });
 
@@ -1593,18 +1786,18 @@ export default {
         organiser: this.orgainser,
         virtual: false,
         description: this.textEditorData,
-        start_date: moment(this.startDateData, "LL").format("YYYY-MM-DD"),
-        end_date: moment(this.endDateData, "LL").format("YYYY-MM-DD"),
+        start_date: moment(this.startDateData, 'LL').format('YYYY-MM-DD'),
+        end_date: moment(this.endDateData, 'LL').format('YYYY-MM-DD'),
         number_of_attendees: this.numOfAttendees,
         location: this.getLocation,
-        welcome: "N/A",
+        welcome: 'N/A',
         airport: 2,
-        website: "N/A",
+        website: 'N/A',
         access_management: access,
-        topics: "N/A",
-        attendee_location: "world",
-        video_link: "",
-        buy_ticket_btn: this.includeTicketsBtn
+        topics: 'N/A',
+        attendee_location: 'world',
+        video_link: '',
+        buy_ticket_btn: this.includeTicketsBtn,
       };
       return body;
     },
@@ -1619,7 +1812,7 @@ export default {
 
     postEventProfile() {
       if (!this.validateFields()) {
-        this.$refs.snackbar.error("You missed some required fields");
+        this.$refs.snackbar.error('You missed some required fields');
         return;
       }
       const body = this.setPostBody();
@@ -1627,34 +1820,34 @@ export default {
       this.$Progress.start();
 
       const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
           Authorization: this.token,
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       };
       fetch(`${apiUrl}/api/event`, options)
-        .then(res => {
+        .then((res) => {
           if (res.status === 201) {
             this.event_profile_done = true;
           }
           return res.json();
         })
-        .then(async message => {
+        .then(async (message) => {
           // upload images
           await this.uploadLogo(message.event_key);
           await this.uploadBanner(message.event_key);
 
           // store event key
-          window.localStorage.setItem("current_event_key", message.event_key);
+          window.localStorage.setItem('current_event_key', message.event_key);
           this.$refs.snackbar.info(message.message);
-          this.switchTabs("tickets-tab");
+          this.switchTabs('tickets-tab');
           this.$Progress.finish();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
-          this.$refs.snackbar.error("Please check your internet connection");
+          this.$refs.snackbar.error('Please check your internet connection');
           this.$Progress.finish();
         });
     },
@@ -1664,7 +1857,7 @@ export default {
     },
 
     handleInvalidFieldFromPaymentInfo() {
-      this.$refs.snackbar.error("You missed some required fields");
+      this.$refs.snackbar.error('You missed some required fields');
     },
 
     handleShowMessageFromPaymentInfo(flag) {
@@ -1676,85 +1869,102 @@ export default {
     },
 
     switchTabs(where) {
-      $(`#${where}`).tab("show");
-    }
+      $(`#${where}`).tab('show');
+    },
   },
 
   computed: {
     ...mapGetters([
-      "getLocation",
-      "allCategories",
-      "allChips",
-      "proceedToTicketTable",
-      "ticketCountryOfPayment",
-      "ticketCurrencyOfPayment"
-    ])
+      'getLocation',
+      'allCategories',
+      'allChips',
+      'proceedToTicketTable',
+      'ticketCountryOfPayment',
+      'ticketCurrencyOfPayment',
+    ]),
   },
 
   beforeUpdate() {
     this.selectedCountry = this.getLocation.country;
     if (this.selectedCountry != undefined)
-      document.querySelector(".dropdown-input").value = this.selectedCountry;
+      document.querySelector('.dropdown-input').value = this.selectedCountry;
   },
 
   beforeDestroy() {},
 
   mounted() {
-    this.token = `Bearer ${window.localStorage.getItem("token")}`;
-    document.querySelector(".dropdown-input").classList.add("form-control");
+    this.token = `Bearer ${window.localStorage.getItem('token')}`;
+    document.querySelector('.dropdown-input').classList.add('form-control');
+
+    this.$Progress.start();
+    this.onFetchAllCreatedEvents()
+      .then((events) => {
+        this.onFetchPreviousFormQuestion(events)
+          .then(() => {
+            this.$Progress.finish();
+          })
+          .catch((err) => {
+            console.log(err);
+            this.$Progress.finish();
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        this.$Progress.finish();
+      });
   },
 
   beforeCreate() {
     // check for authentication
-    const token = window.localStorage.getItem("token");
+    const token = window.localStorage.getItem('token');
     if (!token) {
       window.localStorage.setItem(
-        "return_to_login_info",
-        "Unauthorized access, please login to authenticate"
+        'return_to_login_info',
+        'Unauthorized access, please login to authenticate'
       );
-      this.$router.push("login");
+      this.$router.push('login');
     } else {
       // verify token
       const options = {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ token: `Bearer ${token}` })
+        body: JSON.stringify({ token: `Bearer ${token}` }),
       };
       fetch(`${apiUrl}/api/verify-login`, options)
-        .then(res => {
+        .then((res) => {
           if (res.status !== 208) {
             window.localStorage.setItem(
-              "return_to_login_info",
-              "Sorry, your session has expired, please login"
+              'return_to_login_info',
+              'Sorry, your session has expired, please login'
             );
-            this.$router.push("login");
+            this.$router.push('login');
           }
         })
-        .catch(err => {
-          console.log("ERROR: ", err);
+        .catch((err) => {
+          console.log('ERROR: ', err);
           //if we can't authenticate, then go back to login
-          this.$router.push("login");
+          this.$router.push('login');
         });
     }
   },
 
   created() {
     this.fetchAllCategories();
-  }
+  },
 };
 </script>
 
 <style scoped>
-@import url("../assets/css/adminlte.min.css");
+@import url('../assets/css/adminlte.min.css');
 /* @import url("../assets/css/fontawesome-free/css/all.min.css"); */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
 
 body {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
-    Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -2095,13 +2305,13 @@ element.style {
 }
 
 .content-wrap.mycontent {
-  font-family: "Raleway", sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-size: 14px;
   line-height: 24px;
 }
 
 .img-holder:before {
-  content: "";
+  content: '';
   position: absolute;
   bottom: 100%;
   left: 0;
@@ -2143,7 +2353,7 @@ element.style {
   box-sizing: border-box;
 }
 .img-holder:after {
-  content: " ";
+  content: ' ';
   position: absolute;
   bottom: 100%;
   left: 0;
@@ -2340,7 +2550,7 @@ a.fb.fb2 {
   line-height: 23px;
   margin: -8px 7px -7px -30px;
   padding: 2 25px 0 0;
-  content: "f";
+  content: 'f';
 }
 
 .connect:before {
@@ -2356,7 +2566,7 @@ a.fb.fb2 {
   line-height: 23px;
   margin: -8px 7px -7px -30px;
   padding: 2 25px 0 0;
-  content: "f";
+  content: 'f';
 }
 
 /*google*/
@@ -2391,7 +2601,7 @@ $button-active-blue: #1669f2;*/
   color: #fff;
   font-size: 13px;
   letter-spacing: 0.2px;
-  font-family: "Roboto";
+  font-family: 'Roboto';
   text-align: center;
   position: absolute;
   top: 8px;

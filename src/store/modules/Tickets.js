@@ -1,5 +1,4 @@
-// const country = new Object();
-// const currency = new Object();
+import { apiUrl } from '../../utils/config';
 
 const state = {
   isPaidEvent: true,
@@ -8,6 +7,8 @@ const state = {
   proceed: false,
   createdTickets: [],
   formQuestions: [],
+  createdEvents: [],
+  previousFormQuestion: [],
 };
 
 const getters = {
@@ -17,6 +18,8 @@ const getters = {
   ticketCurrencyOfPayment: (state) => state.currency,
   createdTickets: (state) => state.createdTickets,
   formQuestions: (state) => state.formQuestions,
+  createdEvents: (state) => state.createdEvents,
+  previousFormQuestion: (state) => state.previousFormQuestion,
 };
 
 const actions = {
@@ -59,6 +62,69 @@ const actions = {
   onUpdateFormQuestion({ commit }, question) {
     commit('updateQuestion', question);
   },
+
+  onFetchAllCreatedEvents({ commit }) {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+      },
+    };
+
+    return new Promise((resolve, reject) => {
+      fetch(`${apiUrl}/api/my-events`, options)
+        .then((res) => res.json())
+        .then((data) => {
+          // exclude current event if any
+          const events = data.filter(
+            (oneEvent) =>
+              oneEvent.event_key !=
+              window.localStorage.getItem('current_event_key')
+          );
+
+          commit('fetchAllCreatedEvents', events);
+          resolve(events);
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
+  },
+
+  onFetchPreviousFormQuestion({ commit }, events) {
+    const options = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${window.localStorage.getItem('token')}`,
+      },
+    };
+
+    const form_array = new Array();
+
+    return new Promise((resolve, reject) => {
+      events.forEach((oneEvent, i) => {
+        fetch(`${apiUrl}/api/reg-form?event_key=${oneEvent.event_key}`, options)
+          .then((res) => res.json())
+          .then((data) => {
+            const obj = new Object();
+            obj.key = oneEvent.event_key;
+            obj.value = data;
+
+            form_array.push(obj);
+
+            if (i === events.length - 1) {
+              commit('fetchPreviousFormQuestion', form_array);
+              resolve(form_array);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    });
+  },
 };
 
 const mutations = {
@@ -94,6 +160,11 @@ const mutations = {
       }
     });
   },
+
+  fetchAllCreatedEvents: (state, events) => (state.createdEvents = events),
+
+  fetchPreviousFormQuestion: (state, forms) =>
+    (state.previousFormQuestion = forms),
 };
 
 export default {

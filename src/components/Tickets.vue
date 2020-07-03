@@ -10,10 +10,9 @@
                 Create a ticketing webpage with lower registration fees in 5
                 minutes.
                 <br />
-                <span style="color: #07a254">
-                  Check how Event360 Cut your Event Registration Fee by
-                  60%
-                </span>
+                <span
+                  style="color: #07a254"
+                >Check how Event360 Cut your Event Registration Fee by 60%</span>
               </p>
               <h1>Ticketing Options</h1>
             </div>
@@ -65,12 +64,14 @@
                   <h2 class="lead">
                     <b>
                       1% +
-                      <span class="ghana-cedi" v-html="cedi">{{cedi}}</span> 0.99 per paid ticket
+                      <span class="ghana-cedi" v-html="cedi">{{ cedi }}</span>
+                      0.99 per paid ticket
                     </b>
                   </h2>
                   <span class="small">
                     Capped at
-                    <span class="ghana-cedi" v-html="cedi">{{cedi}}</span> 5.00 per ticket
+                    <span class="ghana-cedi-2" v-html="cedi">{{ cedi }}</span>
+                    5.00 per ticket
                   </span>
                 </div>
               </div>
@@ -91,10 +92,9 @@
                     <li>Discount codes</li>
                     <li>Ticket sale tracking</li>
                   </ul>
-                  <label class="important-message text-left">
-                    Note: excludes the 3rd party credit card processing
-                    fee
-                  </label>
+                  <label
+                    class="important-message text-left"
+                  >Note: excludes the 3rd party credit card processing fee</label>
                 </div>
               </div>
             </div>
@@ -180,7 +180,7 @@
             <h6 class="mt-2">
               <b>Select the Currency to receive the payout</b>
             </h6>
-            <div v-bind:class="{ 'is-empty': currencyNotSet}" class="col-md-6">
+            <div v-bind:class="{ 'is-empty': currencyNotSet }" class="col-md-6">
               <div class="form-group">
                 <Dropdown
                   :options="currencyOptions"
@@ -244,24 +244,25 @@
               <small>
                 Event360 Registration Fee: 1% of ticket price +
                 <span
-                  class="ghana-cedi"
+                  class="ghana-cedi-2"
                   v-html="cedi"
-                >{{cedi}}</span> 0.99 per
-                ticket (Capped at
+                >{{ cedi }}</span> 0.99
+                per ticket (Capped at
                 <span
                   class="ghana-cedi"
                   v-html="cedi"
-                >{{cedi}}</span> 5.00 per ticket)
+                >{{ cedi }}</span> 5.00
+                per ticket)
               </small>
             </div>
             <div class="form-check" style="background-color: #f4f6f9">
               <small>
                 Merchant Processing Fee: 3.4% of ticket price +
                 <span
-                  class="ghana-cedi"
+                  class="ghana-cedi-2"
                   v-html="cedi"
-                >{{cedi}}</span> 0.30 per
-                ticket
+                >{{ cedi }}</span> 0.30
+                per ticket
                 <span style="color: red">*</span>Subject to change by
                 stripe
               </small>
@@ -290,10 +291,10 @@
                   type="checkbox"
                   @change="acceptTerms"
                 />
-                <label class="form-check-label" for="understand-check">
-                  I have read and understand the information presented
-                  above.
-                </label>
+                <label
+                  class="form-check-label"
+                  for="understand-check"
+                >I have read and understand the information presented above.</label>
               </div>
             </div>
           </div>

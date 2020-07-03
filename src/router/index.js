@@ -7,8 +7,11 @@ import VuePageTitle from 'vue-page-title';
 import VueProgressBar from 'vue-progressbar';
 import VModal from 'vue-js-modal';
 import { BootstrapVue } from 'bootstrap-vue';
-// import 'bootstrap/dist/css/bootstrap.css';
+import { Steps } from 'ant-design-vue';
+import 'ant-design-vue/lib/steps/style';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
+// import 'bootstrap/dist/css/bootstrap.css';
+// import 'ant-design-vue/dist/antd.css';
 
 const options = {
   color: '#00BFFF',
@@ -26,6 +29,7 @@ const options = {
 };
 
 Vue.use(VueRouter);
+Vue.use(Steps);
 
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
