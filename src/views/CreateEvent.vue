@@ -1099,7 +1099,11 @@
                         role="tabpanel"
                         aria-labelledby="messages"
                       >
-                        <Registration :token="token" v-on:showProgress="showOrHideProgress" />
+                        <Registration
+                          :token="token"
+                          v-on:showProgress="showOrHideProgress"
+                          v-on:showFlagFromRegistration="showFlagFromRegistration"
+                        />
                       </div>
                       <div
                         class="tab-pane fade card card-body"
@@ -1284,6 +1288,10 @@ export default {
     },
 
     showFlagsFromTicket(flag) {
+      this.$refs.snackbar.open(flag);
+    },
+
+    showFlagFromRegistration(flag) {
       this.$refs.snackbar.open(flag);
     },
 

@@ -21,9 +21,8 @@
             <button
               type="button"
               class="btn btn-block btn-success btn-md next"
-              data-toggle="modal"
-              data-target="#option-modal"
               id="add-question-btn"
+              @click="verifyLegality"
             >
               <i class="fas fa-plus"></i> Add Question
             </button>
@@ -2282,6 +2281,20 @@ export default {
           }
         })
         .catch(err => console.log(err));
+    },
+
+    verifyLegality() {
+      this.event_key = window.localStorage.getItem("current_event_key");
+      if (this.event_key === null || this.event_key === "") {
+        this.$emit(
+          "showFlagFromRegistration",
+          "To add a question you must first create an event."
+        );
+        return;
+      }
+      $("#option-modal")
+        .modal()
+        .show();
     }
   },
 
@@ -2299,8 +2312,8 @@ export default {
 </script>
 
 <style scoped>
-@import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css");
-/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
+/* @import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css"); */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 
 table thead tr th {
   font-weight: 500;
@@ -2365,7 +2378,7 @@ table tbody tr td {
 
 .dialog-btn-image {
   width: 70%;
-  height: 8rem;
+  height: 9.5rem;
 }
 
 .dialog-btn-image-2 {

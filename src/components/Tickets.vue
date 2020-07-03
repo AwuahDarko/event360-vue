@@ -249,7 +249,7 @@
                 >{{ cedi }}</span> 0.99
                 per ticket (Capped at
                 <span
-                  class="ghana-cedi"
+                  class="ghana-cedi-2"
                   v-html="cedi"
                 >{{ cedi }}</span> 5.00
                 per ticket)
@@ -304,6 +304,7 @@
                 type="button"
                 class="btn btn-success my-btn"
                 @click="onNextFromTicketInfoDialog"
+                :disabled="disable_next"
               >Next</button>
             </div>
           </div>
@@ -337,7 +338,8 @@ export default {
       currencyNotSet: false,
       termsAccepted: false,
       event_key: "",
-      cedi: "GH&#8373"
+      cedi: "GH&#8373",
+      disable_next: true
     };
   },
   methods: {
@@ -420,6 +422,7 @@ export default {
 
     acceptTerms(evt) {
       this.termsAccepted = evt.target.checked;
+      this.disable_next = !evt.target.checked;
     },
 
     onCountry(country) {
