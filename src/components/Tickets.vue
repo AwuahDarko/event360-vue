@@ -126,7 +126,13 @@
     <!-- ========modals start here -->
 
     <section class="ticket_attendees">
-      <modal name="ticket-country-currency" :height="height" :width="width" :reset="true">
+      <modal
+        name="ticket-country-currency"
+        :height="height"
+        :styles="infoBoxStyles"
+        :width="width"
+        :reset="true"
+      >
         <div class="card" id="ticket_attend">
           <div class="card-header">
             <span class="heading">Tickets</span>
@@ -160,41 +166,43 @@
               >Yes, attendees will be paying for registration</label>
             </div>
             <!-- country -->
-            <h6 class="mt-2">
-              <b>Select the country of your Bank to receive the payout</b>
-            </h6>
-            <div v-bind:class="{ 'is-empty': countryNotSet }" class="col-md-6">
-              <div class="form-group">
-                <Dropdown
-                  :options="countryOptions"
-                  :disabled="false"
-                  name="countrydrop"
-                  :maxItem="256"
-                  placeholder="Country"
-                  ref="countrydropdown"
-                  v-on:selected="onCountry"
-                ></Dropdown>
+            <div v-if="ticketPaymentType">
+              <h6 class="mt-2">
+                <b>Select the country of your Bank to receive the payout</b>
+              </h6>
+              <div v-bind:class="{ 'is-empty': countryNotSet }" class="col-md-6">
+                <div class="form-group">
+                  <Dropdown
+                    :options="countryOptions"
+                    :disabled="false"
+                    name="countrydrop"
+                    :maxItem="256"
+                    placeholder="Country"
+                    ref="countrydropdown"
+                    v-on:selected="onCountry"
+                  ></Dropdown>
+                </div>
               </div>
-            </div>
-            <!-- currency -->
-            <h6 class="mt-2">
-              <b>Select the Currency to receive the payout</b>
-            </h6>
-            <div v-bind:class="{ 'is-empty': currencyNotSet }" class="col-md-6">
-              <div class="form-group">
-                <Dropdown
-                  :options="currencyOptions"
-                  :disabled="false"
-                  name="currencydrop"
-                  :maxItem="183"
-                  placeholder="Currency"
-                  ref="currencydropdown"
-                  v-on:selected="onCurrency"
-                ></Dropdown>
+              <!-- currency -->
+              <h6 class="mt-2">
+                <b>Select the Currency to receive the payout</b>
+              </h6>
+              <div v-bind:class="{ 'is-empty': currencyNotSet }" class="col-md-6">
+                <div class="form-group">
+                  <Dropdown
+                    :options="currencyOptions"
+                    :disabled="false"
+                    name="currencydrop"
+                    :maxItem="183"
+                    placeholder="Currency"
+                    ref="currencydropdown"
+                    v-on:selected="onCurrency"
+                  ></Dropdown>
+                </div>
               </div>
-            </div>
-            <div class="col-md-8">
-              <small>Please contact us if your country/currency is not listed</small>
+              <div class="col-md-8">
+                <small>Please contact us if your country/currency is not listed</small>
+              </div>
             </div>
           </div>
           <div class="card-footer">
@@ -333,7 +341,7 @@ export default {
       infoModalHeight: "600",
       countryOptions: countries,
       currencyOptions: currency,
-      infoBoxStyles: "overflow: auto; background-color: rgb(0,0,0,0)",
+      infoBoxStyles: "background: none",
       countryNotSet: false,
       currencyNotSet: false,
       termsAccepted: false,
@@ -352,13 +360,13 @@ export default {
 
     showTicketCountryCurrency() {
       this.event_key = window.localStorage.getItem("current_event_key");
-      if (this.event_key === null || this.event_key === "") {
-        this.$emit(
-          "showFlagFromTicket",
-          "To create a ticket you must first create an event."
-        );
-        return;
-      }
+      // if (this.event_key === null || this.event_key === "") {
+      //   this.$emit(
+      //     "showFlagFromTicket",
+      //     "To create a ticket you must first create an event."
+      //   );
+      //   return;
+      // }
 
       this.countryNotSet = false;
       this.currencyNotSet = false;
@@ -388,27 +396,38 @@ export default {
     },
 
     async onNextFromCountryCurrencyDialog() {
-      this.countryNotSet = false;
-      this.currencyNotSet = false;
+      if (this.ticketPaymentType) {
+        this.countryNotSet = false;
+        this.currencyNotSet = false;
 
-      const country = this.$refs.countrydropdown.selected;
-      const currency = this.$refs.currencydropdown.selected;
+        const country = this.$refs.countrydropdown.selected;
+        const currency = this.$refs.currencydropdown.selected;
 
-      if (Object.keys(country).length === 0 && country.constructor === Object) {
-        this.countryNotSet = true;
+        if (
+          Object.keys(country).length === 0 &&
+          country.constructor === Object
+        ) {
+          this.countryNotSet = true;
+          return;
+        }
+
+        if (
+          Object.keys(currency).length === 0 &&
+          currency.constructor === Object
+        ) {
+          this.currencyNotSet = true;
+          return;
+        }
+
+        await this.saveCountryCurrency();
+        this.showTicketInfoBox();
         return;
       }
+      this.hideTicketCountryCurrency();
+      this.$emit("onTicketDone", true);
+      this.onProceedToTicketTable(true);
 
-      if (
-        Object.keys(currency).length === 0 &&
-        currency.constructor === Object
-      ) {
-        this.currencyNotSet = true;
-        return;
-      }
-
-      await this.saveCountryCurrency();
-      this.showTicketInfoBox();
+      await this.setEventPaidState();
     },
 
     onNextFromTicketInfoDialog() {
@@ -455,6 +474,26 @@ export default {
           .then(res => resolve(res))
           .catch(err => reject(err));
       });
+    },
+
+    setEventPaidState() {
+      const token = `Bearer ${window.localStorage.getItem("token")}`;
+
+      const options = {
+        method: "GET",
+        headers: {
+          Authorization: token
+        }
+      };
+
+      return new Promise((resolve, reject) => {
+        fetch(
+          `${apiUrl}/api/event-paid?state=${this.ticketPaymentType}&event_key=${this.event_key}`,
+          options
+        )
+          .then(res => resolve(res))
+          .catch(err => reject(err));
+      });
     }
   },
 
@@ -472,7 +511,11 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["ticketCountryOfPayment", "ticketCurrencyOfPayment"])
+    ...mapGetters([
+      "ticketCountryOfPayment",
+      "ticketCurrencyOfPayment",
+      "ticketPaymentType"
+    ])
   }
 };
 </script>
@@ -480,7 +523,7 @@ export default {
 <style scoped>
 @import url("../assets/css/adminlte.min.css");
 /* @import url("../assets/css/fontawesome-free/css/all.min.css"); */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
 
 body {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",

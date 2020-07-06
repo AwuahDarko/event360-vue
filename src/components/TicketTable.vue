@@ -6,37 +6,43 @@
         <b>Create Tickets</b>
       </h3>
       <div style="width: 70%; "></div>
-      <button class="btn btn-success" style="display: none">Next</button>
+      <button
+        v-if="!ticketPaymentType"
+        class="btn btn-success"
+        @click="handleSwitchTab('registration-tab')"
+      >Next</button>
     </div>
     <div class="card-body">
-      <div class="pl-3 pr-3">
-        <h6>Country and Currency</h6>
-        <hr class="green-rule" />
-      </div>
-      <div class="pl-3 pr-3">
-        <p class="remove-bottom-margin">In which country will you be paid?</p>
-        <div class="custom-row">
-          <Dropdown
-            :options="countryOptions"
-            :disabled="false"
-            name="countdrop"
-            :maxItem="256"
-            placeholder="Country"
-            ref="countdropdown"
-            v-on:selected="onCountry"
-          ></Dropdown>
-          <Dropdown
-            :options="currencyOptions"
-            :disabled="false"
-            name="curdrop"
-            :maxItem="183"
-            placeholder="Currency"
-            ref="curdropdown"
-            v-on:selected="onCurrency"
-          ></Dropdown>
-          <button class="btn btn-success" @click="saveCountryCurrency">Save</button>
+      <div v-if="ticketPaymentType">
+        <div class="pl-3 pr-3">
+          <h6>Country and Currency</h6>
+          <hr class="green-rule" />
         </div>
-        <small>You cannot change country once your event is published</small>
+        <div class="pl-3 pr-3">
+          <p class="remove-bottom-margin">In which country will you be paid?</p>
+          <div class="custom-row">
+            <Dropdown
+              :options="countryOptions"
+              :disabled="false"
+              name="countdrop"
+              :maxItem="256"
+              placeholder="Country"
+              ref="countdropdown"
+              v-on:selected="onCountry"
+            ></Dropdown>
+            <Dropdown
+              :options="currencyOptions"
+              :disabled="false"
+              name="curdrop"
+              :maxItem="183"
+              placeholder="Currency"
+              ref="curdropdown"
+              v-on:selected="onCurrency"
+            ></Dropdown>
+            <button class="btn btn-success" @click="saveCountryCurrency">Save</button>
+          </div>
+          <small>You cannot change country once your event is published</small>
+        </div>
       </div>
       <div class="card-header">
         <div>
@@ -54,10 +60,20 @@
         <div class="row">
           <div class="col-md-4">
             <button
+              v-if="ticketPaymentType"
               type="button"
               class="btn btn-block btn-success btn-md next"
               data-toggle="modal"
               data-target="#modal-default"
+            >
+              <i class="fas fa-plus"></i> Create Ticket
+            </button>
+            <button
+              v-else
+              type="button"
+              class="btn btn-block btn-success btn-md next"
+              data-toggle="modal"
+              data-target="#free_Ticket"
             >
               <i class="fas fa-plus"></i> Create Ticket
             </button>
@@ -153,8 +169,9 @@
         </div>
       </div>
       <div style="height: 20px"></div>
-      <PromoCode v-on:showOrHideProgressBar="reEmitProgressEvent" />
+      <PromoCode v-if="ticketPaymentType" v-on:showOrHideProgressBar="reEmitProgressEvent" />
       <PaymentInfo
+        v-if="ticketPaymentType"
         v-on:onInvalidFields="handleInvalidFieldFromPaymentInfo"
         v-on:showSuccessMessage="handleShowMessageFromPaymentInfo"
         v-on:onTermsNotAccepted="handleTermsNotAccepted"
@@ -332,14 +349,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              v-model="freeTicketSaleStartTime"
-                              class="form-control"
-                              type="time"
-                              v-bind:class="{
-                                    'is-empty': invalidFreeStartTime,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -387,15 +397,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              v-model="freeTicketSaleEndTime"
-                              class="form-control"
-                              type="time"
-                              id="datetimepicker1"
-                              v-bind:class="{
-                                    'is-empty': invalidFreeEndTime,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -610,14 +612,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              type="time"
-                              v-model="freeTicketSaleStartTime_edit"
-                              v-bind:class="{
-                                    'is-empty': invalidFreeStartTime_edit,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -665,15 +660,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              type="time"
-                              id="reservationtime"
-                              v-model="freeTicketSaleEndTime_edit"
-                              v-bind:class="{
-                                    'is-empty': invalidFreeEndTime_edit,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -913,15 +900,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              type="time"
-                              v-model="paidTicketSaleStartTime"
-                              id="reservationtime"
-                              v-bind:class="{
-                                    'is-empty': invalidPaidStartTime,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -969,15 +948,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              v-model="paidTicketSaleEndTime"
-                              type="time"
-                              id="reservationtime"
-                              v-bind:class="{
-                                    'is-empty': invalidPaidEndTime,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -1273,15 +1244,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              type="time"
-                              id="reservationtime2"
-                              v-model="paidTicketSaleStartTime_edit"
-                              v-bind:class="{
-                                    'is-empty': invalidPaidStartTime_edit,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -1326,15 +1289,7 @@
                                 <i class="far fa-clock"></i>
                               </span>
                             </div>
-                            <!-- <input
-                              class="form-control"
-                              type="time"
-                              id="reservationtime2"
-                              v-model="paidTicketSaleEndTime_edit"
-                              v-bind:class="{
-                                    'is-empty': invalidPaidEndTime_edit,
-                                  }"
-                            />-->
+
                             <vue-timepicker
                               close-on-complete
                               :input-class="input"
@@ -1794,7 +1749,6 @@ export default {
           this.enablePaidBtn();
           if (res.status === 201) {
             const ticket = await res.json();
-            // console.log(ticket); // { ticket_id: 11 }
 
             // add
             const num = parseFloat(body.price);
@@ -1806,11 +1760,6 @@ export default {
             this.onCreateTicket(body);
 
             this.resetPaidTicketData();
-
-            // this.showPaidTicketMessage = true;
-            // setTimeout(() => {
-            //   this.showPaidTicketMessage = false;
-            // }, 2000);
 
             this.closePaidTicketModal();
           }
@@ -2083,7 +2032,6 @@ export default {
     },
 
     saveCountryCurrency() {
-      // const token = `Bearer ${window.localStorage.getItem("token")}`;
       const body = {
         event_key: window.localStorage.getItem("current_event_key"),
         country: this.ticketCountryOfPayment.name,
@@ -2627,13 +2575,16 @@ export default {
       "ticketCountryOfPayment",
       "ticketCurrencyOfPayment",
       "proceedToTicketTable",
-      "createdTickets"
+      "createdTickets",
+      "ticketPaymentType"
     ])
   },
 
   mounted() {
-    this.$refs.curdropdown.searchFilter = this.selectedCurrency.name;
-    this.$refs.countdropdown.searchFilter = this.selectedCountry.name;
+    if (this.ticketPaymentType) {
+      this.$refs.curdropdown.searchFilter = this.selectedCurrency.name;
+      this.$refs.countdropdown.searchFilter = this.selectedCountry.name;
+    }
   }
 };
 </script>

@@ -410,6 +410,14 @@
                   </tr>
                 </tbody>
               </table>
+              <div style="display: flex; justify-content: flex-end; margin-top: 10px">
+                <div>
+                  <button
+                    class="btn btn-block btn-success"
+                    @click="$emit('onSwitchTab', 'subscription-tab')"
+                  >Next</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1730,7 +1738,7 @@ export default {
       }
 
       const body = {
-        event_key: window.localStorage.getItem("current_event_key"),
+        event_key: "8a064820-0546-452f-b618-73a5d134758f", // window.localStorage.getItem("current_event_key"),
         field:
           this.selectedOption == "6" ? this.terms_title : this.main_question,
         type: type,
@@ -1832,7 +1840,7 @@ export default {
       $("body").removeClass("modal-open");
       $(".modal-backdrop").remove();
 
-      $(`#add-question-btn`).click();
+      // $(`#add-question-btn`).click();
 
       // for question modal
       $("#new-question-modal")
@@ -2215,7 +2223,7 @@ export default {
       $("body").removeClass("modal-open");
       $(".modal-backdrop").remove();
 
-      $(`#add-question-btn`).click();
+      // $(`#add-question-btn`).click();
 
       $("#recycle-modal")
         .modal()
@@ -2312,8 +2320,8 @@ export default {
 </script>
 
 <style scoped>
-/* @import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css"); */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css");
+/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
 
 table thead tr th {
   font-weight: 500;

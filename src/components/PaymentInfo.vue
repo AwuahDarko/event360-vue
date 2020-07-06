@@ -446,7 +446,13 @@
         </div>
         <div class="light-green p-2 mt-3 mb-3">Agreement and Save</div>
         <div class="row pl-2">
-          <input type="checkbox" id="agree" class="mr-2" v-model="acceptedTerms" />
+          <input
+            type="checkbox"
+            id="agree"
+            class="mr-2"
+            v-model="acceptedTerms"
+            @change="disable_save = !$event.target.checked"
+          />
           <label for="agree">
             I have read and accept the
             <a
@@ -460,6 +466,7 @@
           type="submit"
           class="btn btn-success pl-4 pr-4 float-right"
           @click="createPaymentInfo"
+          :disabled="disable_save"
         >Save</button>
       </form>
     </div>
@@ -516,7 +523,8 @@ export default {
       invalidRoutingNumber: false,
       invalidAccountNumber: false,
       invalidCreditCard: false,
-      invalidCountry: false
+      invalidCountry: false,
+      disable_save: true
     };
   },
 
@@ -793,7 +801,7 @@ h3 {
 
 .image-box {
   width: 100%;
-  height: 200px;
+  height: 220px;
 }
 
 /* RESPONSIVE */

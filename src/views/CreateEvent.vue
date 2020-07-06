@@ -1103,6 +1103,7 @@
                           :token="token"
                           v-on:showProgress="showOrHideProgress"
                           v-on:showFlagFromRegistration="showFlagFromRegistration"
+                          v-on:onSwitchTab="switchTabs"
                         />
                       </div>
                       <div
@@ -1586,6 +1587,9 @@ export default {
 
     switchTabs(where) {
       $(`#${where}`).tab("show");
+      if (where === "subscription-tab") {
+        this.registration_done = true;
+      }
     }
   },
 
@@ -1631,6 +1635,8 @@ export default {
   },
 
   beforeCreate() {
+    // unset current event key
+    window.localStorage.setItem("current_event_key", "");
     // check for authentication
     const token = window.localStorage.getItem("token");
     if (!token) {

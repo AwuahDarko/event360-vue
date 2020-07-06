@@ -316,6 +316,10 @@
                                   <td></td>
                                   <td></td>
                                 </tr>
+                                <tr class="table-light">
+                                  <td></td>
+                                  <td></td>
+                                </tr>
                                 <tr>
                                   <td>With Discount</td>
                                   <td>{{ data.with_discount }}</td>
