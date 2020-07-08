@@ -1111,13 +1111,22 @@
                         id="custom-tabs-one-settings"
                         role="tabpanel"
                         aria-labelledby="custom-tabs-one-settings-tab"
-                      >Subscription</div>
+                      >
+                        <Subscription
+                          :token="token"
+                          v-on:showProgress="showOrHideProgress"
+                          v-on:onSwitchTab="switchTabs"
+                          v-on:onShowMessage="showFlagFromSub"
+                        />
+                      </div>
                       <div
                         class="tab-pane fade card card-body"
                         id="custom-tabs-one-publish"
                         role="tabpanel"
                         aria-labelledby="publish"
-                      >Publish</div>
+                      >
+                        <Publish />
+                      </div>
                     </div>
                   </div>
                   <!-- /.card -->
@@ -1156,6 +1165,8 @@ import { apiUrl } from "../utils/config";
 import Tickets from "../components/Tickets.vue";
 import TicketTable from "../components/TicketTable.vue";
 import Registration from "../components/Registration.vue";
+import Subscription from "../components/Subscriptions.vue";
+import Publish from "../components/Publish.vue";
 
 // setTitleMethod('title')
 //  vue.$refs.snackbar.error('Error function triggered')
@@ -1174,7 +1185,9 @@ export default {
     snackbar: Snackbar,
     Tickets,
     TicketTable,
-    Registration
+    Registration,
+    Subscription,
+    Publish
   },
   props: {},
   data() {
@@ -1294,6 +1307,10 @@ export default {
 
     showFlagFromRegistration(flag) {
       this.$refs.snackbar.open(flag);
+    },
+
+    showFlagFromSub(flag) {
+      this.$refs.snackbar.info(flag);
     },
 
     showFlagsFromTicketTable(flag) {
@@ -1589,6 +1606,8 @@ export default {
       $(`#${where}`).tab("show");
       if (where === "subscription-tab") {
         this.registration_done = true;
+      } else if (where === "publish-tab") {
+        this.subscription_done = true;
       }
     }
   },
