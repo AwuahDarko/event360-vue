@@ -1117,6 +1117,7 @@
                           v-on:showProgress="showOrHideProgress"
                           v-on:onSwitchTab="switchTabs"
                           v-on:onShowMessage="showFlagFromSub"
+                          v-on:onShowError="showErrorFromSub"
                         />
                       </div>
                       <div
@@ -1311,6 +1312,10 @@ export default {
 
     showFlagFromSub(flag) {
       this.$refs.snackbar.info(flag);
+    },
+
+    showErrorFromSub(flag) {
+      this.$refs.snackbar.open(flag);
     },
 
     showFlagsFromTicketTable(flag) {

@@ -6,9 +6,8 @@
           <article class="p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/color/96/000000/tear-off-calendar.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -26,7 +25,6 @@
               v-bind:class="{'btn-light text-dark': !manage_your_event_selected}"
               @click="manage_your_event_selected = !manage_your_event_selected"
             >{{ !manage_your_event_selected ? 'Subscribe' : 'Unsubscribe'}}</button>
-            <!-- <div class="m-badge">Coming Soon</div> -->
           </article>
         </div>
       </div>
@@ -35,9 +33,8 @@
           <article class="col p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/dusk/80/000000/print.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -65,9 +62,8 @@
           <article class="col p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/officel/80/000000/exhibitor.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -96,9 +92,8 @@
           <article class="p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/dusk/80/000000/ticket.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -124,9 +119,8 @@
           <article class="col p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/clouds/100/000000/4-star-hotel.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -154,9 +148,8 @@
           <article class="col p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/dusk/80/000000/airport.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -186,9 +179,8 @@
           <article class="col p-2">
             <div class="image-box">
               <div class="avatar bg-light">
-                <!-- https://img.icons8.com/dusk/64/000000/filled-message.png -->
                 <img
-                  src="../assets/img/avatar.png"
+                  src="https://img.icons8.com/officel/80/000000/commercial.png"
                   alt="subscription image"
                   class="subscription-image"
                 />
@@ -278,7 +270,6 @@
         </div>
         <div class="card-footer">
           <div class="send-right">
-            <!-- <button class="my-btn btn-info" @click="closeDeleteModal">No</button> -->
             <button class="my-btn btn-success ml-2" @click="closeModal">Done</button>
           </div>
         </div>
@@ -338,7 +329,6 @@ export default {
           this.advert_options.splice(index, 1);
         }
       }
-      // console.log(this.advert_options);
     },
 
     getBody() {
@@ -359,6 +349,15 @@ export default {
     },
 
     onSave() {
+      const event = window.localStorage.getItem("current_event_key");
+      if (event === null || event === "") {
+        this.$emit(
+          "onShowError",
+          "To add subscriptions you must first create an event"
+        );
+        return;
+      }
+
       const options = {
         method: !this.setForUpdate ? "POST" : "PUT",
         headers: {

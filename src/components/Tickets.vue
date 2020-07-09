@@ -360,13 +360,13 @@ export default {
 
     showTicketCountryCurrency() {
       this.event_key = window.localStorage.getItem("current_event_key");
-      // if (this.event_key === null || this.event_key === "") {
-      //   this.$emit(
-      //     "showFlagFromTicket",
-      //     "To create a ticket you must first create an event."
-      //   );
-      //   return;
-      // }
+      if (this.event_key === null || this.event_key === "") {
+        this.$emit(
+          "showFlagFromTicket",
+          "To create a ticket you must first create an event."
+        );
+        return;
+      }
 
       this.countryNotSet = false;
       this.currencyNotSet = false;
@@ -523,7 +523,7 @@ export default {
 <style scoped>
 @import url("../assets/css/adminlte.min.css");
 /* @import url("../assets/css/fontawesome-free/css/all.min.css"); */
-/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 
 body {
   font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",

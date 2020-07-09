@@ -2320,8 +2320,8 @@ export default {
 </script>
 
 <style scoped>
-@import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css");
-/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
+/* @import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css"); */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 
 table thead tr th {
   font-weight: 500;

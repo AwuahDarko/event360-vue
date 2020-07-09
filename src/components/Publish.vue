@@ -9,9 +9,10 @@
         <div class="col-md-5">
           <h6 class="text-bold big-text">Total Charge Due:</h6>
         </div>
-        <div class="col-md-5"></div>
-        <div class="col-md-2">
-          <span class="ghana-cedi-2" v-html="cedi">{{ cedi }}</span> 0.00
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+          <span class="ghana-cedi text-bold" v-html="cedi">{{ cedi }}</span>
+          <strong class="big-text ml-1">0.00</strong>
         </div>
       </div>
     </div>
@@ -129,12 +130,13 @@
     <div class="bg-light price-box p-3 mt-2">
       <small>
         By submitting my event, I agree to Event360's
-        <a href="#">Terms of Service</a> and
+        <a href="#" target="_blank">Terms of Service</a> and
         <a href="https://event360-gh.com/privacy.html" target="_blank">Privacy Policies</a>.
         I also understand that Event360 may send emails to attendees with information about
         downloading and using the app.
         <a
           href="#"
+          target="_blank"
         >Learn More</a>
       </small>
     </div>
@@ -174,11 +176,13 @@ export default {
 }
 
 .lab-my {
-  width: 50%;
+  width: 65%;
+  font-size: 1.2rem;
 }
 
 .lab-ui {
   width: 80%;
+  font-size: 0.9rem;
 }
 
 .big-text {
@@ -202,6 +206,7 @@ export default {
 
   .lab-ui {
     width: 50%;
+    font-size: 1rem;
   }
 }
 </style>
