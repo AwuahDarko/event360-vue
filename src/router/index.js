@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import CreateEvent from '../views/CreateEvent.vue';
-import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
+// import CreateEvent from '../views/CreateEvent.vue';
+// import Login from '../views/Login.vue';
+// import Register from '../views/Register.vue';
 import VuePageTitle from 'vue-page-title';
 import VueProgressBar from 'vue-progressbar';
 import VModal from 'vue-js-modal';
@@ -47,39 +47,45 @@ Vue.use(VModal, {
   scrollable: true,
 });
 
+function lazyLoad(view) {
+  return () => import(`@/views/${view}.vue`);
+}
+
 const routes = [
   {
     path: '/',
     name: 'CreateEvent',
-    component: CreateEvent,
+    component: lazyLoad('CreateEvent'),
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: lazyLoad('Login'),
   },
   {
     path: '/sign-up',
     name: 'Register',
-    component: Register,
+    component: lazyLoad('Register'),
   },
   // {
   //   path: '/',
   //   name: 'Home',
   //   component: Home
   // },
-  {
-    path: '/about',
-    name: 'PromoCode',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ '../components/PaymentInfo.vue'),
-  },
+  // {
+  //   path: '/about',
+  //   name: 'PromoCode',
+  //   // route level code-splitting
+  //   // this generates a separate chunk (about.[hash].js) for this route
+  //   // which is lazy-loaded when the route is visited.
+  //   component: () =>
+  //     import(/* webpackChunkName: "about" */ '../components/PaymentInfo.vue'),
+  // },
 ];
 
 const router = new VueRouter({
+  mode: 'history',
+  base: process.env.BASE_URL,
   routes,
 });
 
