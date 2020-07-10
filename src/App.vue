@@ -76,6 +76,17 @@ body {
 
 .vm--modal {
   box-shadow: none !important;
+  height: auto !important;
+  background: none !important;
+  overflow: scroll;
+}
+
+.vm--container {
+  overflow: scroll !important;
+}
+
+.vm--overlay {
+  overflow: scroll !important;
 }
 
 h4 {

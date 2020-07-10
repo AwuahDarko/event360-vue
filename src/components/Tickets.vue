@@ -222,7 +222,7 @@
         :height="infoModalHeight"
         :width="width"
         :reset="true"
-        :styles="infoBoxStyles"
+        :styles="infoBoxStyle"
       >
         <div class="card" id="ticket_cost">
           <div class="card-header">
@@ -337,11 +337,12 @@ export default {
   data() {
     return {
       width: "50%",
-      height: "422px",
-      infoModalHeight: "600",
+      height: "300px",
+      infoModalHeight: "650px",
       countryOptions: countries,
       currencyOptions: currency,
       infoBoxStyles: "background: none",
+      infoBoxStyle: "overflow : auto;",
       countryNotSet: false,
       currencyNotSet: false,
       termsAccepted: false,
@@ -359,14 +360,14 @@ export default {
     ]),
 
     showTicketCountryCurrency() {
-      this.event_key = window.localStorage.getItem("current_event_key");
-      if (this.event_key === null || this.event_key === "") {
-        this.$emit(
-          "showFlagFromTicket",
-          "To create a ticket you must first create an event."
-        );
-        return;
-      }
+      // this.event_key = window.localStorage.getItem("current_event_key");
+      // if (this.event_key === null || this.event_key === "") {
+      //   this.$emit(
+      //     "showFlagFromTicket",
+      //     "To create a ticket you must first create an event."
+      //   );
+      //   return;
+      // }
 
       this.countryNotSet = false;
       this.currencyNotSet = false;
@@ -501,12 +502,16 @@ export default {
     const mq = window.matchMedia("(max-width: 800px)");
     if (mq.matches) {
       this.width = "80%";
-      this.height = "530px";
+      this.height = "600px";
+      // this.infoModalHeight = "900px";
+      // this.infoBoxStyle = "overflow : scroll";
     }
 
     const media = window.matchMedia("(min-width: 411px)");
     if (media.matches) {
-      this.height = "420px";
+      this.height = "600px";
+      // this.infoModalHeight = "900px";
+      // this.infoBoxStyle = "overflow : scroll";
     }
   },
 

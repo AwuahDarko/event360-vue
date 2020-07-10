@@ -462,7 +462,7 @@
                                   <div class="mb-2 mt-2">
                                     <input
                                       class
-                                      name="checkboxPrimary3"
+                                      id="checkboxPrimary3"
                                       type="checkbox"
                                       checked
                                       v-model="includeTicketsBtn"

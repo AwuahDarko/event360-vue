@@ -88,7 +88,13 @@
             <div class="modal-content">
               <div class="modal-header bg-success">
                 <h4 class="modal-title">Create Promo Code</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                  @click="reset"
+                >
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
@@ -277,6 +283,7 @@
                             </div>
                             <input
                               type="number"
+                              class="form-control"
                               placeholder="eg: 10"
                               v-model="limited_number"
                               :disabled="disable_limited"
@@ -312,11 +319,7 @@
                                   <td>You Earn</td>
                                   <td>{{ data.you_earn }}</td>
                                 </tr>
-                                <tr class="table-light">
-                                  <td></td>
-                                  <td></td>
-                                </tr>
-                                <tr class="table-light">
+                                <tr class="table-light" style="height: 40px">
                                   <td></td>
                                   <td></td>
                                 </tr>
@@ -344,6 +347,7 @@
                   class="btn btn-default"
                   data-dismiss="modal"
                   :disabled="isCloseDisable"
+                  @click="reset"
                 >Close</button>
                 <button
                   type="button"

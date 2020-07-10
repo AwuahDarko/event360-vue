@@ -1782,7 +1782,6 @@ export default {
 
       fetch(`${apiUrl}/api/registration-form`, options)
         .then(async res => {
-          console.log(res);
           this.$emit("showProgress", false);
           this.enableBtn();
 
