@@ -26,7 +26,7 @@
             <h6 class="text-bold">Basic price:</h6>
           </div>
           <div class="col-md-5"></div>
-          <h6 class="col-md-2 text-sm">
+          <h6 class="col-md-2 text-sm text-dark">
             <span class="ghana-cedi-2" v-html="cedi">{{ cedi }}</span> 0.00
           </h6>
         </div>
