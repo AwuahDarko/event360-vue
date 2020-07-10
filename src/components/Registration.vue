@@ -1738,7 +1738,7 @@ export default {
       }
 
       const body = {
-        event_key: "8a064820-0546-452f-b618-73a5d134758f", // window.localStorage.getItem("current_event_key"),
+        event_key: window.localStorage.getItem("current_event_key"),
         field:
           this.selectedOption == "6" ? this.terms_title : this.main_question,
         type: type,
@@ -1782,6 +1782,7 @@ export default {
 
       fetch(`${apiUrl}/api/registration-form`, options)
         .then(async res => {
+          console.log(res);
           this.$emit("showProgress", false);
           this.enableBtn();
 
