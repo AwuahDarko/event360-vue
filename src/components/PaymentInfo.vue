@@ -101,7 +101,7 @@
               placeholder="Email"
               class="form-control"
               v-model="email"
-              v-bind:class="{ 'is-empty': invalidLast}"
+              v-bind:class="{ 'is-empty': invalidEmail}"
             />
           </div>
         </div>

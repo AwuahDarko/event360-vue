@@ -1233,7 +1233,7 @@
                           v-if="current_step === 1"
                           style="display: flex; justify-content: flex-end"
                         >
-                          <div class="badge badge-danger">{{current_index}}</div>
+                          <div class="badge badge-danger">Review {{current_index}}</div>
                         </div>
                       </div>
                     </div>

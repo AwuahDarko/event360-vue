@@ -13,14 +13,20 @@
     <div class="wrapper">
       <nav class="main-header navbar navbar-expand navbar-white navbar-light">
         <!-- Left navbar links -->
-        <ul class="navbar-nav"></ul>
+        <ul class="navbar-nav">
+          <div>
+            <a href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="e360 logo" width="60px" height="40px" />
+            </a>
+          </div>
+        </ul>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
           <!--  </a> -->
           <!-- Messages Dropdown Menu -->
           <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
+            <!-- <a class="nav-link" data-toggle="dropdown" href="#">
               <i class="far fa-comments"></i>
               <span class="badge badge-danger navbar-badge">3</span>
             </a>
@@ -49,7 +55,7 @@
 
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-            </div>
+            </div>-->
           </li>
           <!-- Notifications Dropdown Menu -->
 
@@ -59,7 +65,7 @@
                 <div class="widget-content p-0">
                   <div class="widget-content-wrapper">
                     <div class="widget-content-left">
-                      <div class="btn-group" style="text-decoration: none;">
+                      <!-- <div class="btn-group" style="text-decoration: none;">
                         <a
                           data-toggle="dropdown"
                           aria-haspopup="true"
@@ -97,7 +103,7 @@
                             <button type="button" tabindex="0" class="dropdown-item">Help Center</button>
                           </a>
                         </div>
-                      </div>
+                      </div>-->
                     </div>
                   </div>
                 </div>
@@ -117,7 +123,7 @@
                           aria-expanded="false"
                           class="p-0 btn"
                         >
-                          <img width="30" class="rounded-circle" src="../assets/img/avatar.png" alt />
+                          <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
                           <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
                         </a>
                         <div
@@ -128,15 +134,15 @@
                         >
                           <!--  <div tabindex="-1" class="dropdown-divider"></div> -->
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Tickets</button>
+                            <button type="button" tabindex="0" class="dropdown-item">My Events</button>
                           </a>
                           <a href="#">
-                            <button type="button" tabindex="0" class="dropdown-item">Liked</button>
+                            <button type="button" tabindex="1" class="dropdown-item">Browse Events</button>
                           </a>
                           <a href="#">
                             <button
                               type="button"
-                              tabindex="0"
+                              tabindex="2"
                               class="dropdown-item"
                               @click="logout"
                             >Log Out</button>
@@ -461,7 +467,7 @@
 
                                   <div class="mb-2 mt-2">
                                     <input
-                                      class
+                                      class="mr-2"
                                       id="checkboxPrimary3"
                                       type="checkbox"
                                       checked
