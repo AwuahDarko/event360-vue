@@ -157,12 +157,18 @@
                           <div
                             class="m-body"
                             v-bind:class="{
-                                    'is-empty': invalid_discount,
+                                    'is-empty': invalid_discount
                                   }"
                           >
                             <div class="form-groupy">
                               <span>
-                                <input type="radio" name="nam" checked @change="activateAmount" />
+                                <input
+                                  type="radio"
+                                  name="nam"
+                                  ref="activateamountradio"
+                                  checked
+                                  @change="activateAmount"
+                                />
                               </span>
                               <span class="ghana-cedi" v-html="cedi">{{ cedi }}</span>
                               <input
@@ -178,7 +184,12 @@
                             </div>
                             <div class="form-groupy">
                               <span>
-                                <input type="radio" name="nam" @change="activatePercentage" />
+                                <input
+                                  type="radio"
+                                  name="nam"
+                                  ref="activatepercentradio"
+                                  @change="activatePercentage"
+                                />
                               </span>
                               <input
                                 class="form-fieldy"
@@ -266,6 +277,7 @@
                                 type="radio"
                                 name="uses"
                                 id="unlimited"
+                                ref="unlimitedcheck"
                                 checked
                                 @change="activateUnLimited"
                               />
@@ -277,6 +289,7 @@
                                 type="radio"
                                 name="uses"
                                 id="limited"
+                                ref="limitedcheck"
                                 @change="activateLimited"
                               />
                               <label class="remove-bottom-margin ml-2" for="limited">Limited to:</label>
@@ -397,9 +410,9 @@ export default {
       amount_discount: "",
       percent_discount: "",
       start_date: "",
-      start_time: "",
+      start_time: "00:00",
       end_date: "",
-      end_time: "",
+      end_time: "00:00",
       unlimited: true,
       limited: false,
       limited_number: "",
@@ -653,9 +666,9 @@ export default {
       this.amount_discount = "";
       this.percent_discount = "";
       this.start_date = "";
-      this.start_time = "";
+      this.start_time = "00:00";
       this.end_date = "";
-      this.end_time = "";
+      this.end_time = "00:00";
       this.unlimited = true;
       this.limited = false;
       this.limited_number = "";
@@ -668,6 +681,10 @@ export default {
       this.summary_data = [];
 
       this.activateUnLimited();
+      this.$refs.unlimitedcheck.checked = true;
+
+      this.activateAmount();
+      this.$refs.activateamountradio.checked = true;
     },
 
     closeModal() {
@@ -717,19 +734,25 @@ export default {
 
       if (promo.discount_type === "per") {
         this.disable_percent = false;
+        this.disable_amount = true;
         this.percent_discount = promo.discount;
+        this.$refs.activatepercentradio.checked = true;
       }
 
       if (promo.discount_type === "amt") {
         this.disable_amount = false;
+        this.disable_percent = true;
         this.amount_discount = promo.discount;
+        this.$refs.activateamountradio.checked = true;
       }
 
       if (promo.limit === "") {
         this.activateUnLimited();
+        this.$refs.unlimitedcheck.checked = true;
       } else {
         this.activateLimited();
         this.limited_number = promo.limit;
+        this.$refs.limitedcheck.checked = true;
       }
 
       this.code = promo.code;

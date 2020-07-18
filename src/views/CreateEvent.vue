@@ -387,6 +387,7 @@
                                       <option>Seminar or Talk</option>
                                       <option>Submit</option>
                                       <option>Tradeshow, Consumershow, Expo</option>
+                                      <option>Virtual Event</option>
                                     </select>
                                   </div>
                                 </div>
