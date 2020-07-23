@@ -12,6 +12,7 @@ import 'ant-design-vue/lib/steps/style';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'ant-design-vue/dist/antd.css';
+// import LoadScript from 'vue-plugin-load-script';
 
 const options = {
   color: '#00BFFF',
@@ -30,6 +31,7 @@ const options = {
 
 Vue.use(VueRouter);
 Vue.use(Steps);
+// Vue.use(LoadScript);
 
 Vue.use(BootstrapVue);
 // Optionally install the BootstrapVue icon components plugin
@@ -66,6 +68,11 @@ const routes = [
     path: '/sign-up',
     name: 'Register',
     component: lazyLoad('Register'),
+  },
+  {
+    path: '/browse-event',
+    name: 'BrowseEvent',
+    component: lazyLoad('BrowseEvent'),
   },
   // {
   //   path: '/',

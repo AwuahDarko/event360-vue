@@ -367,7 +367,7 @@
                   class="btn btn-success"
                   @click="onCreatePromoCode"
                   :disabled="isCreateDisable"
-                >Create</button>
+                >{{setForUpdate ? 'Update': 'Create'}}</button>
               </div>
             </div>
             <!-- /.modal-content -->
@@ -425,7 +425,8 @@ export default {
       summary_data: [],
       isCloseDisable: false,
       isCreateDisable: false,
-      setForUpdate: false
+      setForUpdate: false,
+      code_to_edit: null
     };
   },
 
@@ -576,14 +577,30 @@ export default {
 
         fetch(`${apiUrl}/api/promo-ticket`, options)
           .then(async res => {
+            console.log(res);
             this.enableBtn();
             if (res.status == 201) {
               if (index === bodyList.length - 1) {
                 const ans = await res.json();
-                oneBody.promo_id = ans.promo_id;
-                oneBody.tickets = this.ticket_value;
+                // delete old code
+                if (this.setForUpdate) {
+                  let i = 0;
+                  for (let code of this.promo_codes) {
+                    if (this.code_to_edit === code.promo_id) {
+                      break;
+                    }
+                    ++i;
+                  }
+                  oneBody.promo_id = ans.promo_id;
+                  oneBody.tickets = this.ticket_value;
+                  this.promo_codes[i] = oneBody;
+                } else {
+                  oneBody.promo_id = ans.promo_id;
+                  oneBody.tickets = this.ticket_value;
 
-                this.promo_codes.push(oneBody);
+                  this.promo_codes.push(oneBody);
+                }
+
                 this.reset();
                 this.closeModal();
               }
@@ -730,6 +747,8 @@ export default {
     },
 
     setValuesOnEdit(promo) {
+      this.code_to_edit = promo.promo_id;
+
       this.ticket_value = promo.tickets;
 
       if (promo.discount_type === "per") {
