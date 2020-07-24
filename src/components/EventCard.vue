@@ -1,29 +1,33 @@
 <template>
-  <div class="card" style="width: 16rem;">
+  <div class="card" style="width: inherit;">
     <div>
-      <img class="img-fluid card-img-top" src="../assets/img/photo2.jpg" alt="Card image cap" />
+      <div v-if="!there_is_banner" class="banner-holder bg-info"></div>
+      <img v-else class="img-fluid" :src="banner_src" :alt="event_data.name" />
     </div>
     <div class="card-body pt-4">
-      <img src="../assets/img/user8-128x128.jpg" alt="event logo" class="avatar small-image" />
-      <div class="meta">
+      <div v-if="!there_is_logo" class="avatar small-image bg-secondary">
+        <span class="initial-text">{{ organiser_initials }}</span>
+      </div>
+      <img v-else :src="logo_src" alt="logo" class="avatar small-image" />
+      <div class="container">
         <ul class="row">
-          <li class="col-md-6 col-sm-3 col-xm-3 pb-1">
+          <li class="col-md-12 pb-1 mt-3 pl-0 pr-0">
             <span>
               <i class="far fa-clock text-success"></i>
-              date
+              {{ date }}
             </span>
           </li>
 
-          <li class="col-md-6 col-sm-3 col-xm-3 pb-1">
+          <li class="col-md-12 pb-1 pl-0 pr-0">
             <span>
               <i class="fa fa-map-marker text-success" key="vunue2"></i>
-              Venue
+              {{ event_data.venue_name + ", " + event_data.city }}
             </span>
           </li>
         </ul>
       </div>
-      <h5 class="card-title">Event Name</h5>
-      <p class="card-text">Short description</p>
+      <h5 class="card-title">{{ event_data.name }}</h5>
+      <!-- <p class="card-text">Short description</p> -->
       <div class="icon-block">
         <a href>
           <h6 class="card-title text-success">
@@ -32,9 +36,10 @@
           </h6>
         </a>
       </div>
-      <div class="icon-block">
+      <div v-if="event_data.buy_ticket_btn === 1" class="icon-block">
         <button type="button" class="btn btn-block btn-success btn-sm mt-2 mb-2">Get Tickets</button>
       </div>
+      <div v-else class="block-block mt-2 mb-2"></div>
 
       <div class="mt-1">
         <div class="items-in-row">
@@ -67,7 +72,95 @@
 
 
 <script>
-export default {};
+import { apiUrl } from "../utils/config";
+import moment from "moment";
+
+export default {
+  name: "EventCard",
+  props: {
+    event_data: {
+      type: Object
+    }
+  },
+
+  data() {
+    return {
+      there_is_banner: false,
+      there_is_logo: false,
+      banner_src: "",
+      logo_src: ""
+    };
+  },
+
+  methods: {
+    getImageUrl() {
+      // LOGO
+      fetch(`${apiUrl}/api/event-logo?key=${this.event_data.event_key}`, {
+        method: "GET"
+      })
+        .then(async res => {
+          if (res.status == 200) {
+            const logo = await res.json();
+            // this.logo_src = `${apiUrl}/api/images/?img=${logo.image_url}`;
+            if (logo.image_url != "") {
+              this.logo_src = `${apiUrl}/api/images/?img=${logo.image_url}`;
+              this.there_is_logo = true;
+            } else {
+              this.there_is_logo = false;
+            }
+          }
+
+          if (res.status == 404) {
+            this.there_is_logo = false;
+          }
+        })
+        .catch(err => console.log(err));
+
+      // BANNER
+      fetch(`${apiUrl}/api/event-banner?key=${this.event_data.event_key}`, {
+        method: "GET"
+      })
+        .then(async res => {
+          if (res.status == 200) {
+            const banner = await res.json();
+            this.banner_src = `${apiUrl}/api/images/?img=${banner.image_url}`;
+            if (banner.image_url != "") {
+              this.banner_src = `${apiUrl}/api/images/?img=${banner.image_url}`;
+              this.there_is_banner = true;
+            } else {
+              this.there_is_banner = false;
+            }
+          }
+
+          if (res.status == 404) {
+            this.there_is_banner = false;
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  },
+
+  created() {
+    this.getImageUrl();
+  },
+
+  computed: {
+    date: function() {
+      // moment(this.endDateData, "LL").format("YYYY-MM-DD")
+      const st = this.event_data.start_date.split("T")[0];
+      const start = moment(st, "YYYY-MM-DD").format("LL");
+
+      const ed = this.event_data.end_date.split("T")[0];
+      const end = moment(ed, "YYYY-MM-DD").format("LL");
+
+      return `${start} - ${end}`;
+    },
+
+    organiser_initials: function() {
+      return this.event_data.organiser.substring(0, 2);
+    }
+  }
+};
 </script>
 
 
@@ -78,8 +171,8 @@ export default {};
 
 .small-image {
   position: absolute;
-  top: 28%;
-  left: 25px;
+  top: 31.5%;
+  left: 22px;
 }
 
 .avatar {
@@ -125,5 +218,38 @@ li {
 .card:active {
   box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.6);
   transform: translateY(-3px) scale(1.01) rotateX(15deg);
+}
+
+.banner-holder {
+  height: 165.677px;
+}
+
+.block-block {
+  height: 31px;
+}
+
+li span {
+  font-size: 0.75rem;
+}
+
+.init {
+  position: relative;
+}
+
+.initial-text {
+  text-transform: uppercase;
+  font-size: 2rem;
+  position: absolute;
+  top: 32%;
+  left: 19%;
+  right: 5%;
+  /* bottom: 50%; */
+  color: white;
+  font-weight: bold;
+}
+
+.img-fluid {
+  max-height: 165.677px;
+  width: 100%;
 }
 </style>

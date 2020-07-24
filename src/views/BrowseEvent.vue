@@ -1,5 +1,13 @@
 <template>
   <section>
+    <vue-progress-bar></vue-progress-bar>
+    <snackbar
+      ref="snackbar"
+      baseSize="50px"
+      :holdTime="5000"
+      :multiple="true"
+      :position="position"
+    />
     <header id="header">
       <div class="header-top bg-success">
         <div class="container">
@@ -40,7 +48,12 @@
         <div class="row align-items-center justify-content-between d-flex">
           <div id="logo">
             <a href="https://event360-gh.com">
-              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+              <img
+                src="../assets/img/logo.png"
+                alt="logo"
+                width="80px"
+                height="30px"
+              />
             </a>
           </div>
           <nav id="nav-menu-container">
@@ -67,45 +80,69 @@
     <section class="banner-area relative" id="home">
       <div class="overlay overlay-bg"></div>
       <div class="container">
-        <div class="row fullscreen d-flex align-items-center justify-content-center">
+        <div
+          class="row fullscreen d-flex align-items-center justify-content-center"
+        >
           <div class="banner-content col-lg-12 col-md-12">
             <!-- <h6 class="text-uppercase">Don’t look further, here is the key</h6> -->
-            <h1>Network, expand your knowledge and find solutions to problems.</h1>
+            <h1>
+              Network, expand your knowledge and find solutions to problems.
+            </h1>
             <h5 class="text-white mb-4">
               Find and attend conferences, seminars, workshop, trade fair shows
               everywhere in Ghana
             </h5>
-            <a href="#" class="btn btn-primary text-white p-2">Browse Events</a>
+            <a href="#browse-event-4-4-2" class="btn btn-primary text-white p-2"
+              >Browse Events</a
+            >
           </div>
         </div>
       </div>
     </section>
+    <div id="browse-event-4-4-2"></div>
     <!-- End banner Area -->
     <div style="height: 10px"></div>
     <!-- TOP LEVEL CATEGORIES -->
     <section>
-      <div class="category-container top-cat">
+      <div class="category-container pl-2 pr-2">
         <button
-          v-for="(num, i) in temp"
-          :key="i"
-          class="btn btn-light border-secondary text-secondary mr-2"
-        >Technology</button>
+          v-for="category in allCategories"
+          :key="`top-${category.id}`"
+          class="btn btn-light border-secondary text-secondary mr-2 mt-1"
+        >
+          {{ category.name }}
+        </button>
       </div>
     </section>
     <div style="height: 30px"></div>
-    <section class="w-80 mx-auto bg-light pl-5 pr-5 pt-1">
+    <section class="main-events bg-light pt-1 put-pad">
       <h3>UPCOMING EVENTS</h3>
       <hr class="bg-success" style="width: 40px; height: 2px" />
       <div class="search-container">
         <div class="search-box">
-          <input type="text" class="search-box-content text-field" placeholder="Search Event" />
+          <input
+            type="text"
+            class="search-box-content text-field"
+            placeholder="Search Event"
+          />
           <button class="search-box-content search-btn">
             <i class="fa fa-search"></i>
           </button>
         </div>
       </div>
       <div style="height: 20px"></div>
-      <section class="browse-parent">
+      <section v-if="!ready_to_display">
+        <article class="row">
+          <div
+            class="col-md-3 pl-0 pr-0"
+            v-for="(a, i) in temp"
+            :key="`asdf-${i}`"
+          >
+            <EventCardSkeleton />
+          </div>
+        </article>
+      </section>
+      <section v-else class="browse-parent">
         <button class="arrows arrows-left">
           <i class="fa fa-caret-left"></i>
         </button>
@@ -120,29 +157,24 @@
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
-            >All Event</a>
+              >All Event</a
+            >
           </li>
-          <li class="nav-item">
+          <li
+            class="nav-item"
+            v-for="day in eventsByDay"
+            :key="`header-${day.day.split(' ').join('-')}`"
+          >
             <a
               class="nav-link"
-              id="pills-profile-tab"
+              :id="`pills-profile-tab-${day.day.split(' ').join('-')}`"
               data-toggle="pill"
-              href="#pills-profile"
+              :href="`#pills-profile-${day.day.split(' ').join('-')}`"
               role="tab"
-              aria-controls="pills-profile"
+              :aria-controls="`pills-profile-${day.day.split(' ').join('-')}`"
               aria-selected="false"
-            >Profile</a>
-          </li>
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              id="pills-contact-tab"
-              data-toggle="pill"
-              href="#pills-contact"
-              role="tab"
-              aria-controls="pills-contact"
-              aria-selected="false"
-            >Contact</a>
+              >{{ day.day }}</a
+            >
           </li>
         </ul>
         <button class="arrows arrows-right">
@@ -156,23 +188,74 @@
             role="tabpanel"
             aria-labelledby="pills-home-tab"
           >
-            <EventCard />
+            <div class="col">
+              <article class="row card-container">
+                <div
+                  class="col-md-3 mb-4"
+                  v-for="event in allEvents"
+                  :key="`event-card-${event.event_key}`"
+                >
+                  <EventCard :event_data="event" />
+                </div>
+              </article>
+              <!-- PAGINATION -->
+              <div style="display: flex; justify-content: flex-end">
+                <paginate
+                  :page-count="10"
+                  :page-range="1"
+                  :margin-pages="1"
+                  :click-handler="clickCallback"
+                  :prev-text="'Prev'"
+                  :next-text="'Next'"
+                  :container-class="'pagination'"
+                  :page-class="'page-item'"
+                  :page-link-class="'page-link'"
+                  :prev-link-class="'page-link'"
+                  :next-link-class="'page-link'"
+                >
+                </paginate>
+              </div>
+            </div>
           </div>
+
           <div
             class="tab-pane fade"
-            id="pills-profile"
+            :id="`pills-profile-${day.day.split(' ').join('-')}`"
             role="tabpanel"
-            aria-labelledby="pills-profile-tab"
+            :aria-labelledby="
+              `pills-profile-tab-${day.day.split(' ').join('-')}`
+            "
+            v-for="day in eventsByDay"
+            :key="`body-${day.day.split(' ').join('-')}`"
           >
-            <EventCard />
-          </div>
-          <div
-            class="tab-pane fade"
-            id="pills-contact"
-            role="tabpanel"
-            aria-labelledby="pills-contact-tab"
-          >
-            <EventCard />
+            <article class="row card-container">
+              <div
+                class="col-md-3 mb-4"
+                v-for="(event, index) in day.events"
+                :key="`event-card-by-day-${event.event_key}-${index}`"
+              >
+                <EventCard :event_data="event" />
+                <div
+                  v-if="index === day.events.length - 1"
+                  style="display: flex; justify-content: flex-end"
+                >
+                  <paginate
+                    :page-count="10"
+                    :page-range="3"
+                    :margin-pages="3"
+                    :click-handler="clickCallback"
+                    :prev-text="'Prev'"
+                    :next-text="'Next'"
+                    :container-class="'pagination'"
+                    :page-class="'page-item'"
+                    :page-link-class="'page-link'"
+                    :prev-link-class="'page-link'"
+                    :next-link-class="'page-link'"
+                  >
+                  </paginate>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
         <!-- TAB CONTENTS ENDS HERE -->
@@ -180,26 +263,30 @@
       </section>
     </section>
     <!-- <div style="height: 60px"></div> -->
-    <footer class="greay-color pt-4">
+    <footer class="footer-color pt-4">
       <section class="col">
-        <h5>Browse By Catergory:</h5>
-        <div class="category-container mt-1">
+        <h5>Browse by catergory:</h5>
+        <div class="category-container mt-1 pl-1 pr-1">
           <button
-            v-for="(num, i) in temp"
-            :key="i"
-            class="btn btn-light border-secondary text-secondary mr-2"
-          >Technology</button>
+            v-for="category in allCategories"
+            :key="`down-${category.id}`"
+            class="btn btn-primary border-primary text-white mr-2 mt-1"
+          >
+            {{ category.name }}
+          </button>
         </div>
       </section>
       <div style="height: 20px"></div>
       <section class="col mt-6">
-        <h5>Browse by Type:</h5>
-        <div class="category-container mt-1">
+        <h5>Browse by type:</h5>
+        <div class="category-container mt-1 pl-1 pr-1">
           <button
             v-for="(type, i) in event_types"
             :key="`type-${i}`"
-            class="btn btn-light border-secondary text-secondary mr-2"
-          >{{ type }}</button>
+            class="btn btn-primary border-primary text-white mr-2 mt-1"
+          >
+            {{ type }}
+          </button>
         </div>
       </section>
       <div style="height: 60px"></div>
@@ -208,35 +295,56 @@
 </template>
 
 <script>
-import EventCard from "../components/EventCard.vue";
+import EventCard from '../components/EventCard.vue';
+import { mapGetters, mapActions } from 'vuex';
+import Snackbar from 'vuejs-snackbar';
+import EventCardSkeleton from '../components/EventCardSkeleton.vue';
+
+//  vue.$refs.snackbar.error('Error function triggered')
+// vue.$refs.snackbar.warn('Warn function triggered')
+// vue.$refs.snackbar.info('Info function triggered')
+// vue.$refs.snackbar.open('Open function triggered')
+
 export default {
-  name: "BrowseEvent",
-  title: "Browse Event",
+  name: 'BrowseEvent',
+  title: 'Browse Event',
   components: {
-    EventCard
+    EventCard,
+    snackbar: Snackbar,
+    EventCardSkeleton,
   },
 
   data() {
     return {
+      position: 'top-right',
       temp: [1, 2, 3, 4, 5, 6, 7, 8],
       event_types: [
-        "Camp, Trip or Retreat",
-        "Conference",
-        "Convention",
-        "Dinner or Gala",
-        "Festival or Fair",
-        "Forum",
-        "Meeting or Networking Event",
-        "Meetup",
-        "Seminar or Talk",
-        "Submit",
-        "Tradeshow, Consumershow, Expo",
-        "Virtual Event"
-      ]
+        'Camp, Trip or Retreat',
+        'Conference',
+        'Convention',
+        'Dinner or Gala',
+        'Festival or Fair',
+        'Forum',
+        'Meeting or Networking Event',
+        'Meetup',
+        'Seminar or Talk',
+        'Submit',
+        'Tradeshow, Consumershow, Expo',
+        'Virtual Event',
+      ],
+      ready_to_display: false,
     };
   },
 
   methods: {
+    ...mapActions([
+      'fetchAllCategories',
+      'getAllEvents',
+      'getAllEventsByDay',
+      'getAllEventsByType',
+      'getAllEventsByCategory',
+    ]),
+
     loadExternalScripts() {
       //   this.$loadScript("./js/jquery-2.2.4.min.js");
       // this.$loadScript("./js/bootstrap.min.js");
@@ -246,29 +354,58 @@ export default {
       // this.$loadScript("./js/jquery.counterup.min.js");
       // this.$loadScript("./js/waypoints.min.js");
       // this.$loadScript("./js/main.js");
-    }
+    },
+
+    async fetchAllNeededData() {
+      try {
+        this.$Progress.start();
+        await this.getAllEvents();
+        await this.getAllEventsByDay();
+        this.ready_to_display = true;
+        this.$Progress.finish();
+      } catch (err) {
+        console.log(err);
+        this.$Progress.finish();
+      }
+    },
+
+    clickCallback(pageNum) {
+      console.log(pageNum);
+      window.location.href = '#browse-event-4-4-2';
+    },
   },
 
-  mounted() {}
+  created() {
+    this.fetchAllCategories();
+  },
+
+  mounted() {
+    this.fetchAllNeededData();
+  },
+
+  computed: {
+    ...mapGetters([
+      'allCategories',
+      'eventsByDay',
+      'allEvents',
+      'eventsByCategory',
+      'eventsByType',
+    ]),
+  },
 };
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700");
-@import url("https://cdn.linearicons.com/free/1.0.0/icon-font.min.css");
-@import url("../assets/css/browse-event.css");
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700');
+@import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css');
+@import url('../assets/css/browse-event.css');
 /* @import url('../assets/css/fontawesome-free/css/all.min.css'); */
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
 
 .category-container {
   overflow: auto;
   white-space: nowrap;
   padding-bottom: 10px;
-}
-
-.top-cat {
-  display: flex;
-  justify-content: center;
 }
 
 .category-container li {
@@ -282,14 +419,14 @@ export default {
 .search-container {
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .search-box {
   border-style: solid;
   border-width: 1px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   width: 200px;
   padding: 5px 10px;
   border-color: rgb(149, 146, 146);
@@ -344,23 +481,66 @@ export default {
 .arrows-left {
   position: absolute;
   left: -30px;
-  top: 8px;
+  top: 5px;
 }
 
 .arrows-right {
   position: absolute;
-  right: 30%;
+  right: -5px;
   top: 8px;
 }
 
-.greay-color {
-  background-color: rgb(243, 239, 239);
+.footer-color {
+  background-color: rgb(255, 255, 255);
 }
 
-@media (max-width: 1000px) {
-  .top-cat {
-    display: flex;
-    justify-content: flex-start;
+.center-items {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.put-pad {
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.main-events {
+  width: 100%;
+  margin: auto;
+}
+
+@media (max-width: 1034px) {
+  .card-container .col-md-3 {
+    -ms-flex: 0 0 33.333333333%;
+    flex: 0 0 33.333333333%;
+    max-width: 33.333333333%;
+  }
+}
+
+@media (max-width: 763px) {
+  .card-container .col-md-3 {
+    -ms-flex: 0 0 50%;
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 496px) {
+  .card-container .col-md-3 {
+    -ms-flex: 0 0 90%;
+    flex: 0 0 90%;
+    max-width: 90%;
+    margin: auto;
+  }
+}
+
+@media (max-width: 300px) {
+  .card-container .col-md-3 {
+    -ms-flex: 0 0 95%;
+    flex: 0 0 95%;
+    max-width: 95%;
+    margin: auto;
   }
 }
 
@@ -372,24 +552,13 @@ export default {
     padding: 10px;
     overflow-x: auto;
   }
-
-  .arrows-right {
-    position: absolute;
-    right: 5%;
-    top: 8px;
-  }
 }
 
-@media (max-width: 340px) {
-  section.pl-5 {
-    padding-left: 5% !important;
-    padding-right: 5% !important;
-  }
-
+@media (max-width: 638px) {
   .arrows-left {
     position: absolute !important;
-    right: 10px !important;
-    top: 16px !important;
+    left: -5px !important;
+    top: 5px !important;
   }
 }
 </style>

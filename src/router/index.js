@@ -9,6 +9,7 @@ import VModal from 'vue-js-modal';
 import { BootstrapVue } from 'bootstrap-vue';
 import { Steps } from 'ant-design-vue';
 import 'ant-design-vue/lib/steps/style';
+import Paginate from 'vuejs-paginate';
 // import 'bootstrap-vue/dist/bootstrap-vue.css';
 // import 'bootstrap/dist/css/bootstrap.css';
 // import 'ant-design-vue/dist/antd.css';
@@ -48,6 +49,8 @@ Vue.use(VModal, {
   adaptive: true,
   scrollable: true,
 });
+
+Vue.component('paginate', Paginate);
 
 function lazyLoad(view) {
   return () => import(`@/views/${view}.vue`);
