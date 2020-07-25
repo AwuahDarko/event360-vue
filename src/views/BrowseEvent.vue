@@ -48,12 +48,7 @@
         <div class="row align-items-center justify-content-between d-flex">
           <div id="logo">
             <a href="https://event360-gh.com">
-              <img
-                src="../assets/img/logo.png"
-                alt="logo"
-                width="80px"
-                height="30px"
-              />
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
             </a>
           </div>
           <nav id="nav-menu-container">
@@ -80,26 +75,23 @@
     <section class="banner-area relative" id="home">
       <div class="overlay overlay-bg"></div>
       <div class="container">
-        <div
-          class="row fullscreen d-flex align-items-center justify-content-center"
-        >
+        <div class="row fullscreen d-flex align-items-center justify-content-center">
           <div class="banner-content col-lg-12 col-md-12">
             <!-- <h6 class="text-uppercase">Don’t look further, here is the key</h6> -->
-            <h1>
-              Network, expand your knowledge and find solutions to problems.
-            </h1>
+            <h1>Network, expand your knowledge and find solutions to problems.</h1>
             <h5 class="text-white mb-4">
               Find and attend conferences, seminars, workshop, trade fair shows
               everywhere in Ghana
             </h5>
-            <a href="#browse-event-4-4-2" class="btn btn-primary text-white p-2"
-              >Browse Events</a
-            >
+            <a
+              @click="scrollMeTo('scrollhere')"
+              class="btn btn-primary text-white p-2"
+            >Browse Events</a>
           </div>
         </div>
       </div>
     </section>
-    <div id="browse-event-4-4-2"></div>
+    <div ref="scrollhere"></div>
     <!-- End banner Area -->
     <div style="height: 10px"></div>
     <!-- TOP LEVEL CATEGORIES -->
@@ -109,22 +101,16 @@
           v-for="category in allCategories"
           :key="`top-${category.id}`"
           class="btn btn-light border-secondary text-secondary mr-2 mt-1"
-        >
-          {{ category.name }}
-        </button>
+        >{{ category.name }}</button>
       </div>
     </section>
     <div style="height: 30px"></div>
     <section class="main-events bg-light pt-1 put-pad">
-      <h3>UPCOMING EVENTS</h3>
+      <h3 ref="upcome">UPCOMING EVENTS</h3>
       <hr class="bg-success" style="width: 40px; height: 2px" />
       <div class="search-container">
         <div class="search-box">
-          <input
-            type="text"
-            class="search-box-content text-field"
-            placeholder="Search Event"
-          />
+          <input type="text" class="search-box-content text-field" placeholder="Search Event" />
           <button class="search-box-content search-btn">
             <i class="fa fa-search"></i>
           </button>
@@ -133,17 +119,18 @@
       <div style="height: 20px"></div>
       <section v-if="!ready_to_display">
         <article class="row">
-          <div
-            class="col-md-3 pl-0 pr-0"
-            v-for="(a, i) in temp"
-            :key="`asdf-${i}`"
-          >
+          <div class="col-md-3 pl-0 pr-0" v-for="(a, i) in temp" :key="`asdf-${i}`">
             <EventCardSkeleton />
           </div>
         </article>
       </section>
       <section v-else class="browse-parent">
-        <button class="arrows arrows-left">
+        <button
+          class="arrows arrows-left"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="prev"
+        >
           <i class="fa fa-caret-left"></i>
         </button>
         <!-- TAB HEADER STARTS HERE -->
@@ -157,27 +144,88 @@
               role="tab"
               aria-controls="pills-home"
               aria-selected="true"
-              >All Event</a
-            >
+              @click="onAllEventsClicked"
+            >All Event</a>
           </li>
-          <li
-            class="nav-item"
-            v-for="day in eventsByDay"
-            :key="`header-${day.day.split(' ').join('-')}`"
-          >
-            <a
-              class="nav-link"
-              :id="`pills-profile-tab-${day.day.split(' ').join('-')}`"
-              data-toggle="pill"
-              :href="`#pills-profile-${day.day.split(' ').join('-')}`"
-              role="tab"
-              :aria-controls="`pills-profile-${day.day.split(' ').join('-')}`"
-              aria-selected="false"
-              >{{ day.day }}</a
+          <div id="carouselExampleControls" class="carousel slide" data-interval="false">
+            <div class="carousel-inner">
+              <div
+                v-for="(oneDay, number) in event_by_day_chunks"
+                :key="`chunk-${number}`"
+                class="carousel-item"
+                v-bind:class="{'active': number === 0}"
+              >
+                <div class="row pr-3 pl-3">
+                  <li
+                    class="nav-item"
+                    v-for="day in oneDay"
+                    :key="`header-${day.day.split(' ').join('-')}`"
+                  >
+                    <a
+                      class="nav-link"
+                      ref="theTabs"
+                      :id="`pills-profile-tab-${day.day.split(' ').join('-')}`"
+                      data-toggle="pill"
+                      :href="`#pills-profile-${day.day.split(' ').join('-')}`"
+                      role="tab"
+                      :aria-controls="`pills-profile-${day.day.split(' ').join('-')}`"
+                      aria-selected="false"
+                      @click="resetPageCount"
+                    >{{ day.day }}</a>
+                  </li>
+                </div>
+              </div>
+              <!-- <div class="carousel-item active">
+                <div class="row">
+                  <li
+                    class="nav-item"
+                    v-for="day in eventsByDay"
+                    :key="`header-${day.day.split(' ').join('-')}`"
+                  >
+                    <a
+                      class="nav-link"
+                      :id="`pills-profile-tab-${day.day.split(' ').join('-')}`"
+                      data-toggle="pill"
+                      :href="`#pills-profile-${day.day.split(' ').join('-')}`"
+                      role="tab"
+                      :aria-controls="`pills-profile-${day.day.split(' ').join('-')}`"
+                      aria-selected="false"
+                      @click="resetPageCount"
+                    >{{ day.day }}</a>
+                  </li>
+                </div>
+              </div>-->
+              <!-- <div class="carousel-item">
+                <h1>world</h1>
+              </div>
+              <div class="carousel-item">
+                <h1>there</h1>
+              </div>-->
+            </div>
+            <!-- <a
+              class="carousel-control-prev"
+              href="#carouselExampleControls"
+              role="button"
+              data-slide="prev"
             >
-          </li>
+              <span class="fa fa-chevron-circle-left" aria-hidden="true"></span>
+            </a>-->
+            <!-- <a
+              class="carousel-control-next"
+              href="#carouselExampleControls"
+              role="button"
+              data-slide="next"
+            >
+              <span class="fa fa-chevron-circle-right" aria-hidden="true"></span>
+            </a>-->
+          </div>
         </ul>
-        <button class="arrows arrows-right">
+        <button
+          class="arrows arrows-right"
+          href="#carouselExampleControls"
+          role="button"
+          data-slide="next"
+        >
           <i class="fa fa-caret-right"></i>
         </button>
         <!-- TAB CONTENTS STARTS HERE -->
@@ -192,7 +240,7 @@
               <article class="row card-container">
                 <div
                   class="col-md-3 mb-4"
-                  v-for="event in allEvents"
+                  v-for="event in events_to_display[current_all_event_page]"
                   :key="`event-card-${event.event_key}`"
                 >
                   <EventCard :event_data="event" />
@@ -201,10 +249,10 @@
               <!-- PAGINATION -->
               <div style="display: flex; justify-content: flex-end">
                 <paginate
-                  :page-count="10"
+                  :page-count="events_to_display.length"
                   :page-range="1"
                   :margin-pages="1"
-                  :click-handler="clickCallback"
+                  :click-handler="allEventsPaginationCallback"
                   :prev-text="'Prev'"
                   :next-text="'Next'"
                   :container-class="'pagination'"
@@ -212,8 +260,7 @@
                   :page-link-class="'page-link'"
                   :prev-link-class="'page-link'"
                   :next-link-class="'page-link'"
-                >
-                </paginate>
+                ></paginate>
               </div>
             </div>
           </div>
@@ -225,37 +272,33 @@
             :aria-labelledby="
               `pills-profile-tab-${day.day.split(' ').join('-')}`
             "
-            v-for="day in eventsByDay"
-            :key="`body-${day.day.split(' ').join('-')}`"
+            v-for="(day, i) in eventsByDay"
+            :key="`body-${day.day.split(' ').join('-')}-${i}`"
           >
             <article class="row card-container">
               <div
                 class="col-md-3 mb-4"
-                v-for="(event, index) in day.events"
+                v-for="(event, index) in divideArray(day.events, divide_number)[page_number_for_events_by_day]"
                 :key="`event-card-by-day-${event.event_key}-${index}`"
               >
                 <EventCard :event_data="event" />
-                <div
-                  v-if="index === day.events.length - 1"
-                  style="display: flex; justify-content: flex-end"
-                >
-                  <paginate
-                    :page-count="10"
-                    :page-range="3"
-                    :margin-pages="3"
-                    :click-handler="clickCallback"
-                    :prev-text="'Prev'"
-                    :next-text="'Next'"
-                    :container-class="'pagination'"
-                    :page-class="'page-item'"
-                    :page-link-class="'page-link'"
-                    :prev-link-class="'page-link'"
-                    :next-link-class="'page-link'"
-                  >
-                  </paginate>
-                </div>
               </div>
             </article>
+            <div class="mt-4" style="display: flex; justify-content: flex-end">
+              <paginate
+                :page-count="divideArray(day.events, divide_number).length"
+                :page-range="1"
+                :margin-pages="1"
+                :click-handler="clickCallbackForEventsByName"
+                :prev-text="'Prev'"
+                :next-text="'Next'"
+                :container-class="'pagination'"
+                :page-class="'page-item'"
+                :page-link-class="'page-link'"
+                :prev-link-class="'page-link'"
+                :next-link-class="'page-link'"
+              ></paginate>
+            </div>
           </div>
         </div>
         <!-- TAB CONTENTS ENDS HERE -->
@@ -271,9 +314,7 @@
             v-for="category in allCategories"
             :key="`down-${category.id}`"
             class="btn btn-primary border-primary text-white mr-2 mt-1"
-          >
-            {{ category.name }}
-          </button>
+          >{{ category.name }}</button>
         </div>
       </section>
       <div style="height: 20px"></div>
@@ -284,9 +325,7 @@
             v-for="(type, i) in event_types"
             :key="`type-${i}`"
             class="btn btn-primary border-primary text-white mr-2 mt-1"
-          >
-            {{ type }}
-          </button>
+          >{{ type }}</button>
         </div>
       </section>
       <div style="height: 60px"></div>
@@ -295,10 +334,11 @@
 </template>
 
 <script>
-import EventCard from '../components/EventCard.vue';
-import { mapGetters, mapActions } from 'vuex';
-import Snackbar from 'vuejs-snackbar';
-import EventCardSkeleton from '../components/EventCardSkeleton.vue';
+import EventCard from "../components/EventCard.vue";
+import { mapGetters, mapActions } from "vuex";
+import Snackbar from "vuejs-snackbar";
+import EventCardSkeleton from "../components/EventCardSkeleton.vue";
+import { divideArray } from "../utils/utility";
 
 //  vue.$refs.snackbar.error('Error function triggered')
 // vue.$refs.snackbar.warn('Warn function triggered')
@@ -306,8 +346,8 @@ import EventCardSkeleton from '../components/EventCardSkeleton.vue';
 // vue.$refs.snackbar.open('Open function triggered')
 
 export default {
-  name: 'BrowseEvent',
-  title: 'Browse Event',
+  name: "BrowseEvent",
+  title: "Browse Event",
   components: {
     EventCard,
     snackbar: Snackbar,
@@ -316,33 +356,36 @@ export default {
 
   data() {
     return {
-      position: 'top-right',
+      position: "top-right",
       temp: [1, 2, 3, 4, 5, 6, 7, 8],
       event_types: [
-        'Camp, Trip or Retreat',
-        'Conference',
-        'Convention',
-        'Dinner or Gala',
-        'Festival or Fair',
-        'Forum',
-        'Meeting or Networking Event',
-        'Meetup',
-        'Seminar or Talk',
-        'Submit',
-        'Tradeshow, Consumershow, Expo',
-        'Virtual Event',
+        "Camp, Trip or Retreat",
+        "Conference",
+        "Convention",
+        "Dinner or Gala",
+        "Festival or Fair",
+        "Forum",
+        "Meeting or Networking Event",
+        "Meetup",
+        "Seminar or Talk",
+        "Submit",
+        "Tradeshow, Consumershow, Expo",
+        "Virtual Event",
       ],
       ready_to_display: false,
+      current_all_event_page: 0,
+      page_number_for_events_by_day: 0,
+      divide_number: 8,
     };
   },
 
   methods: {
     ...mapActions([
-      'fetchAllCategories',
-      'getAllEvents',
-      'getAllEventsByDay',
-      'getAllEventsByType',
-      'getAllEventsByCategory',
+      "fetchAllCategories",
+      "getAllEvents",
+      "getAllEventsByDay",
+      "getAllEventsByType",
+      "getAllEventsByCategory",
     ]),
 
     loadExternalScripts() {
@@ -369,9 +412,37 @@ export default {
       }
     },
 
-    clickCallback(pageNum) {
+    allEventsPaginationCallback(pageNum) {
       console.log(pageNum);
-      window.location.href = '#browse-event-4-4-2';
+      this.$refs.upcome.scrollIntoView();
+      this.current_all_event_page = pageNum - 1;
+    },
+
+    clickCallbackForEventsByName(pageNum) {
+      console.log(pageNum);
+      this.page_number_for_events_by_day = pageNum - 1;
+    },
+
+    scrollMeTo(refName) {
+      const element = this.$refs[refName];
+      const top = element.offsetTop;
+
+      window.scrollTo(0, top);
+    },
+
+    divideArray: divideArray,
+
+    resetPageCount(evt) {
+      this.page_number_for_events_by_day = 0;
+      this.$refs.theTabs.forEach((oneItem) => {
+        oneItem.setAttribute("class", "nav-link");
+      });
+    },
+
+    onAllEventsClicked() {
+      this.$refs.theTabs.forEach((oneItem) => {
+        oneItem.setAttribute("class", "nav-link");
+      });
     },
   },
 
@@ -385,22 +456,35 @@ export default {
 
   computed: {
     ...mapGetters([
-      'allCategories',
-      'eventsByDay',
-      'allEvents',
-      'eventsByCategory',
-      'eventsByType',
+      "allCategories",
+      "eventsByDay",
+      "allEvents",
+      "eventsByCategory",
+      "eventsByType",
     ]),
+
+    events_to_display: function () {
+      return divideArray(this.allEvents, 8);
+    },
+
+    event_by_day_chunks: function () {
+      return divideArray(this.eventsByDay, 15); // 15
+    },
   },
 };
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700');
-@import url('https://cdn.linearicons.com/free/1.0.0/icon-font.min.css');
-@import url('../assets/css/browse-event.css');
+@import url("https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700");
+@import url("https://cdn.linearicons.com/free/1.0.0/icon-font.min.css");
+@import url("../assets/css/browse-event.css");
 /* @import url('../assets/css/fontawesome-free/css/all.min.css'); */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
+
+html,
+body {
+  overflow-x: hidden;
+}
 
 .category-container {
   overflow: auto;
@@ -508,6 +592,19 @@ export default {
 .main-events {
   width: 100%;
   margin: auto;
+}
+
+a span.fa {
+  color: blue;
+  font-size: 1.2rem;
+}
+
+.carousel-control-next {
+  right: 40px;
+}
+
+.carousel-control-prev {
+  left: 40px;
 }
 
 @media (max-width: 1034px) {
