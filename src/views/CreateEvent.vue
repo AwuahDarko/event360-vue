@@ -56,6 +56,7 @@
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
             </div>-->
+            <router-link to="/browse-event" tag="a">Browse Events</router-link>
           </li>
           <!-- Notifications Dropdown Menu -->
 
@@ -136,9 +137,7 @@
                           <a href="#">
                             <button type="button" tabindex="0" class="dropdown-item">My Events</button>
                           </a>
-                          <a href="#">
-                            <button type="button" tabindex="1" class="dropdown-item">Browse Events</button>
-                          </a>
+
                           <a href="#">
                             <button
                               type="button"
@@ -1195,7 +1194,7 @@ export default {
     TicketTable,
     Registration,
     Subscription,
-    Publish
+    Publish,
   },
   props: {},
   data() {
@@ -1251,7 +1250,7 @@ export default {
       token: "",
       includeTicketsBtn: true,
       logoImage: null,
-      bannerImage: null
+      bannerImage: null,
     };
   },
   methods: {
@@ -1259,7 +1258,7 @@ export default {
       "onLocationSelected",
       "fetchAllCategories",
       "onFetchAllCreatedEvents",
-      "onFetchPreviousFormQuestion"
+      "onFetchPreviousFormQuestion",
     ]),
 
     setEventPreview(value) {
@@ -1347,12 +1346,12 @@ export default {
     callbaavkFile(callback, value, meta) {
       if (meta.filetype == "image") {
         $("#upload").trigger("click");
-        $("#upload").on("change", function() {
+        $("#upload").on("change", function () {
           var file = this.files[0];
           var reader = new FileReader();
-          reader.onload = function(e) {
+          reader.onload = function (e) {
             callback(e.target.result, {
-              alt: ""
+              alt: "",
             });
           };
           reader.readAsDataURL(file);
@@ -1368,16 +1367,16 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          Authorization: this.token
+          Authorization: this.token,
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData
+        body: formData,
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-logo`, options)
-          .then(res => resolve(res))
-          .catch(err => reject(err));
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
       });
     },
 
@@ -1389,16 +1388,16 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          Authorization: this.token
+          Authorization: this.token,
           // 'Content-Type': 'multipart/form-data'
         },
-        body: formData
+        body: formData,
       };
 
       return new Promise((resolve, reject) => {
         fetch(`${apiUrl}/api/event-banner`, options)
-          .then(res => resolve(res))
-          .catch(err => reject(err));
+          .then((res) => resolve(res))
+          .catch((err) => reject(err));
       });
     },
 
@@ -1543,7 +1542,7 @@ export default {
         topics: "N/A",
         attendee_location: "world",
         video_link: "",
-        buy_ticket_btn: this.includeTicketsBtn
+        buy_ticket_btn: this.includeTicketsBtn,
       };
       return body;
     },
@@ -1569,18 +1568,18 @@ export default {
         method: "POST",
         headers: {
           Authorization: this.token,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       };
       fetch(`${apiUrl}/api/event`, options)
-        .then(res => {
+        .then((res) => {
           if (res.status === 201) {
             this.event_profile_done = true;
           }
           return res.json();
         })
-        .then(async message => {
+        .then(async (message) => {
           // upload images
           await this.uploadLogo(message.event_key);
           await this.uploadBanner(message.event_key);
@@ -1591,7 +1590,7 @@ export default {
           this.switchTabs("tickets-tab");
           this.$Progress.finish();
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
           this.$refs.snackbar.error("Please check your internet connection");
           this.$Progress.finish();
@@ -1621,7 +1620,7 @@ export default {
       } else if (where === "publish-tab") {
         this.subscription_done = true;
       }
-    }
+    },
   },
 
   computed: {
@@ -1631,8 +1630,8 @@ export default {
       "allChips",
       "proceedToTicketTable",
       "ticketCountryOfPayment",
-      "ticketCurrencyOfPayment"
-    ])
+      "ticketCurrencyOfPayment",
+    ]),
   },
 
   beforeUpdate() {
@@ -1649,17 +1648,17 @@ export default {
 
     this.$Progress.start();
     this.onFetchAllCreatedEvents()
-      .then(events => {
+      .then((events) => {
         this.onFetchPreviousFormQuestion(events)
           .then(() => {
             this.$Progress.finish();
           })
-          .catch(err => {
+          .catch((err) => {
             console.log(err);
             this.$Progress.finish();
           });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         this.$Progress.finish();
       });
@@ -1668,6 +1667,9 @@ export default {
   beforeCreate() {
     // unset current event key
     window.localStorage.setItem("current_event_key", "");
+    window.localStorage.setItem("current_location_name", "create-event");
+    window.localStorage.setItem("current_location_param", "");
+    window.localStorage.setItem("current_location_type", "");
     // check for authentication
     const token = window.localStorage.getItem("token");
     if (!token) {
@@ -1681,12 +1683,12 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: `Bearer ${token}` })
+        body: JSON.stringify({ token: `Bearer ${token}` }),
       };
       fetch(`${apiUrl}/api/verify-login`, options)
-        .then(res => {
+        .then((res) => {
           if (res.status !== 208) {
             window.localStorage.setItem(
               "return_to_login_info",
@@ -1695,7 +1697,7 @@ export default {
             this.$router.push("login");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log("ERROR: ", err);
           //if we can't authenticate, then go back to login
           this.$router.push("login");
@@ -1705,7 +1707,7 @@ export default {
 
   created() {
     this.fetchAllCategories();
-  }
+  },
 };
 </script>
 
@@ -2443,6 +2445,18 @@ html {
 .login-page,
 .register-page {
   background-color: #f6f7f7;
+}
+
+.nav-item.dropdown a {
+  color: rgb(65, 62, 62);
+}
+
+.nav-item.dropdown a:hover {
+  color: #07a254;
+}
+
+.nav-item.dropdown {
+  padding-top: 10px;
 }
 
 /*====================================Tickets Section============================================*/

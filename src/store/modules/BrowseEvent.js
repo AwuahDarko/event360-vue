@@ -68,6 +68,11 @@ const actions = {
 
   getAllEventsByCategory({ commit }, category_id) {
     return new Promise((resolve, reject) => {
+      if (category_id === '') {
+        commit('setEventsByCategory', []);
+        resolve([]);
+        return;
+      }
       fetch(`${apiUrl}/api/browse/category?id=${category_id}`, {
         method: 'GET',
       })

@@ -146,7 +146,7 @@ export default {
   name: "Login",
   title: "Login",
   components: {
-    snackbar: Snackbar
+    snackbar: Snackbar,
   },
   methods: {
     validateFields() {
@@ -165,7 +165,7 @@ export default {
     getPostBody() {
       const body = {
         email: this.email,
-        password: this.password
+        password: this.password,
       };
 
       return body;
@@ -184,14 +184,14 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(body)
+        body: JSON.stringify(body),
       };
 
       let login_failed = false;
       fetch(`${apiUrl}/auth/local`, options)
-        .then(res => {
+        .then((res) => {
           this.$Progress.finish();
           if (res.status === 401) {
             this.$refs.snackbar.error("Invalid login credentials");
@@ -201,19 +201,39 @@ export default {
 
           return res.json();
         })
-        .then(data => {
+        .then((data) => {
           if (!login_failed) {
             window.localStorage.setItem("token", data.token);
-            this.$router.push("/");
+            this.deduceRoute();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$Progress.finish();
           console.log(err);
           this.$refs.snackbar.error(
             "Network error please check your internet connection"
           );
         });
+    },
+
+    deduceRoute() {
+      const name = window.localStorage.getItem("current_location_name");
+      const param = window.localStorage.getItem("current_location_param");
+      const type = window.localStorage.getItem("current_location_type");
+
+      if (param == null || param === "") {
+        this.$router.push(`/${name}`);
+      } else {
+        if (type == "type") {
+          this.$router.push({ name: name, params: { type: type } });
+          return;
+        }
+
+        if (type == "category") {
+          this.$router.push({ name: name, params: { category: type } });
+          return;
+        }
+      }
     },
     rememberMe(evt) {
       const value = evt.target.checked;
@@ -222,7 +242,7 @@ export default {
       } else {
         window.localStorage.removeItem("remember_me");
       }
-    }
+    },
   },
   data() {
     return {
@@ -231,7 +251,7 @@ export default {
       emailError: false,
       passwordError: false,
       position: "top-right",
-      loading: true
+      loading: true,
     };
   },
 
@@ -245,17 +265,17 @@ export default {
       const options = {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token: token })
+        body: JSON.stringify({ token: token }),
       };
       fetch(`${apiUrl}/api/verify-login`, options)
-        .then(res => {
+        .then((res) => {
           if (res.status === 208) {
             this.$router.push("/");
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log("ERROR:", err);
           this.$refs.snackbar.error(
             "Network error please check your internet connection"
@@ -270,7 +290,7 @@ export default {
       this.$refs.snackbar.info(message);
       window.localStorage.removeItem("return_to_login_info");
     }
-  }
+  },
 };
 </script>
 

@@ -1,6 +1,6 @@
 const utili = require('../src/utils/utility');
 
-const array = [
+let array = [
   1,
   2,
   3,
@@ -22,6 +22,7 @@ const array = [
   19,
   20,
 ];
+array = []
 
 console.log(array);
 

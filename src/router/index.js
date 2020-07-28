@@ -59,6 +59,11 @@ function lazyLoad(view) {
 const routes = [
   {
     path: '/',
+    name: 'BrowseEvent',
+    component: lazyLoad('BrowseEvent'),
+  },
+  {
+    path: '/create-event',
     name: 'CreateEvent',
     component: lazyLoad('CreateEvent'),
   },
@@ -76,6 +81,16 @@ const routes = [
     path: '/browse-event',
     name: 'BrowseEvent',
     component: lazyLoad('BrowseEvent'),
+  },
+  {
+    path: '/browse-by-category/:category',
+    name: 'BrowseByCategory',
+    component: lazyLoad('BrowseByCategory'),
+  },
+  {
+    path: '/browse-by-type/:type',
+    name: 'BrowseByType',
+    component: lazyLoad('BrowseByType'),
   },
   // {
   //   path: '/',

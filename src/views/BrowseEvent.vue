@@ -37,7 +37,7 @@
               </ul>-->
             </div>
             <div class="col-lg-6 col-sm-6 col-8 header-top-right no-padding">
-              <a href="tel:+233 419 444 5555">+233 419 444 5555</a>
+              <a href="tel:233242859665">+233 242 859 665</a>
 
               <a href="mailto:info@event360-gh.com">info@event360-gh.com</a>
             </div>
@@ -54,14 +54,14 @@
           <nav id="nav-menu-container">
             <ul class="nav-menu">
               <li>
-                <a href="#">Create New Event</a>
+                <router-link to="/create-event" tag="a">Create New Event</router-link>
               </li>
 
               <li>
-                <a href="#">Log In</a>
+                <router-link to="/login" tag="a">Log In</router-link>
               </li>
               <li>
-                <a href="#">Sign Up</a>
+                <router-link to="/sign-up" tag="a">Sign Up</router-link>
               </li>
             </ul>
           </nav>
@@ -101,6 +101,7 @@
           v-for="category in allCategories"
           :key="`top-${category.id}`"
           class="btn btn-light border-secondary text-secondary mr-2 mt-1"
+          @click="navigateToCategory(category.name)"
         >{{ category.name }}</button>
       </div>
     </section>
@@ -175,49 +176,7 @@
                   </li>
                 </div>
               </div>
-              <!-- <div class="carousel-item active">
-                <div class="row">
-                  <li
-                    class="nav-item"
-                    v-for="day in eventsByDay"
-                    :key="`header-${day.day.split(' ').join('-')}`"
-                  >
-                    <a
-                      class="nav-link"
-                      :id="`pills-profile-tab-${day.day.split(' ').join('-')}`"
-                      data-toggle="pill"
-                      :href="`#pills-profile-${day.day.split(' ').join('-')}`"
-                      role="tab"
-                      :aria-controls="`pills-profile-${day.day.split(' ').join('-')}`"
-                      aria-selected="false"
-                      @click="resetPageCount"
-                    >{{ day.day }}</a>
-                  </li>
-                </div>
-              </div>-->
-              <!-- <div class="carousel-item">
-                <h1>world</h1>
-              </div>
-              <div class="carousel-item">
-                <h1>there</h1>
-              </div>-->
             </div>
-            <!-- <a
-              class="carousel-control-prev"
-              href="#carouselExampleControls"
-              role="button"
-              data-slide="prev"
-            >
-              <span class="fa fa-chevron-circle-left" aria-hidden="true"></span>
-            </a>-->
-            <!-- <a
-              class="carousel-control-next"
-              href="#carouselExampleControls"
-              role="button"
-              data-slide="next"
-            >
-              <span class="fa fa-chevron-circle-right" aria-hidden="true"></span>
-            </a>-->
           </div>
         </ul>
         <button
@@ -314,6 +273,7 @@
             v-for="category in allCategories"
             :key="`down-${category.id}`"
             class="btn btn-primary border-primary text-white mr-2 mt-1"
+            @click="navigateToCategory(category.name)"
           >{{ category.name }}</button>
         </div>
       </section>
@@ -325,6 +285,7 @@
             v-for="(type, i) in event_types"
             :key="`type-${i}`"
             class="btn btn-primary border-primary text-white mr-2 mt-1"
+            @click="navigateToType(type)"
           >{{ type }}</button>
         </div>
       </section>
@@ -413,13 +374,11 @@ export default {
     },
 
     allEventsPaginationCallback(pageNum) {
-      console.log(pageNum);
       this.$refs.upcome.scrollIntoView();
       this.current_all_event_page = pageNum - 1;
     },
 
     clickCallbackForEventsByName(pageNum) {
-      console.log(pageNum);
       this.page_number_for_events_by_day = pageNum - 1;
     },
 
@@ -432,7 +391,7 @@ export default {
 
     divideArray: divideArray,
 
-    resetPageCount(evt) {
+    resetPageCount() {
       this.page_number_for_events_by_day = 0;
       this.$refs.theTabs.forEach((oneItem) => {
         oneItem.setAttribute("class", "nav-link");
@@ -444,10 +403,34 @@ export default {
         oneItem.setAttribute("class", "nav-link");
       });
     },
+
+    navigateToCategory(category) {
+      const item = category.split(" ").join("+");
+      this.$router.push({
+        name: "BrowseByCategory",
+        params: { category: item },
+      });
+    },
+
+    navigateToType(type) {
+      const item = type.split(" ").join("+");
+      this.$router.push({
+        name: "BrowseByType",
+        params: { type: item },
+      });
+    },
+  },
+
+  beforeCreate() {
+    window.localStorage.setItem("current_location_name", "browse-event");
+    window.localStorage.setItem("current_location_param", "");
+    window.localStorage.setItem("current_location_type", "");
   },
 
   created() {
-    this.fetchAllCategories();
+    if (this.allCategories.length === 0) {
+      this.fetchAllCategories();
+    }
   },
 
   mounted() {
@@ -468,7 +451,7 @@ export default {
     },
 
     event_by_day_chunks: function () {
-      return divideArray(this.eventsByDay, 15); // 15
+      return divideArray(this.eventsByDay, 13); // 15
     },
   },
 };
@@ -605,6 +588,17 @@ a span.fa {
 
 .carousel-control-prev {
   left: 40px;
+}
+
+.nav-menu a {
+  border-style: solid;
+  border-color: #28a745;
+  border-width: 1px;
+  border-radius: 3px;
+}
+
+.nav-menu a:hover {
+  color: #28a745;
 }
 
 @media (max-width: 1034px) {
