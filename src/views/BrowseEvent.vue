@@ -38,7 +38,6 @@
             </div>
             <div class="col-lg-6 col-sm-6 col-8 header-top-right no-padding">
               <a href="tel:233242859665">+233 242 859 665</a>
-
               <a href="mailto:info@event360-gh.com">info@event360-gh.com</a>
             </div>
           </div>
@@ -53,16 +52,27 @@
           </div>
           <nav id="nav-menu-container">
             <ul class="nav-menu">
-              <li>
-                <router-link to="/create-event" tag="a">Create New Event</router-link>
+              <li v-if="!is_logged_in">
+                <router-link class="anchor" to="/create-event" tag="a">Create New Event</router-link>
               </li>
 
-              <li>
-                <router-link to="/login" tag="a">Log In</router-link>
+              <li v-if="!is_logged_in">
+                <router-link to="/login" class="anchor" tag="a">Log In</router-link>
               </li>
-              <li>
-                <router-link to="/sign-up" tag="a">Sign Up</router-link>
+              <li v-if="!is_logged_in">
+                <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
               </li>
+              <div class="dropdown ml-4" v-if="is_logged_in">
+                <a>
+                  <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
+                  <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+                </a>
+                <div class="dropdown-content">
+                  <a href="#">My Events</a>
+                  <router-link to="/create-event" tag="a">Create Event</router-link>
+                  <a href="#" @click="logout">Log Out</a>
+                </div>
+              </div>
             </ul>
           </nav>
           <!-- #nav-menu-container -->
@@ -337,6 +347,7 @@ export default {
       current_all_event_page: 0,
       page_number_for_events_by_day: 0,
       divide_number: 8,
+      is_logged_in: false,
     };
   },
 
@@ -419,6 +430,11 @@ export default {
         params: { type: item },
       });
     },
+
+    logout() {
+      window.localStorage.removeItem("token");
+      this.is_logged_in = false;
+    },
   },
 
   beforeCreate() {
@@ -434,6 +450,14 @@ export default {
   },
 
   mounted() {
+    // check login
+    const token = window.localStorage.getItem("token");
+    if (token == null || token === "") {
+      this.is_logged_in = false;
+    } else {
+      this.is_logged_in = true;
+    }
+
     this.fetchAllNeededData();
   },
 
@@ -590,15 +614,64 @@ a span.fa {
   left: 40px;
 }
 
-.nav-menu a {
+.nav-menu .anchor {
   border-style: solid;
   border-color: #28a745;
   border-width: 1px;
   border-radius: 3px;
 }
 
-.nav-menu a:hover {
+.nav-menu .anchor:hover {
   color: #28a745;
+}
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-transform: capitalize;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
 }
 
 @media (max-width: 1034px) {
@@ -642,6 +715,10 @@ a span.fa {
     margin: auto;
     padding: 10px;
     overflow-x: auto;
+  }
+
+  .hide-in-mobile {
+    display: none;
   }
 }
 

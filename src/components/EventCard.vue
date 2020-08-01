@@ -12,21 +12,22 @@
       <div class="container">
         <ul class="row">
           <li class="col-md-12 pb-1 mt-3 pl-0 pr-0">
-            <span>
+            <span class="small-label-2 small-label">
               <i class="far fa-clock text-success"></i>
               {{ date }}
             </span>
           </li>
 
           <li class="col-md-12 pb-1 pl-0 pr-0">
-            <span>
+            <span class="small-label-2">
               <i class="fa fa-map-marker text-success" key="vunue2"></i>
-              {{ event_data.venue_name + ", " + event_data.city }}
+              {{ event_data.venue_name }}
             </span>
+            <!-- + ", " + event_data.city -->
           </li>
         </ul>
       </div>
-      <h5 class="card-title">{{ event_data.name }}</h5>
+      <h5 class="card-title">{{ event_name }}</h5>
       <!-- <p class="card-text">Short description</p> -->
       <div class="icon-block">
         <a href>
@@ -79,8 +80,8 @@ export default {
   name: "EventCard",
   props: {
     event_data: {
-      type: Object
-    }
+      type: Object,
+    },
   },
 
   data() {
@@ -88,7 +89,7 @@ export default {
       there_is_banner: false,
       there_is_logo: false,
       banner_src: "",
-      logo_src: ""
+      logo_src: "",
     };
   },
 
@@ -96,9 +97,9 @@ export default {
     getImageUrl() {
       // LOGO
       fetch(`${apiUrl}/api/event-logo?key=${this.event_data.event_key}`, {
-        method: "GET"
+        method: "GET",
       })
-        .then(async res => {
+        .then(async (res) => {
           if (res.status == 200) {
             const logo = await res.json();
             // this.logo_src = `${apiUrl}/api/images/?img=${logo.image_url}`;
@@ -114,13 +115,13 @@ export default {
             this.there_is_logo = false;
           }
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
 
       // BANNER
       fetch(`${apiUrl}/api/event-banner?key=${this.event_data.event_key}`, {
-        method: "GET"
+        method: "GET",
       })
-        .then(async res => {
+        .then(async (res) => {
           if (res.status == 200) {
             const banner = await res.json();
             this.banner_src = `${apiUrl}/api/images/?img=${banner.image_url}`;
@@ -136,8 +137,8 @@ export default {
             this.there_is_banner = false;
           }
         })
-        .catch(err => console.log(err));
-    }
+        .catch((err) => console.log(err));
+    },
   },
 
   created() {
@@ -145,21 +146,30 @@ export default {
   },
 
   computed: {
-    date: function() {
+    date: function () {
       // moment(this.endDateData, "LL").format("YYYY-MM-DD")
       const st = this.event_data.start_date.split("T")[0];
       const start = moment(st, "YYYY-MM-DD").format("LL");
 
-      const ed = this.event_data.end_date.split("T")[0];
-      const end = moment(ed, "YYYY-MM-DD").format("LL");
+      // const ed = this.event_data.end_date.split("T")[0];
+      // const end = moment(ed, "YYYY-MM-DD").format("LL");
 
-      return `${start} - ${end}`;
+      return start;
     },
 
-    organiser_initials: function() {
+    organiser_initials: function () {
       return this.event_data.organiser.substring(0, 2);
-    }
-  }
+    },
+
+    event_name: function () {
+      if (this.event_data.name.length > 2) {
+        let chip = this.event_data.name.substring(0, 17);
+        return chip + "...";
+      } else {
+        return this.event_data.name;
+      }
+    },
+  },
 };
 </script>
 
@@ -216,8 +226,8 @@ li {
 .card:hover,
 .card:focus,
 .card:active {
-  box-shadow: 0 5px 5px 3px rgba(0, 0, 0, 0.6);
-  transform: translateY(-3px) scale(1.01) rotateX(15deg);
+  box-shadow: 0 5px 2px 3px rgba(0, 0, 0, 0.1);
+  /* transform: translateY(-3px) scale(1.01) rotateX(15deg); */
 }
 
 .banner-holder {
@@ -229,7 +239,7 @@ li {
 }
 
 li span {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
 }
 
 .init {
@@ -251,5 +261,13 @@ li span {
 .img-fluid {
   max-height: 165.677px;
   width: 100%;
+}
+
+@media (max-width: 1034px) {
+  .small-image {
+    position: absolute;
+    top: 28.5%;
+    left: 22px;
+  }
 }
 </style>

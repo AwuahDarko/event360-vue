@@ -53,16 +53,27 @@
           </div>
           <nav id="nav-menu-container">
             <ul class="nav-menu">
-              <li>
-                <router-link to="/create-event" tag="a">Create New Event</router-link>
+              <li v-if="!is_logged_in">
+                <router-link class="anchor" to="/create-event" tag="a">Create New Event</router-link>
               </li>
 
-              <li>
-                <router-link to="/login" tag="a">Log In</router-link>
+              <li v-if="!is_logged_in">
+                <router-link to="/login" class="anchor" tag="a">Log In</router-link>
               </li>
-              <li>
-                <router-link to="/sign-up" tag="a">Sign Up</router-link>
+              <li v-if="!is_logged_in">
+                <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
               </li>
+              <div class="dropdown ml-4" v-if="is_logged_in">
+                <a>
+                  <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
+                  <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+                </a>
+                <div class="dropdown-content">
+                  <a href="#">My Events</a>
+                  <router-link to="/create-event" tag="a">Create Event</router-link>
+                  <a href="#" @click="logout">Log Out</a>
+                </div>
+              </div>
             </ul>
           </nav>
           <!-- #nav-menu-container -->
@@ -109,9 +120,11 @@
         </article>
       </section>
     </section>
-    <section>
+    <section class="pr-4 pl-4">
       <div v-if="events_to_display.length === 0 && ready_to_display" style="height: 50px">
-        <p class="text-center m-5 text-bold">Sorry there are no currents for {{ current_category }}</p>
+        <p
+          class="text-center m-5 text-bold"
+        >Sorry there are no current events for {{ current_category }}</p>
       </div>
       <div v-else class="col mt-4">
         <article class="row card-container mb-4">
@@ -149,6 +162,7 @@
             v-for="category in allCategories"
             :key="`down-${category.id}`"
             class="btn btn-primary border-primary text-white mr-2 mt-1"
+            @click="navigateToCategory(category.name)"
           >{{ category.name }}</button>
         </div>
       </section>
@@ -206,6 +220,7 @@ export default {
       ],
       current_category: "",
       current_all_event_page: 0,
+      is_logged_in: false,
     };
   },
 
@@ -269,6 +284,11 @@ export default {
       this.$refs.upcome.scrollIntoView();
       this.current_all_event_page = pageNum - 1;
     },
+
+    logout() {
+      window.localStorage.removeItem("token");
+      this.is_logged_in = false;
+    },
   },
 
   computed: {
@@ -283,6 +303,16 @@ export default {
     events_to_display: function () {
       return divideArray(this.eventsByCategory, 8);
     },
+  },
+
+  mounted() {
+    // check login
+    const token = window.localStorage.getItem("token");
+    if (token == null || token === "") {
+      this.is_logged_in = false;
+    } else {
+      this.is_logged_in = true;
+    }
   },
 
   async created() {
@@ -374,15 +404,64 @@ export default {
   width: 10%;
 }
 
-.nav-menu a {
+.nav-menu .anchor {
   border-style: solid;
   border-color: #28a745;
   border-width: 1px;
   border-radius: 3px;
 }
 
-.nav-menu a:hover {
+.nav-menu .anchor:hover {
   color: #28a745;
+}
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-transform: capitalize;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
 }
 
 @media (max-width: 1034px) {
