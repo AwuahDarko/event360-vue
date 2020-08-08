@@ -92,6 +92,11 @@ const routes = [
     name: 'BrowseByType',
     component: lazyLoad('BrowseByType'),
   },
+  {
+    path: '/event-details/:event_key',
+    name: 'EventDetails',
+    component: lazyLoad('EventDetails'),
+  },
   // {
   //   path: '/',
   //   name: 'Home',

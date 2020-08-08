@@ -162,8 +162,8 @@ export default {
     },
 
     event_name: function () {
-      if (this.event_data.name.length > 2) {
-        let chip = this.event_data.name.substring(0, 17);
+      if (this.event_data.name.length > 30) {
+        let chip = this.event_data.name.substring(0, 25);
         return chip + "...";
       } else {
         return this.event_data.name;
@@ -259,7 +259,7 @@ li span {
 }
 
 .img-fluid {
-  max-height: 165.677px;
+  height: 165.677px;
   width: 100%;
 }
 

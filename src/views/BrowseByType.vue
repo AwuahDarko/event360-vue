@@ -193,8 +193,8 @@ import EventCard from "../components/EventCard.vue";
 import { apiUrl } from "../utils/config";
 
 export default {
-  name: "BrowseByCategory",
-  title: "Browse by Category",
+  name: "BrowseByType",
+  title: "Browse by Event Type",
   components: {
     snackbar: Snackbar,
     EventCardSkeleton,
