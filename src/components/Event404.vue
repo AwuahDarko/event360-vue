@@ -6,7 +6,6 @@
       </div>
       <h2>404 - Page not found</h2>
       <p>The page you are looking for might have been removed, had its name changed, does not exist or is temporarily unavailable.</p>
-      <!-- <a href="https://event360-gh.com">Browse Our Events</a> -->
       <router-link to="/browse-event" tag="a">Browse Our Events</router-link>
     </div>
   </div>

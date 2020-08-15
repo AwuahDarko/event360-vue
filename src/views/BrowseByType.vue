@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="container main-menu">
+      <!-- <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">
           <div id="logo">
             <a href="https://event360-gh.com">
@@ -75,8 +75,69 @@
                 </div>
               </div>
             </ul>
+
+        </div>
+      </div>-->
+      <div class="container main-menu pb-4 set-as-row">
+        <div class="row align-items-center justify-content-between d-flex on-big-screen w-100">
+          <div id="logo" class="on-big-screen">
+            <a href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+          </div>
+          <nav v-if="!is_logged_in" class="on-big-screen">
+            <ul class="nav-menu">
+              <li>
+                <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
+              </li>
+              <!-- <li>
+                <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link>
+              </li>-->
+              <li>
+                <router-link to="/login" class="anchor" tag="a">Log In</router-link>
+              </li>
+              <li>
+                <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
+              </li>
+            </ul>
           </nav>
-          <!-- #nav-menu-container -->
+        </div>
+        <nav class="on-small-screen">
+          <div class="topnav">
+            <a id="logo" class="on-small-screen" href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+
+            <div v-if="!is_logged_in" ref="myLink" id="myLinks">
+              <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link> -->
+              <router-link to="/login" class="anchor" tag="a">Log In</router-link>
+              <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
+            </div>
+            <div v-else ref="myLink" id="myLinks">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" tag="a">Browse Events</router-link> -->
+              <a href="#" @click="logout">Log Out</a>
+            </div>
+            <a href="javascript:void(0);" class="icon" @click="toogleMobileNavBar">
+              <i class="fa fa-bars"></i>
+            </a>
+          </div>
+        </nav>
+        <div class="on-big-screen">
+          <div class="dropdown ml-4" v-if="is_logged_in">
+            <a>
+              <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
+              <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" tag="a">Browse Events</router-link> -->
+              <a @click="logout">Log Out</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -241,6 +302,15 @@ export default {
         name: "BrowseByCategory",
         params: { category: item },
       });
+    },
+
+    toogleMobileNavBar() {
+      const x = this.$refs.myLink;
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
     },
 
     fetchAllEventsByType(type) {
@@ -468,6 +538,85 @@ export default {
 .dropdown:hover .dropbtn {
   background-color: #3e8e41;
 }
+
+/* ================================================== */
+.on-big-screen {
+  display: none;
+}
+
+.on-small-screen {
+  display: block;
+}
+
+.topnav {
+  overflow: hidden;
+  position: relative;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: white;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: solid 1px #28a745;
+  border-radius: 5px;
+}
+
+.dropdown a {
+  /* padding: 0 8px 0px 8px; */
+  text-decoration: none;
+  display: inline-flex;
+  color: #222;
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+  outline: none;
+  align-items: center;
+}
+
+.dropdown a i {
+  font-size: 0.8rem;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 12px;
+  text-decoration: none;
+  display: block;
+  text-transform: capitalize;
+}
+
+/* BIG SCREEN */
+@media (min-width: 800px) {
+  .on-big-screen {
+    display: block;
+  }
+
+  .on-small-screen {
+    display: none;
+  }
+
+  .set-as-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+/* ======================================================= */
 
 @media (max-width: 1034px) {
   .card-container .col-md-3 {

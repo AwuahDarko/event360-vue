@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="body">
     <vue-progress-bar></vue-progress-bar>
     <snackbar
       ref="snackbar"
@@ -43,14 +43,14 @@
           </div>
         </div>
       </div>
-      <div class="container main-menu">
+      <!-- <div class="container main-menu">
         <div class="row align-items-center justify-content-between d-flex">
           <div id="logo">
             <a href="https://event360-gh.com">
               <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
             </a>
           </div>
-          <nav id="nav-menu-container">
+          <nav class="on-small-screen">
             <ul class="nav-menu">
               <li v-if="!is_logged_in">
                 <router-link class="anchor" to="/create-event" tag="a">Create New Event</router-link>
@@ -75,7 +75,69 @@
               </div>
             </ul>
           </nav>
-          <!-- #nav-menu-container -->
+       
+        </div>
+      </div>-->
+      <div class="container main-menu pb-4 set-as-row">
+        <div class="row align-items-center justify-content-between d-flex on-big-screen w-100">
+          <div id="logo" class="on-big-screen">
+            <a href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+          </div>
+          <nav v-if="!is_logged_in" class="on-big-screen">
+            <ul class="nav-menu">
+              <li>
+                <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
+              </li>
+              <!-- <li>
+                <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link>
+              </li>-->
+              <li>
+                <router-link to="/login" class="anchor" tag="a">Log In</router-link>
+              </li>
+              <li>
+                <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <nav class="on-small-screen">
+          <div class="topnav">
+            <a id="logo" class="on-small-screen" href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+
+            <div v-if="!is_logged_in" ref="myLink" id="myLinks">
+              <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link> -->
+              <router-link to="/login" class="anchor" tag="a">Log In</router-link>
+              <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
+            </div>
+            <div v-else ref="myLink" id="myLinks">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" tag="a">Browse Events</router-link> -->
+              <a href="#" @click="logout">Log Out</a>
+            </div>
+            <a href="javascript:void(0);" class="icon" @click="toogleMobileNavBar">
+              <i class="fa fa-bars"></i>
+            </a>
+          </div>
+        </nav>
+        <div class="on-big-screen">
+          <div class="dropdown ml-4" v-if="is_logged_in">
+            <a>
+              <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
+              <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <!-- <router-link to="/browse-event" tag="a">Browse Events</router-link> -->
+              <a @click="logout">Log Out</a>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -360,15 +422,13 @@ export default {
       "getAllEventsByCategory",
     ]),
 
-    loadExternalScripts() {
-      //   this.$loadScript("./js/jquery-2.2.4.min.js");
-      // this.$loadScript("./js/bootstrap.min.js");
-      // this.$loadScript("./js/superfish.min.js");
-      // this.$loadScript("./js/jquery.magnific-popup.min.js");
-      // this.$loadScript("./js/jquery.nice-select.min.js");
-      // this.$loadScript("./js/jquery.counterup.min.js");
-      // this.$loadScript("./js/waypoints.min.js");
-      // this.$loadScript("./js/main.js");
+    toogleMobileNavBar() {
+      const x = this.$refs.myLink;
+      if (x.style.display === "block") {
+        x.style.display = "none";
+      } else {
+        x.style.display = "block";
+      }
     },
 
     async fetchAllNeededData() {
@@ -459,6 +519,111 @@ export default {
     }
 
     this.fetchAllNeededData();
+
+    // Initiate superfish on nav menu
+    // $(".nav-menu").superfish({
+    //   animation: {
+    //     opacity: "show",
+    //   },
+    //   speed: 400,
+    // });
+
+    // $(".nav-menu").show();
+
+    // // Mobile Navigation
+    // if ($("#nav-menu-container").length) {
+    //   var $mobile_nav = $("#nav-menu-container").clone().prop({
+    //     id: "mobile-nav",
+    //   });
+    //   $mobile_nav.find("> ul").attr({
+    //     class: "",
+    //     id: "",
+    //   });
+    //   $(".body").append($mobile_nav);
+    //   $(".body").prepend(
+    //     '<button type="button" id="mobile-nav-toggle"><i class="lnr lnr-menu"></i></button>'
+    //   );
+    //   $(".body").append('<div id="mobile-body-overly"></div>');
+    //   $("#mobile-nav")
+    //     .find(".menu-has-children")
+    //     .prepend('<i class="lnr lnr-chevron-down"></i>');
+
+    //   $(document).on("click", ".menu-has-children i", function () {
+    //     $(this).next().toggleClass("menu-item-active");
+    //     $(this).nextAll("ul").eq(0).slideToggle();
+    //     $(this).toggleClass("lnr-chevron-up lnr-chevron-down");
+    //   });
+
+    //   $(document).on("click", "#mobile-nav-toggle", function () {
+    //     $(".body").toggleClass("mobile-nav-active");
+    //     $("#mobile-nav-toggle i").toggleClass("lnr-cross lnr-menu");
+    //     $("#mobile-body-overly").toggle();
+    //   });
+
+    //   $(document).click(function (e) {
+    //     var container = $("#mobile-nav, #mobile-nav-toggle");
+    //     if (!container.is(e.target) && container.has(e.target).length === 0) {
+    //       if ($(".body").hasClass("mobile-nav-active")) {
+    //         $(".body").removeClass("mobile-nav-active");
+    //         $("#mobile-nav-toggle i").toggleClass("lnr-cross lnr-menu");
+    //         $("#mobile-body-overly").fadeOut();
+    //       }
+    //     }
+    //   });
+    // } else if ($("#mobile-nav, #mobile-nav-toggle").length) {
+    //   $("#mobile-nav, #mobile-nav-toggle").hide();
+    // }
+
+    // // Smooth scroll for the menu and links with .scrollto classes
+    // $(".nav-menu a, #mobile-nav a, .scrollto").on("click", function () {
+    //   if (
+    //     location.pathname.replace(/^\//, "") ==
+    //       this.pathname.replace(/^\//, "") &&
+    //     location.hostname == this.hostname
+    //   ) {
+    //     var target = $(this.hash);
+    //     if (target.length) {
+    //       var top_space = 0;
+
+    //       if ($("#header").length) {
+    //         top_space = $("#header").outerHeight();
+
+    //         if (!$("#header").hasClass("header-fixed")) {
+    //           top_space = top_space + 0;
+    //         }
+    //       }
+
+    //       $("html, .body").animate(
+    //         {
+    //           scrollTop: target.offset().top - top_space,
+    //         },
+    //         1500,
+    //         "easeInOutExpo"
+    //       );
+
+    //       if ($(this).parents(".nav-menu").length) {
+    //         $(".nav-menu .menu-active").removeClass("menu-active");
+    //         $(this).closest("li").addClass("menu-active");
+    //       }
+
+    //       if ($(".body").hasClass("mobile-nav-active")) {
+    //         $(".body").removeClass("mobile-nav-active");
+    //         $("#mobile-nav-toggle i").toggleClass("lnr-times lnr-bars");
+    //         $("#mobile-body-overly").fadeOut();
+    //       }
+    //       return false;
+    //     }
+    //   }
+    // });
+
+    // // Header scroll class
+    // $(window).scroll(function () {
+    //   if ($(this).scrollTop() > 100) {
+    //     $("#header").addClass("header-scrolled");
+    //   } else {
+    //     $("#header").removeClass("header-scrolled");
+    //   }
+    // });
   },
 
   computed: {
@@ -673,6 +838,85 @@ a span.fa {
 .dropdown:hover .dropbtn {
   background-color: #3e8e41;
 }
+
+/* ================================================== */
+.on-big-screen {
+  display: none;
+}
+
+.on-small-screen {
+  display: block;
+}
+
+.topnav {
+  overflow: hidden;
+  position: relative;
+}
+
+.topnav #myLinks {
+  display: none;
+}
+
+.topnav a {
+  color: rgb(0, 0, 0);
+  padding: 10px 10px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.topnav a.icon {
+  background: white;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border: solid 1px #28a745;
+  border-radius: 5px;
+}
+
+.dropdown a {
+  /* padding: 0 8px 0px 8px; */
+  text-decoration: none;
+  display: inline-flex;
+  color: #222;
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+  outline: none;
+  align-items: center;
+}
+
+.dropdown a i {
+  font-size: 0.8rem;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 12px;
+  text-decoration: none;
+  display: block;
+  text-transform: capitalize;
+}
+
+/* BIG SCREEN */
+@media (min-width: 800px) {
+  .on-big-screen {
+    display: block;
+  }
+
+  .on-small-screen {
+    display: none;
+  }
+
+  .set-as-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+/* ======================================================= */
 
 @media (max-width: 1034px) {
   .card-container .col-md-3 {

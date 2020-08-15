@@ -238,7 +238,7 @@ import Snackbar from "vuejs-snackbar";
 import { apiUrl } from "../utils/config";
 import moment from "moment";
 import EventDetailsSkeleton from "../components/EventDetailSkeleton.vue";
-import Event404 from "../components/404Event.vue";
+import Event404 from "../components/Event404.vue";
 
 export default {
   name: "EventDetails",
@@ -428,17 +428,19 @@ export default {
     window.onscroll = () => {
       const header = this.$refs.myHeader;
       const ticketBox = this.$refs.ticketBox;
-      const sticky = ticketBox.offsetTop;
-      if (window.pageYOffset > sticky) {
-        header.classList.remove("hide");
-        header.classList.add("sticky");
-        header.classList.add("add-shadow");
-        header.classList.add("show");
-      } else {
-        header.classList.remove("show");
-        header.classList.add("hide");
-        header.classList.remove("sticky");
-        header.classList.remove("add-shadow");
+      if (ticketBox != undefined) {
+        const sticky = ticketBox.offsetTop;
+        if (window.pageYOffset > sticky) {
+          header.classList.remove("hide");
+          header.classList.add("sticky");
+          header.classList.add("add-shadow");
+          header.classList.add("show");
+        } else {
+          header.classList.remove("show");
+          header.classList.add("hide");
+          header.classList.remove("sticky");
+          header.classList.remove("add-shadow");
+        }
       }
     };
   },
@@ -487,8 +489,8 @@ export default {
 
 <style scoped>
 @import url("../assets/css/browse-event.css");
-@import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css");
-/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"); */
+/* @import url("../assets/css/fontawesome-free-5.13.1-web/css/all.min.css"); */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css");
 
 .top-container {
   padding: 10px 20px;
