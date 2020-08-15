@@ -70,7 +70,7 @@
                 <div class="dropdown-content">
                   <a href="#">My Events</a>
                   <router-link to="/create-event" tag="a">Create Event</router-link>
-                  <a href="#" @click="logout">Log Out</a>
+                  <a @click="logout">Log Out</a>
                 </div>
               </div>
             </ul>
@@ -169,8 +169,8 @@
                 <div class="row pr-3 pl-3">
                   <li
                     class="nav-item"
-                    v-for="day in oneDay"
-                    :key="`header-${day.day.split(' ').join('-')}`"
+                    v-for="(day, i) in oneDay"
+                    :key="`header-${day.day.split(' ').join('-')}-${i}`"
                   >
                     <a
                       class="nav-link"

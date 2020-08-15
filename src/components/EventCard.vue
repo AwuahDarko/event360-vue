@@ -23,14 +23,12 @@
               <i class="fa fa-map-marker text-success" key="vunue2"></i>
               {{ event_data.venue_name }}
             </span>
-            <!-- + ", " + event_data.city -->
           </li>
         </ul>
       </div>
-      <h5 class="card-title">{{ event_name }}</h5>
-      <!-- <p class="card-text">Short description</p> -->
+      <h5 style="height: 62px" class="card-title">{{ event_name }}</h5>
       <div class="icon-block">
-        <a href>
+        <a @click="onReadMore">
           <h6 class="card-title text-success">
             Read More
             <i class="fas fa-chevron-right" style="font-size: 12px;"></i>
@@ -38,7 +36,11 @@
         </a>
       </div>
       <div v-if="event_data.buy_ticket_btn === 1" class="icon-block">
-        <button type="button" class="btn btn-block btn-success btn-sm mt-2 mb-2">Get Tickets</button>
+        <button
+          type="button"
+          class="btn btn-block btn-success btn-sm mt-2 mb-2"
+          @click="onGetTickets"
+        >Get Tickets</button>
       </div>
       <div v-else class="block-block mt-2 mb-2"></div>
 
@@ -139,6 +141,17 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+
+    onReadMore() {
+      this.$router.push({
+        name: "EventDetails",
+        params: { event_key: this.event_data.event_key },
+      });
+    },
+
+    onGetTickets() {
+      console.log("Ouch ticket");
+    },
   },
 
   created() {
@@ -162,8 +175,8 @@ export default {
     },
 
     event_name: function () {
-      if (this.event_data.name.length > 30) {
-        let chip = this.event_data.name.substring(0, 25);
+      if (this.event_data.name.length > 110) {
+        let chip = this.event_data.name.substring(0, 106);
         return chip + "...";
       } else {
         return this.event_data.name;

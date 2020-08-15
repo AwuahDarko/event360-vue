@@ -1,5 +1,13 @@
 <template>
-  <section>
+  <div>
+    <vue-progress-bar></vue-progress-bar>
+    <snackbar
+      ref="snackbar"
+      baseSize="50px"
+      :holdTime="5000"
+      :multiple="true"
+      :position="position"
+    />
     <div class="header-top bg-success">
       <div class="container">
         <div class="row">
@@ -35,174 +43,443 @@
         </div>
       </div>
     </div>
-    <div class="container main-menu pb-4">
-      <div class="row align-items-center justify-content-between d-flex on-big-screen">
-        <div id="logo" class="on-big-screen">
-          <a href="https://event360-gh.com">
-            <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
-          </a>
+    <section class="pl-2 pr-2">
+      <!-- header section -->
+
+      <div class="container main-menu pb-4 set-as-row">
+        <div class="row align-items-center justify-content-between d-flex on-big-screen w-100">
+          <div id="logo" class="on-big-screen">
+            <a href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+          </div>
+          <nav v-if="!is_logged_in" class="on-big-screen">
+            <ul class="nav-menu">
+              <li>
+                <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
+              </li>
+              <li>
+                <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link>
+              </li>
+              <li>
+                <router-link to="/login" class="anchor" tag="a">Log In</router-link>
+              </li>
+              <li>
+                <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
+              </li>
+            </ul>
+          </nav>
         </div>
-        <nav class="on-big-screen">
-          <ul class="nav-menu">
-            <li>
+        <nav class="on-small-screen">
+          <div class="topnav">
+            <a id="logo" class="on-small-screen" href="https://event360-gh.com">
+              <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
+            </a>
+
+            <div v-if="!is_logged_in" ref="myLink" id="myLinks">
               <router-link to="/create-event" class="anchor" tag="a">Create Event</router-link>
-            </li>
-            <li>
               <router-link to="/browse-event" class="anchor" tag="a">Browse Events</router-link>
-            </li>
-            <li>
               <router-link to="/login" class="anchor" tag="a">Log In</router-link>
-            </li>
-            <li>
               <router-link to="/sign-up" class="anchor" tag="a">Sign Up</router-link>
-            </li>
-          </ul>
+            </div>
+            <div v-else ref="myLink" id="myLinks">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <router-link to="/browse-event" tag="a">Browse Events</router-link>
+              <a href="#" @click="logout">Log Out</a>
+            </div>
+            <a href="javascript:void(0);" class="icon" @click="toogleMobileNavBar">
+              <i class="fa fa-bars"></i>
+            </a>
+          </div>
         </nav>
-      </div>
-      <nav class="on-small-screen">
-        <div class="topnav">
-          <a id="logo" class="on-small-screen" href="https://event360-gh.com">
-            <img src="../assets/img/logo.png" alt="logo" width="80px" height="30px" />
-          </a>
-
-          <div ref="myLink" id="myLinks">
-            <a href="#news">News</a>
-            <a href="#contact">Contact</a>
-            <a href="#about">About</a>
-          </div>
-          <a href="javascript:void(0);" class="icon" @click="toogleMobileNavBar">
-            <i class="fa fa-bars"></i>
-          </a>
-        </div>
-      </nav>
-      <div class="dropdown ml-4" v-if="is_logged_in">
-        <a>
-          <img width="30" class="rounded-circle" src="../assets/img/logo.png" />
-          <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
-        </a>
-        <div class="dropdown-content">
-          <a href="#">My Events</a>
-          <router-link to="/create-event" tag="a">Create Event</router-link>
-          <a href="#" @click="logout">Log Out</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="header" ref="myHeader">
-      <div class="header-content">
-        <aside class="fav-btn">
-          <div data-toggle="tooltip" data-placement="bottom" title="Interested">
-            <i class="fa fa-star mr-1"></i>
-          </div>
-          <div data-toggle="tooltip" data-placement="bottom" title="Going">
-            <i class="far fa-check-circle mr-1"></i>
-          </div>
-          <div data-toggle="tooltip" data-placement="bottom" title="Share">
-            <i class="fas fa-share mr-1"></i>
-          </div>
-          <div data-toggle="tooltip" data-placement="bottom" title="Save">
-            <i class="far fa-save mr-1"></i>
-          </div>
-        </aside>
-        <aside class="ticket-btn">
-          <label class="cash-label">GHc100.00 - GHc 1000.00</label>
-          <button class="btn btn-success ticket">Tickets</button>
-        </aside>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="row-me">
-        <div class="banner-container">
-          <div class="banner">
-            <img src="../assets/img/back.png" class="banner-img" alt="event banner" />
-          </div>
-          <img src="../assets/img/avatar04.png" alt="event logo" class="logo-img" />
-        </div>
-        <div class="date-box">
-          <label>
-            <i class="fa fa-calendar mr-1"></i> Date and Time
-          </label>
-          <p class="ml-4">Wed, March 25-27, 2020</p>
-          <p class="ml-4">9:00 - 13:00</p>
-
-          <div style="height: 20px"></div>
-          <label>
-            <i class="fa fa-map-marker mr-1"></i>
-            Venue
-          </label>
-          <p class="ml-4">Venue name</p>
-          <p class="ml-4">Street</p>
-          <p class="ml-4">State</p>
-          <p class="ml-4">Country</p>
-
-          <div style="height: 100px"></div>
-          <div class="items-in-row">
-            <div>
-              <button type="button" class="small-text btn btn-sm">
-                <i class="fa fa-star text-success mr-1"></i>Interested
-              </button>
-            </div>
-            <div>
-              <button type="button" class="btn btn-sm small-text">
-                <i class="far fa-check-circle text-success mr-1"></i>Going
-              </button>
-            </div>
-            <div>
-              <button type="button" class="btn btn-sm small-text">
-                <i class="fas fa-share text-success mr-1"></i>Share
-              </button>
-            </div>
-            <div>
-              <button type="button" class="btn btn-sm small-text">
-                <i class="far fa-save text-success mr-1"></i>Save
-              </button>
+        <div class="on-big-screen">
+          <div class="dropdown ml-4" v-if="is_logged_in">
+            <a>
+              <img width="30" class="rounded-circle" src="../assets/img/avatar.png" />
+              <i class="fa fa-angle-down ml-2 opacity-10" style="color: #000;"></i>
+            </a>
+            <div class="dropdown-content">
+              <a href="#">My Events</a>
+              <router-link to="/create-event" tag="a">Create Event</router-link>
+              <router-link to="/browse-event" tag="a">Browse Events</router-link>
+              <a @click="logout">Log Out</a>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div style="height: 60px"></div>
-  </section>
+
+      <div class="header hide" ref="myHeader">
+        <div class="header-content">
+          <aside class="fav-btn">
+            <div data-toggle="tooltip" data-placement="bottom" title="Interested">
+              <i class="fa fa-star mr-1"></i>
+            </div>
+            <div data-toggle="tooltip" data-placement="bottom" title="Going">
+              <i class="far fa-check-circle mr-1"></i>
+            </div>
+            <div data-toggle="tooltip" data-placement="bottom" title="Share">
+              <i class="fas fa-share mr-1"></i>
+            </div>
+            <div data-toggle="tooltip" data-placement="bottom" title="Save">
+              <i class="far fa-save mr-1"></i>
+            </div>
+          </aside>
+          <aside class="ticket-btn">
+            <label class="cash-label">GHc100.00 - GHc 1000.00</label>
+            <button class="btn btn-success ticket">Tickets</button>
+          </aside>
+        </div>
+      </div>
+      <!-- header section ends -->
+      <!-- body section -->
+      <div v-if="loading" class="pl-5 pr-5">
+        <EventDetailsSkeleton />
+      </div>
+      <div v-else-if="no_data_available">
+        <Event404 />
+      </div>
+      <div v-else-if="event_has_expired">
+        <div class="w-50 mx-auto">
+          <div class="bg-warning expired">event ended</div>
+        </div>
+      </div>
+      <div v-else class="content">
+        <div class="row-me">
+          <div class="banner-container">
+            <div v-if="there_is_banner" class="banner">
+              <img :src="banner_src" class="banner-img" alt="event banner" />
+            </div>
+            <div v-else class="banner">
+              <div class="banner-img bg-info"></div>
+            </div>
+            <img v-if="there_is_logo" :src="logo_src" alt="event logo" class="logo-img" />
+            <div v-else class="logo-img bg-secondary">
+              <span class="initial-text">{{ organiser_initials }}</span>
+            </div>
+          </div>
+
+          <div class="date-box">
+            <label>
+              <i class="fa fa-calendar mr-1"></i> Date and Time
+            </label>
+            <p class="ml-4">
+              <strong>Starts on:</strong>
+              {{ start_date }}
+            </p>
+            <p class="ml-4 mb-2">{{ start_time }} {{ start_time == '' ? '' : 'UTC' }}</p>
+
+            <p class="ml-4">
+              <strong>Ends on:</strong>
+              {{ end_date }}
+            </p>
+            <p class="ml-4">{{ end_time }} {{ end_time == '' ? '' : 'UTC' }}</p>
+
+            <div style="height: 20px"></div>
+            <label>
+              <i class="fa fa-map-marker mr-1"></i>
+              Venue
+            </label>
+            <p class="ml-4">{{ venue }}</p>
+            <p class="ml-4">{{ street }}</p>
+            <p class="ml-4">{{ state }}</p>
+            <p class="ml-4">{{ country }}</p>
+
+            <div style="height: 100px"></div>
+            <div class="items-in-row">
+              <div>
+                <button type="button" class="small-text btn btn-sm">
+                  <i class="fa fa-star text-success mr-1"></i>Interested
+                </button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-sm small-text">
+                  <i class="far fa-check-circle text-success mr-1"></i>Going
+                </button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-sm small-text">
+                  <i class="fas fa-share text-success mr-1"></i>Share
+                </button>
+              </div>
+              <div>
+                <button type="button" class="btn btn-sm small-text">
+                  <i class="far fa-save text-success mr-1"></i>Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="height: 30px"></div>
+        <!-- EVENT TITLE AND TICKET BUTTON -->
+        <div class="row" ref="ticketBox">
+          <div class="max-label-box">
+            <h3>{{ name }}</h3>
+          </div>
+          <div class="max-btn-box put-margin-on-me">
+            <button class="btn btn-success w-100">Tickets</button>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <h5>About</h5>
+        </div>
+        <section class="row">
+          <article class="description-box" v-html="event.description"></article>
+        </section>
+      </div>
+    </section>
+  </div>
 </template>
 
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+import Snackbar from "vuejs-snackbar";
+import { apiUrl } from "../utils/config";
+import moment from "moment";
+import EventDetailsSkeleton from "../components/EventDetailSkeleton.vue";
+import Event404 from "../components/404Event.vue";
+
 export default {
   name: "EventDetails",
   title: "Event Details",
-  components: {},
+  components: {
+    snackbar: Snackbar,
+    EventDetailsSkeleton,
+    Event404,
+  },
 
   data() {
     return {
+      position: "top-right",
       is_logged_in: false,
+      loading: true,
+      there_is_banner: false,
+      there_is_logo: false,
+      logo_src: "",
+      banner_src: "",
+      event: new Object(),
+      name: "",
+      description: "",
+      start_time: "",
+      start_date: "",
+      end_date: "",
+      end_time: "",
+      venue: "",
+      street: "",
+      state: "",
+      country: "",
+      organiser_initials: "",
+      no_data_available: false,
+      event_has_expired: false,
     };
   },
 
   methods: {
+    ...mapActions([
+      "fetchAllCategories",
+      "getAllEvents",
+      "getAllEventsByDay",
+      "getAllEventsByType",
+      "getAllEventsByCategory",
+    ]),
+
     toogleMobileNavBar() {
-      var x = this.$refs.myLink;
+      const x = this.$refs.myLink;
       if (x.style.display === "block") {
         x.style.display = "none";
       } else {
         x.style.display = "block";
       }
     },
+
+    setHistory(param) {
+      window.localStorage.setItem("current_location_name", "EventDetails");
+      window.localStorage.setItem("current_location_param", param);
+      window.localStorage.setItem("current_location_type", "event_key");
+    },
+
+    logout() {
+      window.localStorage.removeItem("token");
+      this.is_logged_in = false;
+    },
+
+    getSingleEvent(event_key) {
+      return new Promise((resolve, reject) => {
+        fetch(`${apiUrl}/api/single-event?key=${event_key}`, {
+          method: "GET",
+        })
+          .then(async (res) => {
+            // console.log(res);
+            if (res.status == 404) {
+              return null;
+            }
+
+            if (res.status === 200) {
+              return res.json();
+            }
+
+            return null;
+          })
+          .then((data) => {
+            resolve(data);
+          })
+          .catch((err) => {
+            console.log(err);
+            reject(err);
+          });
+      });
+    },
+
+    getImageUrl(event_key) {
+      // LOGO
+      fetch(`${apiUrl}/api/event-logo?key=${event_key}`, {
+        method: "GET",
+      })
+        .then(async (res) => {
+          if (res.status == 200) {
+            const logo = await res.json();
+            // this.logo_src = `${apiUrl}/api/images/?img=${logo.image_url}`;
+            if (logo.image_url != "") {
+              this.logo_src = `${apiUrl}/api/images/?img=${logo.image_url}`;
+              this.there_is_logo = true;
+            } else {
+              this.there_is_logo = false;
+            }
+          }
+
+          if (res.status == 404) {
+            this.there_is_logo = false;
+          }
+        })
+        .catch((err) => console.log(err));
+
+      // BANNER
+      fetch(`${apiUrl}/api/event-banner?key=${event_key}`, {
+        method: "GET",
+      })
+        .then(async (res) => {
+          if (res.status == 200) {
+            const banner = await res.json();
+            this.banner_src = `${apiUrl}/api/images/?img=${banner.image_url}`;
+            if (banner.image_url != "") {
+              this.banner_src = `${apiUrl}/api/images/?img=${banner.image_url}`;
+              this.there_is_banner = true;
+            } else {
+              this.there_is_banner = false;
+            }
+          }
+
+          if (res.status == 404) {
+            this.there_is_banner = false;
+          }
+        })
+        .catch((err) => console.log(err));
+    },
+
+    setThePageUp(data) {
+      this.loading = false;
+
+      if (data == null) {
+        this.no_data_available = true;
+      } else {
+        if (data.status !== "expired") {
+          this.event = data;
+          this.name = data.name;
+          this.venue = data.venue_name;
+          this.street = data.street;
+          this.state = data.state;
+          this.country = data.country;
+
+          // date and time
+          const slist = data.start_date.split("T");
+          const elist = data.end_date.split("T");
+          this.start_date = moment(slist[0], "YYYY-MM-DD").format("LL");
+          this.end_date = moment(elist[0], "YYYY-MM-DD").format("LL");
+          const st = slist[1].split(".")[0];
+          if (st !== "00:00:00") {
+            const a = st.split(":");
+            this.start_time = `at: ${a[0]}:${a[1]}`;
+          }
+
+          const et = elist[1].split(".")[0];
+          if (et !== "00:00:00") {
+            const a = et.split(":");
+            this.end_time = `at: ${a[0]}:${a[1]}`;
+          }
+          this.organiser_initials = data.organiser.substring(0, 2);
+        } else {
+          this.event_has_expired = true;
+        }
+      }
+    },
   },
 
   mounted() {
+    // check login
+    const token = window.localStorage.getItem("token");
+    if (token == null || token === "") {
+      this.is_logged_in = false;
+    } else {
+      this.is_logged_in = true;
+    }
+
     // fixed  header script
     window.onscroll = () => {
       const header = this.$refs.myHeader;
-      const sticky = header.offsetTop;
+      const ticketBox = this.$refs.ticketBox;
+      const sticky = ticketBox.offsetTop;
       if (window.pageYOffset > sticky) {
+        header.classList.remove("hide");
         header.classList.add("sticky");
         header.classList.add("add-shadow");
+        header.classList.add("show");
       } else {
+        header.classList.remove("show");
+        header.classList.add("hide");
         header.classList.remove("sticky");
         header.classList.remove("add-shadow");
       }
     };
+  },
+
+  created() {
+    const event_key = this.$route.params.event_key;
+
+    this.setHistory(event_key);
+
+    if (this.allEvents.length === 0) {
+      this.loading = true;
+
+      this.getSingleEvent(event_key)
+        .then((data) => {
+          this.setThePageUp(data);
+        })
+        .catch((err) => {
+          this.$Progress.finish();
+          console.log(err);
+        });
+    } else {
+      // find in all events
+      for (let event of this.allEvents) {
+        if (event.event_key === event_key) {
+          this.setThePageUp(event);
+          break;
+        }
+      }
+    }
+
+    this.getImageUrl(event_key);
+  },
+
+  computed: {
+    ...mapGetters([
+      "allCategories",
+      "eventsByDay",
+      "allEvents",
+      "eventsByCategory",
+      "eventsByType",
+    ]),
   },
 };
 </script>
@@ -262,6 +539,18 @@ export default {
 
 .nav-menu .anchor:hover {
   color: #28a745;
+}
+
+.dropdown a {
+  padding: 0 8px 0px 8px;
+  text-decoration: none;
+  display: inline-flex;
+  color: #222;
+  font-weight: 400;
+  font-size: 12px;
+  text-transform: uppercase;
+  outline: none;
+  align-items: center;
 }
 
 .text-small {
@@ -438,6 +727,133 @@ button i {
   flex-wrap: wrap;
 }
 
+.max-btn-box {
+  width: 100%;
+}
+
+.max-label-box {
+  width: 100%;
+}
+
+.put-margin-on-me {
+  margin-top: 20px;
+}
+
+.show {
+  display: block;
+  opacity: 1;
+  transition: opacity 2s;
+  transition-timing-function: ease-in;
+}
+
+.hide {
+  display: none;
+  opacity: 0;
+  transition: opacity 2s;
+  transition-timing-function: ease-out;
+}
+
+.description-box {
+  width: 100%;
+  margin-top: 20px;
+  text-align: justify;
+}
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: #4caf50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #ffffff;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 12px;
+  text-decoration: none;
+  display: block;
+  text-transform: capitalize;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
+
+.dropdown a i {
+  font-size: 0.8rem;
+}
+
+.initial-text {
+  text-transform: uppercase;
+  font-size: 2.5rem;
+  position: absolute;
+  top: 35%;
+  left: 20%;
+  right: 5%;
+  color: white;
+  font-weight: bold;
+}
+
+strong {
+  font-size: medium;
+}
+
+.expired {
+  width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+@media (max-width: 800px) {
+  .fav-btn {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+    align-items: center;
+    background-color: white;
+    padding: 20px 5px;
+    flex-wrap: wrap;
+    z-index: 90;
+  }
+
+  .banner-img {
+    border-radius: 5px;
+  }
+}
+
 /* BIG SCREEN */
 @media (min-width: 800px) {
   .ticket-btn {
@@ -464,16 +880,6 @@ button i {
     display: none;
   }
 
-  /* .banner-img {
-    width: inherit;
-    height: inherit;
-  } */
-
-  /* .banner {
-    width: 100%;
-    height: 500px;
-  } */
-
   .banner-container {
     width: 70%;
   }
@@ -481,25 +887,32 @@ button i {
   .date-box {
     width: 30%;
   }
-}
 
-@media (max-width: 800px) {
-  .fav-btn {
-    position: fixed;
-    bottom: 0px;
-    left: 0;
-    display: flex;
-    justify-content: space-evenly;
-    width: 100%;
-    align-items: center;
-    background-color: white;
-    padding: 20px 5px;
-    flex-wrap: wrap;
-    z-index: 90;
+  .max-btn-box {
+    width: 30%;
   }
 
-  .banner-img {
-    border-radius: 5px;
+  .max-label-box {
+    width: 70%;
+  }
+
+  .row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .put-margin-on-me {
+    margin-top: 0px;
+  }
+
+  .description-box {
+    width: 70%;
+  }
+
+  .set-as-row {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>

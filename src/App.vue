@@ -25,6 +25,14 @@ body {
   text-align: left;
 }
 
+b,
+sup,
+sub,
+u,
+del {
+  color: inherit !important;
+}
+
 @media (max-width: 800px) {
   .leaflet-control-geosearch.bar {
     width: 70% !important;

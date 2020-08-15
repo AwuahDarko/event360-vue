@@ -233,6 +233,11 @@ export default {
           this.$router.push({ name: name, params: { category: type } });
           return;
         }
+
+        if (type == "event_key") {
+          this.$router.push({ name: name, params: { event_key: type } });
+          return;
+        }
       }
     },
     rememberMe(evt) {

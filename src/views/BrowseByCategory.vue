@@ -71,7 +71,7 @@
                 <div class="dropdown-content">
                   <a href="#">My Events</a>
                   <router-link to="/create-event" tag="a">Create Event</router-link>
-                  <a href="#" @click="logout">Log Out</a>
+                  <a @click="logout">Log Out</a>
                 </div>
               </div>
             </ul>

@@ -16,7 +16,7 @@ const getters = {
 
 const actions = {
   getAllEvents({ commit }) {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       fetch(`${apiUrl}/api/event`, {
         method: 'GET',
       })
@@ -33,7 +33,7 @@ const actions = {
   },
 
   getAllEventsByDay({ commit }) {
-    new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       fetch(`${apiUrl}/api/browse/by-day`, {
         method: 'GET',
       })
